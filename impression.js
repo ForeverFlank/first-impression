@@ -23,10 +23,20 @@ function rejectAnimation(id) {
 var bn = (n) => new BigNum(n);
 
 
-var im = new BigNum(800);      // rels
+var im = new BigNum(0);      // rels
 
-var imUpgrade = Array(4).fill(bn(0));
-var imTotal = Array(4).fill(bn(0));
+var imUpgrade = [
+    new BigNum(0),
+    new BigNum(0),
+    new BigNum(0),
+    new BigNum(0)
+];
+var imTotal = [
+    new BigNum(0),
+    new BigNum(0),
+    new BigNum(0),
+    new BigNum(0)
+];
 
 /*
 var imAb1 = false;
@@ -137,31 +147,35 @@ var imPerSec = () => imValue(0);
 
 // updating function
 
-function imUp1Update() {
-    imAdd(BigNum.div(
-        imPerSec(),
-        bn(20)
-    ));
-    setText('imAps', imPerSec().smartToString(0, 'dark-blue', 6));
-    setText('imUp1R', imValue(0).smartToString(0, 'gray', 6));
-}
-
 function imUpdate(n) {
-    imTotal[n-1] = BigNum.add(
-        imTotal[n-1],
-        BigNum.div(
-            imValue(n),
+    
+    document.getElementById('imUp' + (n+1)).disabled = !(BigNum.greater(im, imCost(n)));
+    if (n == 0) {
+        imAdd(BigNum.div(
+            imPerSec(),
             bn(20)
-        )
-    );
-    setText('imUp' + (n+1) + 'R', imValue(n).smartToString(0, 'gray'));
+        ));
+        setText('imAps', imPerSec().smartToString(0, 'dark-blue', 6));
+        setText('imUp1R', imValue(0).smartToString(0, 'gray', 6));
+    }
+    else {
+        
+        imTotal[n-1] = BigNum.add(
+            imTotal[n-1],
+            BigNum.div(
+                imValue(n),
+                bn(20)
+            )
+        );
+        setText('imUp' + (n+1) + 'R', imValue(n).smartToString(0, 'gray'));
+    }
 }
 
 setInterval(function() {
     imUpdate(3);
     imUpdate(2);
     imUpdate(1);
-    imUp1Update();
+    imUpdate(0);
 
     setText('imUp1T', imTotal[0].smartToString(0, 'black', 6));
     setText('imUp2T', imTotal[1].smartToString(0, 'black', 6));
