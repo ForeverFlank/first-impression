@@ -30,12 +30,14 @@ var imUpgrade = [
     new BigNum(0),
     new BigNum(0),
     new BigNum(0),
+    new BigNum(20),
     new BigNum(0)
 ];
 var imTotal = [
     new BigNum(0),
     new BigNum(0),
     new BigNum(0),
+    new BigNum(20),
     new BigNum(0)
 ];
 
@@ -53,10 +55,10 @@ function imSub(n) {
 // prestige layer : remove all im t variable while only using the im a
 
 var imCost = (n) => {
-    var a = [ 1, .5, .1, .1];
-    var b = [ 0,  1,  1,  1];
-    var c = [ 2,  3,  4,  5];
-    var d = [ 1,  3,  6, 10];
+    var a = [ 1, .5, .1, .1, .1];
+    var b = [ 0,  1,  1,  1,  1];
+    var c = [ 2,  3,  4,  5,  6];
+    var d = [ 1,  3,  6, 10, 16];
     a = a.map(x => bn(x));
     b = b.map(x => bn(x));
     c = c.map(x => bn(x));
@@ -98,9 +100,9 @@ var imValue = (n) => {
     );
 }
 
-for (var n = 0; n < 4; n++) {
+for (var n = 0; n < 5; n++) {
     setText('imUp' + (n+1), imCost(n).smartToString(0));
-    setText('imUp' + (n+1) + 'A', imUpgrade[n].smartToString(0));
+    // setText('imUp' + (n+1) + 'A', imUpgrade[n].smartToString(0));
     setText('imUp' + (n+1) + 'T', imTotal[n].smartToString(0));
     setText('imUp' + (n+1) + 'R', imValue(n).smartToString(1));
 }
@@ -112,7 +114,7 @@ window.imClick = (n) => {
         imTotal[n] = BigNum.add(imTotal[n], bn(1));
         // pc = 1 + 0.1 * Math.pow(2, imUp2 - 1);
         setText('imUp' + (n+1), imCost(n).smartToString(0));
-        setText('imUp' + (n+1) + 'A', imUpgrade[n].smartToString(0));
+        // setText('imUp' + (n+1) + 'A', imUpgrade[n].smartToString(0));
         setText('imUp' + (n+1) + 'T', imTotal[n].smartToString(0));
         setText('imUp' + (n+1) + 'R', imValue(n).smartToString(1));
     }
@@ -143,11 +145,12 @@ function imUpdate(n) {
                 bn(20)
             )
         );
-        setText('imUp' + (n+1) + 'R', imValue(n).smartToString(0, 'gray'));
+        setText('imUp' + (n+1) + 'R', imValue(n).smartToString(0, 'gray', 6));
     }
 }
 
 setInterval(function() {
+    imUpdate(4);
     imUpdate(3);
     imUpdate(2);
     imUpdate(1);
@@ -156,6 +159,8 @@ setInterval(function() {
     setText('imUp1T', imTotal[0].smartToString(0, 'black', 6));
     setText('imUp2T', imTotal[1].smartToString(0, 'black', 6));
     setText('imUp3T', imTotal[2].smartToString(0, 'black', 6));
-    setText('imA', im.smartToString(2, 'blue', 18, 3));
+    setText('imUp4T', imTotal[3].smartToString(0, 'black', 6));
+    setText('imUp5T', imTotal[4].smartToString(0, 'black', 6));
+    setText('imA', im.smartToString(2, 'blue', 15, 3));
     // t += 1;
 }, 50);
