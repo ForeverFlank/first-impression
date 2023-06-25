@@ -4,6 +4,7 @@ function setText(id, str) {
     document.getElementById(id).innerHTML = str;
 }
 
+/*
 function rejectAnimation(id) {
     document.getElementById(id).animate(
         [
@@ -19,9 +20,9 @@ function rejectAnimation(id) {
         }
     );
 }
+*/
 
 var bn = (n) => new BigNum(n);
-
 
 var im = new BigNum(0);      // rels
 
@@ -38,21 +39,6 @@ var imTotal = [
     new BigNum(0)
 ];
 
-/*
-var imAb1 = false;
-var imAb2 = false;
-var imAb3 = false;
-
-var im = new BigNum(0);      // rels
-
-var imUp1 = new BigNum(30);
-var imUp2 = new BigNum(10);
-var imUp3 = new BigNum(10);
-
-var imUp1T = new BigNum(6000);
-var imUp2T = new BigNum(300);
-var imUp3T = new BigNum(10);
-*/
 var t = 1;
 
 function imAdd(n) {
@@ -61,14 +47,6 @@ function imAdd(n) {
 
 function imSub(n) {
     im = BigNum.sub(im, n);
-}
-
-function ticks(sec) {
-    return sec * 20;
-}
-
-window.imClick = () => {
-    imAdd(pc());
 }
 
 // TODO
@@ -148,7 +126,6 @@ var imPerSec = () => imValue(0);
 // updating function
 
 function imUpdate(n) {
-    
     document.getElementById('imUp' + (n+1)).disabled = !(BigNum.greater(im, imCost(n)));
     if (n == 0) {
         imAdd(BigNum.div(
@@ -159,7 +136,6 @@ function imUpdate(n) {
         setText('imUp1R', imValue(0).smartToString(0, 'gray', 6));
     }
     else {
-        
         imTotal[n-1] = BigNum.add(
             imTotal[n-1],
             BigNum.div(
@@ -180,6 +156,6 @@ setInterval(function() {
     setText('imUp1T', imTotal[0].smartToString(0, 'black', 6));
     setText('imUp2T', imTotal[1].smartToString(0, 'black', 6));
     setText('imUp3T', imTotal[2].smartToString(0, 'black', 6));
-    setText('imA', im.smartToString(2, 'blue', 9, 3));
+    setText('imA', im.smartToString(2, 'blue', 18, 3));
     // t += 1;
 }, 50);

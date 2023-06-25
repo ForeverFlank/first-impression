@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body style="margin: 0">
-    <div class="newsticker-bg">
-        <p>newsticker</p>
+    <div class="newsticker-bg" id="newstickerBg">
+        <p id="newsticker">newsticker</p>
     </div>
 
     <div style="margin: 3vw">
@@ -36,63 +36,63 @@
         <h2 class="center">Upgrades</h2>
         <div>
             <div class="upgrades">
-                <div class="width-30">
+                <div class="width-20">
                     <p style="margin-top: 0;">U1</p>
                     <div class="flex-start">
                         <p id="imUp1R" class="upgrade-rate number">x</p>
                         <p class="upgrade-rate">&nbsp;×</p>
                     </div>
                 </div>
-                <div class="width-30 center">
+                <div class="width-20 center">
                     <p id="imUp1A" style="margin-top: 0;">0</p>
                     <p id="imUp1T" class="upgrade-rate number">0</p>
                 </div>
-                <button id="imUp1" onclick="imClick(0)" class="upgrade-button number"></button>
+                <button id="imUp1" onclick="imClick(0)" class="upgrade-button number width-40"></button>
             </div>
 
             <div class="upgrades">
-                <div class="width-30">
+                <div class="width-20">
                     <p style="margin-top: 0;">U2</p>
                     <div class="flex-start">
                         <p id="imUp2R" class="upgrade-rate number">x</p>
                         <p class="upgrade-rate">&nbsp;×</p>
                     </div>
                 </div>
-                <div class="width-30 center">
+                <div class="width-20 center">
                     <p id="imUp2A" style="margin-top: 0;">0</p>
                     <p id="imUp2T" class="upgrade-rate number">0</p>
                 </div>
-                <button id="imUp2" onclick="imClick(1)" class="upgrade-button number"></button>
+                <button id="imUp2" onclick="imClick(1)" class="upgrade-button number width-40"></button>
             </div>
 
             <div class="upgrades">
-                <div class="width-30">
+                <div class="width-20">
                     <p style="margin-top: 0;">U3</p>
                     <div class="flex-start">
                         <p id="imUp3R" class="upgrade-rate number">x</p>
                         <p class="upgrade-rate">&nbsp;×</p>
                     </div>
                 </div>
-                <div class="width-30 center">
+                <div class="width-20 center">
                     <p id="imUp3A" style="margin-top: 0;">0</p>
                     <p id="imUp3T" class="upgrade-rate number">0</p>
                 </div>
-                <button id="imUp3" onclick="imClick(2)" class="upgrade-button number"></button>
+                <button id="imUp3" onclick="imClick(2)" class="upgrade-button number width-40"></button>
             </div>
             
             <div class="upgrades">
-                <div class="width-30">
+                <div class="width-20">
                     <p style="margin-top: 0;">U4</p>
                     <div class="flex-start">
                         <p id="imUp4R" class="upgrade-rate number">x</p>
                         <p class="upgrade-rate">&nbsp;×</p>
                     </div>
                 </div>
-                <div class="width-30 center">
+                <div class="width-20 center">
                     <p id="imUp4A" style="margin-top: 0;">0</p>
                     <p id="imUp4T" class="upgrade-rate number">0</p>
                 </div>
-                <button id="imUp4" onclick="imClick(3)" class="upgrade-button number"></button>
+                <button id="imUp4" onclick="imClick(3)" class="upgrade-button number width-40"></button>
             </div>
 
         </div>
@@ -117,6 +117,7 @@
         </div>
     </div>
     <script src="button-ripple.js"></script>
+    <script src="newsticker.js"></script>
     <script type="module" src="impression.js"></script>
 </body>
 </html>
