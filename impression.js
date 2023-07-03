@@ -40,17 +40,24 @@ var imTotal = [
     new BigNum(0),
     new BigNum(0)
 ];
-var imMul = new BigNum(1);
+var imLocMul = [
+    new BigNum(1),
+    new BigNum(1),
+    new BigNum(1),
+    new BigNum(1),
+    new BigNum(1)
+];
 var imAbCost = [
     new BigNum(1, 20),
     new BigNum(1, 40),
     new BigNum(1, 60),
-    new BigNum(0),
-    new BigNum(10)
+    new BigNum(1, 80),
+    new BigNum(1, 100)
 ];
 var imAutobuy = [false, false, false, false, false];
-
+var imMul = new BigNum(1);
 var imP1 = new BigNum(0);
+var imP2 = new BigNum(0);
 
 function imAdd(n) {
     im = BigNum.add(im, n);
@@ -97,7 +104,10 @@ var imValue = (n) => {
         BigNum.mul(
             BigNum.mul(
                 imTotal[n],
-                imMul
+                BigNum.mul(
+                    imLocMul[n],
+                    imMul
+                )
             ),
             BigNum.floor(
                 BigNum.log2(
@@ -125,6 +135,7 @@ window.imClick = (n) => {
 }
 
 window.imAbClick = (n) => {
+    console.log('ckci')
     if (BigNum.greater(im, imAbCost[n]) && !imAutobuy[n]) {
         imSub(imAbCost[n]);
         imAutobuy[n] = true;
@@ -142,13 +153,13 @@ function imUpdate(n, t) {
         button.disabled = !BigNum.greater(im, imCost(n));
     }
     else {
-        button.style.backgroundImage = `linear-gradient(to right, #aaa ${10 * (imUpgrade[n] % 10)}%, #777 ${10 * (imUpgrade[n] % 10) + 0.1}%)`;
+        button.style.backgroundImage = `linear-gradient(to right, #999 ${10 * (imUpgrade[n] % 10)}%, #777 ${10 * (imUpgrade[n] % 10) + 0.1}%)`;
         button.disabled = !BigNum.greater(im, imCost(n));
     }
     if (n == 0) {
         imAdd(BigNum.div(
             imPerSec(),
-            bn(20)
+            bn(1000 / t)
         ));
         setText('imAps', imPerSec().smartToString(0, 'dark-blue', 6));
         setText('imUp1R', imValue(0).smartToString(0, 'gray', 6));
@@ -167,11 +178,18 @@ function imUpdate(n, t) {
 
 function imPrestigeUpdate(n) {
     var button = document.getElementById(`imP${n+1}`);
-    button.disabled = !BigNum.greater(imUpgrade[4], imP1Req(imP1));
+    if (n == 0) {
+        button.disabled = !BigNum.greater(imUpgrade[4], imP1Req());
+    }
+    if (n == 1) {
+        button.disabled = !BigNum.greater(imUpgrade[4], imP2Req());
+    }
 }
 
 function imAutobuyer(n) {
+    var button = document.getElementById(`imAb${n+1}`);
     if (imAutobuy[n]) {
+        button.style.backgroundColor = '#99b897';   // take a look at css
         if (BigNum.greater(im, imCost(n))) {
             imSub(imCost(n));
             imUpgrade[n] = BigNum.add(imUpgrade[n], bn(1));
@@ -181,9 +199,13 @@ function imAutobuyer(n) {
             setText(`imUp${n+1}R`, imValue(n).smartToString(1));
         }
     }
+    else {
+        button.disabled = !BigNum.greater(im, imAbCost[n]);
+    }
 }
 
-var imP1Req = (n) => BigNum.mul(bn(15), BigNum.add(bn(1), imP1));
+var imP1Req = () => BigNum.add(bn(10), BigNum.mul(bn(10), imP1));
+var imP2Req = () => BigNum.add(bn(40), BigNum.mul(bn(15), imP2));
 
 function initText() {
     for (var n = 0; n < 5; n++) {
@@ -197,26 +219,47 @@ function initText() {
         // setText('imUp' + (n+1) + 'A', imUpgrade[n].smartToString(0));
         setText(`imAb${n+1}`, imAbCost[n].smartToString(1));
     }
-    setText('imP1', imP1Req(imP1).smartToString(0, 'gray', 6) + ' Fifth');
-    setText('imPV1', 'Currently: ×' + imMul.smartToString(0, 'gray', 6));
+    setText('imP1', imP1Req().smartToString(0, 'gray', 6) + ' Fifth');
+    setText('imPV1', 'Currently: ×' + imLocMul[4].smartToString(0, 'gray', 6));
+    setText('imP2', imP2Req().smartToString(0, 'gray', 6) + ' Fifth');
+    setText('imPV2', 'Currently: ×' + imMul.smartToString(0, 'gray', 6));
 }
 
 window.prestigeClick = (n) => {
     if (n == 1) {
-        if (BigNum.greater(imUpgrade[4], imP1Req(imP1))) {
+        if (BigNum.greater(imUpgrade[4], imP1Req())) {
             im = new BigNum(0);
             imUpgrade = Array(5).fill(new BigNum(0));
+            imLocMul[4] = BigNum.add(
+                imLocMul[4],
+                BigNum.add(
+                    BigNum.add(
+                        BigNum.log10(imTotal[0]),
+                        BigNum.log10(imTotal[1])
+                    ),
+                    BigNum.add(
+                        BigNum.log10(imTotal[2]),
+                        BigNum.log10(imTotal[3])
+                    )
+                )
+            );
             imTotal = Array(5).fill(new BigNum(0));
-            imMul = BigNum.mul(imMul, bn(2));
             imP1 = BigNum.add(imP1, bn(1));
             initText();
         }
     }
     if (n == 2) {
-
+        if (BigNum.greater(imUpgrade[4], imP2Req())) {
+            im = new BigNum(0);
+            imUpgrade = Array(5).fill(new BigNum(0));
+            imTotal = Array(5).fill(new BigNum(0));
+            imP1 = new BigNum(0);
+            imP2 = BigNum.add(imP1, bn(1));
+            imMul = BigNum.mul(imMul, bn(2));
+            initText();
+        }
     }
 }
-
 
 
 var savegame = JSON.parse(localStorage.getItem('save'));
@@ -245,19 +288,25 @@ if (savegame !== null) {
     if (typeof savegame.imP1 !== 'undefined') {
         imP1 = new BigNum(savegame.imP1.man, savegame.imP1.exp);
     }
+    if (typeof savegame.imP2 !== 'undefined') {
+        imP2 = new BigNum(savegame.imP2.man, savegame.imP2.exp);
+    }
     if (typeof savegame.imAutobuy !== 'undefined') { imAutobuy = savegame.imAutobuy; }
     var timeAway = Date.now() - savedate;
     console.log(timeAway);
 
     var oldIm = im;
-    for (var i = 0; i < timeAway / 50; i++) {
+    var ticks = Math.floor(timeAway / 1000);
+    for (var i = 0; i < ticks; i++) {
         imAutobuyer(0);
-        imUpdate(4, 50);
-        imUpdate(3, 50);
-        imUpdate(2, 50);
-        imUpdate(1, 50);
-        imUpdate(0, 50);
+        imUpdate(4, 1000);
+        imUpdate(3, 1000);
+        imUpdate(2, 1000);
+        imUpdate(1, 1000);
+        imUpdate(0, 1000);
+        document.getElementById('bar').style.width = `${i / ticks * 100}%`;
     }
+    document.getElementById('bar').style.width = `100%`;
     var newIm = im;
     setText('imGain', BigNum.sub(newIm, oldIm).smartToString(0, 'black', 6) + ' im.');
     document.getElementById('away').style.display = 'block';
@@ -267,11 +316,13 @@ else {
 }
 
 initText();
-
 setInterval(function() {
     imAutobuyer(0);
+    imAutobuyer(1);
+    imAutobuyer(2);
 
     imPrestigeUpdate(0);
+    imPrestigeUpdate(1);
 
     imUpdate(4, 50);
     imUpdate(3, 50);
@@ -298,7 +349,8 @@ setInterval(function() {
         imTotal : imTotal,
         imMul : imMul,
         imAutobuy : imAutobuy,
-        imP1 : imP1
+        imP1 : imP1,
+        imP2 : imP2
     }
     localStorage.setItem('save', JSON.stringify(save));
 }, 5 * 1000);

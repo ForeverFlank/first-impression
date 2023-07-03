@@ -213,12 +213,14 @@ span.ripple {
     margin: 0;
 }
 
-.prestige-div p {
+.prestige-desc {
+    margin-top: 0.5em;
     text-align: center;
 }
 
 .prestige-rate {
     margin-bottom: 0.5em;
+    text-align: center;
 }
 
 @keyframes ripple {
@@ -262,10 +264,23 @@ span.ripple {
 
 .button {
     margin: auto;
-    margin-top: 20px;
+    margin-top: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 2.4em;
     width: 100%;
+}
+
+.bar-container {
+    margin: 0;
+    height: 0.8em;
+    border-radius: 10px;
+    background-color: #aaa;
+}
+
+.bar {
+    height: 100%;
+    border-radius: 10px;
+    background-color: #2692f7;
 }

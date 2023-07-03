@@ -19,7 +19,7 @@
         </div>
         <div style="margin: 5vw">
             <div class="amount-div">
-                <p class="center">You currently have</p>
+                <p class="center">คุณมี</p>
                 <div>
                     <h1 id="imA" class="number center amount blue">0</h1>
                 </div>
@@ -27,17 +27,20 @@
             </div>
             <div class="inline">
                 <p id="imAps" class="number dark-blue">0.00</p>
-                <p>&ensp;/s</p>
+                <p>&ensp;ต่อวินาที</p>
             </div>
         </div>
     </div>
     
     <div style="margin: 3vw; margin-top: calc(132px + 16vw)">
         <div class="away" id="away">
-            <h3>While you were away...</h3>
-            <p>You gained</p>
-            <p id="imGain">something.</p>
-            <button class="button" onclick="document.getElementById('away').style.display = 'none'">Close this message</button>
+            <h3>ในขณะที่คุณไม่อยู่...</h3>
+            <p>คุณได้รับ</p>
+            <p id="imGain">อะไรบางอย่าง</p>
+            <div class="bar-container">
+                <div class="bar" id="bar" style="width: 50%"></div>
+            </div>
+            <button class="button" onclick="document.getElementById('away').style.display = 'none'">ปิดข้อความนี้</button>
         </div>
 
         <button onclick="localStorage.removeItem('save')">clear save</button>
@@ -121,15 +124,18 @@
         <h2 class="center">Prestige</h2>
         <div class="space-between">
             <div class="prestige-div">
-                <p style="margin: 0;">Reset everything for ×2 multiplier on all ims</p>
+                <p class="prestige-desc">Reset 1-4 for Fifth multiplier</p>
                 <div>
                     <p class="upgrade-rate prestige-rate" id="imPV1">Currently: ×1</p>
                     <button class="button" id="imP1" onclick="prestigeClick(1)">Reset 1</button>
                 </div>
             </div>
             <div class="prestige-div">
-                <p>Reset</p>
-                <button class="button" id="imP2">Reset 2</button>
+                <p class="prestige-desc">Reset everything for ×2 multiplier on all ims</p>
+                <div>
+                    <p class="upgrade-rate prestige-rate" id="imPV2">Currently: ×1</p>
+                    <button class="button" id="imP2" onclick="prestigeClick(2)">Reset 1</button>
+                </div>
             </div>
         </div>
 
@@ -139,17 +145,17 @@
         <div>
             <div class="upgrades">
                 <p>U1</p>
-                <button id="imAb1" onclick="imAbClick(0)" class="upgrade-button number">Buy</button>
+                <button id="imAb1" onclick="imAbClick(0)" class="upgrade-button number width-40">Buy</button>
             </div>
 
             <div class="upgrades">
                 <p>U2</p>
-                <button id="imAb2" onclick="" class="upgrade-button number">Buy</button>
+                <button id="imAb2" onclick="imAbClick(1)" class="upgrade-button number width-40">Buy</button>
             </div>
 
             <div class="upgrades">
                 <p>U3</p>
-                <button id="imAb3" onclick="" class="upgrade-button number">Buy</button>
+                <button id="imAb3" onclick="imAbClick(2)" class="upgrade-button number width-40">Buy</button>
             </div>
         </div>
     </div>
