@@ -1,9 +1,3 @@
-function swap(a, b) {
-    var temp = a;
-    a = b;
-    b = temp;
-}
-
 export default class BigNum {
     constructor(man, exp) {
         if (exp == undefined) {
@@ -56,10 +50,19 @@ export default class BigNum {
         var bMan = b.man;
         var bExp = b.exp;
         if (aExp < bExp) {
-            swap(aMan, bMan);
-            swap(aExp, bExp);
+            var temp = aMan;
+            aMan = bMan;
+            bMan = temp;
+            var temp = aExp;
+            aExp = bExp;
+            bExp = temp;
         }
-        bMan /= 10 ** (aExp - bExp);
+        if (aExp - bExp < 300) {
+            bMan /= 10 ** (aExp - bExp);
+        }
+        else {
+            bMan = 0;
+        }
         aMan += bMan;
         var resultMan = aMan;
         var resultExp = aExp;
@@ -77,7 +80,12 @@ export default class BigNum {
         if (aExp < bExp || (aExp == bExp && aMan < bMan)) {
             throw "Minuend is smaller than subtrahend!"
         }
-        bMan /= 10 ** (aExp - bExp)
+        if (aExp - bExp < 300) {
+            bMan /= 10 ** (aExp - bExp);
+        }
+        else {
+            bMan = 0;
+        }
         aMan -= bMan;
         var resultMan = aMan;
         var resultExp = aExp;
@@ -130,7 +138,7 @@ export default class BigNum {
     static pow(a, b) {
         // var aMan = a.man;
         // var aExp = a.exp;
-        var b = b.man * 10 ** b.exp;
+        b = b.man * 10 ** b.exp;
         var resultMan = a.man ** b;
         var resultExp = a.exp * b;
         var result = new BigNum(resultMan, resultExp);
