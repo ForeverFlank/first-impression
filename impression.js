@@ -67,10 +67,10 @@ function imSub(n) {
 }
 
 var imCost = (n) => {
-    var a = [ 1, .5, .1, .1, .1];
+    var a = [ 1, .5, .2, .1, .1];
     var b = [ 0,  1,  1,  1,  1];
     var c = [ 2,  3,  4,  5,  6];
-    var d = [ 1,  3,  6, 10, 16];
+    var d = [ 1,  3,  6, 10, 15];
     a = a.map(x => bn(x));
     b = b.map(x => bn(x));
     c = c.map(x => bn(x));
@@ -204,7 +204,7 @@ function imAutobuyer(n) {
     }
 }
 
-var imP1Req = () => BigNum.add(bn(10), BigNum.mul(bn(10), imP1));
+var imP1Req = () => BigNum.add(bn(15), BigNum.mul(bn(15), imP1));
 var imP2Req = () => BigNum.add(bn(40), BigNum.mul(bn(15), imP2));
 
 function initText() {
@@ -220,9 +220,9 @@ function initText() {
         setText(`imAb${n+1}`, imAbCost[n].smartToString(1));
     }
     setText('imP1', imP1Req().smartToString(0, 'gray', 6) + ' Fifth');
-    setText('imPV1', 'Currently: ×' + imLocMul[4].smartToString(0, 'gray', 6));
+    setText('imPV1', 'Currently: ×' + imMul.smartToString(0, 'gray', 6));
     setText('imP2', imP2Req().smartToString(0, 'gray', 6) + ' Fifth');
-    setText('imPV2', 'Currently: ×' + imMul.smartToString(0, 'gray', 6));
+    setText('imPV2', 'Currently: (' + imP2.smartToString(0, 'gray', 6) + ')');
 }
 
 window.prestigeClick = (n) => {
@@ -230,20 +230,8 @@ window.prestigeClick = (n) => {
         if (BigNum.greater(imUpgrade[4], imP1Req())) {
             im = new BigNum(0);
             imUpgrade = Array(5).fill(new BigNum(0));
-            imLocMul[4] = BigNum.add(
-                imLocMul[4],
-                BigNum.add(
-                    BigNum.add(
-                        BigNum.log10(imTotal[0]),
-                        BigNum.log10(imTotal[1])
-                    ),
-                    BigNum.add(
-                        BigNum.log10(imTotal[2]),
-                        BigNum.log10(imTotal[3])
-                    )
-                )
-            );
             imTotal = Array(5).fill(new BigNum(0));
+            imMul = BigNum.mul(imMul, bn(2));
             imP1 = BigNum.add(imP1, bn(1));
             initText();
         }
@@ -252,15 +240,33 @@ window.prestigeClick = (n) => {
         if (BigNum.greater(imUpgrade[4], imP2Req())) {
             im = new BigNum(0);
             imUpgrade = Array(5).fill(new BigNum(0));
+            for (var i = 0; i < 5; i++) {
+                imLocMul[i] = BigNum.add(
+                    imLocMul[i],
+                    BigNum.log100(imTotal[i])
+                );
+            }
             imTotal = Array(5).fill(new BigNum(0));
+            imMul = new BigNum(1);
             imP1 = new BigNum(0);
-            imP2 = BigNum.add(imP1, bn(1));
-            imMul = BigNum.mul(imMul, bn(2));
+            imP2 = BigNum.add(imP2, bn(1));
             initText();
         }
     }
 }
 
+window.buyMax = () => {
+    for (var n = 4; n >= 0; n--) {
+        while (BigNum.greater(im, imCost(n))) {
+            imSub(imCost(n));
+            imUpgrade[n] = BigNum.add(imUpgrade[n], bn(1));
+            imTotal[n] = BigNum.add(imTotal[n], bn(1));
+        }
+        setText(`imUp${n+1}`, imCost(n).smartToString(0));
+        setText(`imUp${n+1}T`, imTotal[n].smartToString(0));
+        setText(`imUp${n+1}R`, imValue(n).smartToString(1));
+    }
+}
 
 var savegame = JSON.parse(localStorage.getItem('save'));
 var savedate = Date.now();
@@ -282,6 +288,12 @@ if (savegame !== null) {
             imTotal[i] = new BigNum(each.man, each.exp);
         }
     }
+    if (typeof savegame.imLocMul !== 'undefined') {
+        for (var i = 0; i < 5; i++) {
+            var each = savegame.imLocMul[i];
+            imLocMul[i] = new BigNum(each.man, each.exp);
+        }
+    }
     if (typeof savegame.imMul !== 'undefined') {
         imMul = new BigNum(savegame.imMul.man, savegame.imMul.exp);
     }
@@ -297,6 +309,8 @@ if (savegame !== null) {
 
     var oldIm = im;
     var ticks = Math.floor(timeAway / 1000);
+    // var bar = document.getElementById('bar');
+    // ticks = 20000;
     for (var i = 0; i < ticks; i++) {
         imAutobuyer(0);
         imUpdate(4, 1000);
@@ -304,11 +318,11 @@ if (savegame !== null) {
         imUpdate(2, 1000);
         imUpdate(1, 1000);
         imUpdate(0, 1000);
-        document.getElementById('bar').style.width = `${i / ticks * 100}%`;
+        // bar.style.width = `${i / ticks * 100}%`;
     }
-    document.getElementById('bar').style.width = `100%`;
+    // bar.style.width = `100%`;
     var newIm = im;
-    setText('imGain', BigNum.sub(newIm, oldIm).smartToString(0, 'black', 6) + ' im.');
+    setText('imGain', oldIm.smartToString(0, 'black', 6) + ' เป็น ' + newIm.smartToString(0, 'black', 6) + ' ims.');
     document.getElementById('away').style.display = 'block';
 }
 else {
@@ -317,10 +331,6 @@ else {
 
 initText();
 setInterval(function() {
-    imAutobuyer(0);
-    imAutobuyer(1);
-    imAutobuyer(2);
-
     imPrestigeUpdate(0);
     imPrestigeUpdate(1);
 
@@ -342,12 +352,19 @@ setInterval(function() {
 }, 50);
 
 setInterval(function() {
+    imAutobuyer(0);
+    imAutobuyer(1);
+    imAutobuyer(2);
+}, 200);
+
+setInterval(function() {
     var save = {
         date: Date.now(),
         im: im,
         imUpgrade : imUpgrade,
         imTotal : imTotal,
         imMul : imMul,
+        imLocMul : imLocMul,
         imAutobuy : imAutobuy,
         imP1 : imP1,
         imP2 : imP2

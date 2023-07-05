@@ -3,19 +3,26 @@
 }
 
 body {
-    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+main {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 p {
-    font-size: calc(12px + 0.6vw);
+    font-size: calc(12px + 0.3vw);
 }
 
 h1 {
-    font-size: calc(18px + 0.9vw);
+    font-size: calc(18px + 0.3vw);
 }
 
 h2 {
-    font-size: calc(15px + 0.75vw);
+    font-size: calc(15px + 0.3vw);
 }
 
 .white {
@@ -49,7 +56,7 @@ h2 {
 
 .amount-div {
     display: flex;
-    height: calc(48px + 2.4vw);
+    height: calc(60px + .3vw);
     justify-content: space-between;
     flex-direction: column;
 }
@@ -118,14 +125,14 @@ h2 {
 }
 
 .upgrades {
-    height: calc(24px + 1.2vw);
+    height: calc(24px + .6vw);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 5px 5px 5px 7px;
     margin: 0.4em 0;
     border-radius: 10px;
-    background-color: #e0e0e0;
+    background-color: #eaeaea;
 }
 
 .upgrade-button {
@@ -136,9 +143,9 @@ h2 {
 }
 
 .upgrade-rate {
-    font-size: calc(9px + 0.45vw);
+    font-size: calc(10px + .3vw);
     color: #555;
-    margin-top: calc(-12px - 0.6vw);
+    margin-top: calc(-12px - .3vw);
     margin-bottom: 0;
 }
 
@@ -163,11 +170,14 @@ h2 {
 .width-55 { width: 55%; }
 
 sup {
+    vertical-align: baseline;
+    position: relative;
+    top: -0.5em;
     line-height: 0;
 }
 
 button {
-    font-size: calc(10px + 0.5vw);
+    font-size: calc(10px + .3vw);
     position: relative;
     overflow: hidden;
     color: white;
@@ -185,7 +195,7 @@ button:hover {
 }
 
 button:disabled {
-    background-color: #888;
+    background-color: #808080;
     /* box-shadow: none; */
 }
 
@@ -201,11 +211,11 @@ span.ripple {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #e0e0e0;
+    background-color: #eaeaea;
     padding: 5px;
     margin: 0.4em 0;
     width: 45%;
-    height: calc(100px + 5vw);
+    height: calc(120px + .6vw);
     border-radius: 10px;
 }
 
@@ -232,14 +242,17 @@ span.ripple {
 
 .newsticker-bg {
     background-color: black;
-    height: calc(24px + 1.2vw);
-    margin: 0;
+    height: calc(24px + .3vw);
+    max-width: 720px;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .newsticker-bg * {
     display: inline-block;
     position: absolute;
-    top: calc(4px + 0.2vw);
+    top: 4px;
     white-space: nowrap;
     color: white;
     margin: 0;
@@ -249,12 +262,13 @@ span.ripple {
 .away {
     margin: 0.4em 0;
     padding: 10px;
-    background-color: #e0e0e0;
+    background-color: #eaeaea;
     border-radius: 10px;
 }
 
-.away h3 {
+.away h2 {
     margin: 0;
+    margin-bottom: -.25em;
 }
 
 .away p {
@@ -270,6 +284,54 @@ span.ripple {
     align-items: center;
     height: 2.4em;
     width: 100%;
+}
+
+.toggle {
+    display: inline-block;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.toggle-button {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+
+    width: calc(12px + 0.6vw);
+    height: calc(12px + 0.6vw);
+    color: white;
+    background-color: #f2395a;
+
+    transition: all 0.3 ease;
+}
+
+.toggle-button::before {
+    position: absolute;
+    display: flex;
+    align-items: center;
+  
+    top: 4px;
+    left: 60px;
+    height: 30px;
+    padding: 0 10px;
+
+    background: white;
+    color: #f2395a;
+    transition: all 0.3s ease;
+}
+
+.toggle-checkbox:checked + .toggle-button{
+    background: #8ECF45;
+    border: solid 1px #8ECF45;
+    box-shadow: 0 2px 20px rgba(142, 207, 69, 0.5);
+
+}
+
+.toggle-checkbox:checked + .toggle-button::before {
+    left: 5px;
+    color:#8ECF45;
 }
 
 .bar-container {

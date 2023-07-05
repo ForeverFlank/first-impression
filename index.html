@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta chaimet="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secret</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Anuphan&display=swap');
+
         * {
             font-family: 'Anuphan', sans-serif;
         }
-        </style>
+    </style>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body style="margin: 0">
     <div class="fixed">
         <div class="newsticker-bg" id="newstickerBg">
             <p id="newsticker"></p>
         </div>
-        <div style="margin: 5vw">
+        <div style="margin: calc(16px + .4vw)">
             <div class="amount-div">
                 <p class="center">คุณมี</p>
                 <div>
@@ -25,137 +28,148 @@
                 </div>
                 <p class="center">im.</p>
             </div>
-            <div class="inline">
+            <div class="inline" style="height: calc(14px + .4vw); margin-top: calc(8px + .4vw);">
                 <p id="imAps" class="number dark-blue">0.00</p>
                 <p>&ensp;ต่อวินาที</p>
             </div>
         </div>
     </div>
-    
-    <div style="margin: 3vw; margin-top: calc(132px + 16vw)">
-        <div class="away" id="away">
-            <h3>ในขณะที่คุณไม่อยู่...</h3>
-            <p>คุณได้รับ</p>
-            <p id="imGain">อะไรบางอย่าง</p>
-            <div class="bar-container">
-                <div class="bar" id="bar" style="width: 50%"></div>
+
+    <div class="main">
+        <div style="margin: 3vw; margin-top: calc(150px + 3vw); max-width: 480px;">
+            <div class="away" id="away">
+                <h2>ในขณะที่คุณไม่อยู่...</h2>
+                <p>คุณได้รับจาก</p>
+                <p id="imGain">(กำลังคำนวณ im ที่ได้รับขณะ offline)</p>
+                <div class="bar-container" hidden="hidden">
+                    <div class="bar" id="bar" style="width: 50%"></div>
+                </div>
+                <button class="button"
+                    onclick="document.getElementById('away').style.display = 'none'">ปิดข้อความนี้</button>
             </div>
-            <button class="button" onclick="document.getElementById('away').style.display = 'none'">ปิดข้อความนี้</button>
-        </div>
 
-        <button onclick="localStorage.removeItem('save')">clear save</button>
+            <button onclick="localStorage.removeItem('save')">clear save</button>
 
-        <h2 class="center">Upgrades</h2>
-        <div>
-            <div class="upgrades">
-                <div class="width-55">
-                    <p style="margin-top: 0;">First</p>
-                    <div class="space-between">
-                        <div class="flex-start width-45">
-                            <p id="imUp1R" class="upgrade-rate number">x</p>
-                            <p class="upgrade-rate">&nbsp;×</p>
+            <h2 class="center">Upgrades</h2>
+            <button onclick="buyMax()" class="button" style="display: block; margin-left: auto; margin-right: 5px;">
+                Buy Max
+            </button>
+            <div>
+                <div class="upgrades">
+                    <div class="width-55">
+                        <p style="margin-top: 0;">First</p>
+                        <div class="space-between">
+                            <div class="flex-start width-45">
+                                <p id="imUp1R" class="upgrade-rate number">x</p>
+                                <p class="upgrade-rate">&nbsp;×</p>
+                            </div>
+                            <p id="imUp1T" class="upgrade-rate number width-45 center">0</p>
                         </div>
-                        <p id="imUp1T" class="upgrade-rate number width-45 center">0</p>
+                    </div>
+                    <button id="imUp1" onclick="imClick(0)" class="upgrade-button number width-40"></button>
+                </div>
+
+                <div class="upgrades">
+                    <div class="width-55">
+                        <p style="margin-top: 0;">Second</p>
+                        <div class="space-between">
+                            <div class="flex-start width-45">
+                                <p id="imUp2R" class="upgrade-rate number">x</p>
+                                <p class="upgrade-rate">&nbsp;×</p>
+                            </div>
+                            <p id="imUp2T" class="upgrade-rate number width-45 center">0</p>
+                        </div>
+                    </div>
+                    <button id="imUp2" onclick="imClick(1)" class="upgrade-button number width-40"></button>
+                </div>
+
+                <div class="upgrades">
+                    <div class="width-55">
+                        <p style="margin-top: 0;">Third</p>
+                        <div class="space-between">
+                            <div class="flex-start width-45">
+                                <p id="imUp3R" class="upgrade-rate number">x</p>
+                                <p class="upgrade-rate">&nbsp;×</p>
+                            </div>
+                            <p id="imUp3T" class="upgrade-rate number width-45 center">0</p>
+                        </div>
+                    </div>
+                    <button id="imUp3" onclick="imClick(2)" class="upgrade-button number width-40"></button>
+                </div>
+
+                <div class="upgrades">
+                    <div class="width-55">
+                        <p style="margin-top: 0;">Forth</p>
+                        <div class="space-between">
+                            <div class="flex-start width-45">
+                                <p id="imUp4R" class="upgrade-rate number">x</p>
+                                <p class="upgrade-rate">&nbsp;×</p>
+                            </div>
+                            <p id="imUp4T" class="upgrade-rate number width-45 center">0</p>
+                        </div>
+                    </div>
+                    <button id="imUp4" onclick="imClick(3)" class="upgrade-button number width-40"></button>
+                </div>
+
+                <div class="upgrades">
+                    <div class="width-55">
+                        <p style="margin-top: 0;">Fifth</p>
+                        <div class="space-between">
+                            <div class="flex-start width-45">
+                                <p id="imUp5R" class="upgrade-rate number">x</p>
+                                <p class="upgrade-rate">&nbsp;×</p>
+                            </div>
+                            <p id="imUp5T" class="upgrade-rate number width-45 center">0</p>
+                        </div>
+                    </div>
+                    <button id="imUp5" onclick="imClick(4)" class="upgrade-button number width-40"></button>
+                </div>
+            </div>
+
+            <hr>
+
+            <h2 class="center">Prestige</h2>
+            <div class="space-between">
+                <div class="prestige-div">
+                    <p class="prestige-desc">Reset everything for ×2 multiplier on all ims</p>
+                    <div>
+                        <p class="upgrade-rate prestige-rate" id="imPV1">Currently: ×1</p>
+                        <button class="button" id="imP1" onclick="prestigeClick(1)">Reset 1</button>
                     </div>
                 </div>
-                <button id="imUp1" onclick="imClick(0)" class="upgrade-button number width-40"></button>
-            </div>
-
-            <div class="upgrades">
-                <div class="width-55">
-                    <p style="margin-top: 0;">Second</p>
-                    <div class="space-between">
-                        <div class="flex-start width-45">
-                            <p id="imUp2R" class="upgrade-rate number">x</p>
-                            <p class="upgrade-rate">&nbsp;×</p>
-                        </div>
-                        <p id="imUp2T" class="upgrade-rate number width-45 center">0</p>
+                <div class="prestige-div">
+                    <p class="prestige-desc">Reset all ims for multiplier on each im, based on their amount</p>
+                    <div>
+                        <p class="upgrade-rate prestige-rate" id="imPV2">Currently: (1)</p>
+                        <button class="button" id="imP2" onclick="prestigeClick(2)">Reset 1</button>
                     </div>
                 </div>
-                <button id="imUp2" onclick="imClick(1)" class="upgrade-button number width-40"></button>
             </div>
 
-            <div class="upgrades">
-                <div class="width-55">
-                    <p style="margin-top: 0;">Third</p>
-                    <div class="space-between">
-                        <div class="flex-start width-45">
-                            <p id="imUp3R" class="upgrade-rate number">x</p>
-                            <p class="upgrade-rate">&nbsp;×</p>
-                        </div>
-                        <p id="imUp3T" class="upgrade-rate number width-45 center">0</p>
-                    </div>
+            <hr>
+
+            <h2 class="center">Autobuys</h2>
+            <div>
+                <div class="upgrades">
+                    <p>U1</p>
+                    <label class="toggle">
+                        <input class="toggle-checkbox" type="checkbox" id="imAb1T">
+                        <span class="toggle-button"></span>
+                    </label>
+                    <button id="imAb1" onclick="imAbClick(0)" class="upgrade-button number width-40">Buy</button>
                 </div>
-                <button id="imUp3" onclick="imClick(2)" class="upgrade-button number width-40"></button>
-            </div>
-            
-            <div class="upgrades">
-                <div class="width-55">
-                    <p style="margin-top: 0;">Forth</p>
-                    <div class="space-between">
-                        <div class="flex-start width-45">
-                            <p id="imUp4R" class="upgrade-rate number">x</p>
-                            <p class="upgrade-rate">&nbsp;×</p>
-                        </div>
-                        <p id="imUp4T" class="upgrade-rate number width-45 center">0</p>
-                    </div>
+
+                <div class="upgrades">
+                    <p>U2</p>
+                    <input class="checkbox" type="checkbox" id="imAb2T">
+                    <button id="imAb2" onclick="imAbClick(1)" class="upgrade-button number width-40">Buy</button>
                 </div>
-                <button id="imUp4" onclick="imClick(3)" class="upgrade-button number width-40"></button>
-            </div>
 
-            <div class="upgrades">
-                <div class="width-55">
-                    <p style="margin-top: 0;">Fifth</p>
-                    <div class="space-between">
-                        <div class="flex-start width-45">
-                            <p id="imUp5R" class="upgrade-rate number">x</p>
-                            <p class="upgrade-rate">&nbsp;×</p>
-                        </div>
-                        <p id="imUp5T" class="upgrade-rate number width-45 center">0</p>
-                    </div>
+                <div class="upgrades">
+                    <p>U3</p>
+                    <input class="checkbox" type="checkbox" id="imAb3T">
+                    <button id="imAb3" onclick="imAbClick(2)" class="upgrade-button number width-40">Buy</button>
                 </div>
-                <button id="imUp5" onclick="imClick(4)" class="upgrade-button number width-40"></button>
-            </div>
-
-        </div>
-
-        <hr>
-
-        <h2 class="center">Prestige</h2>
-        <div class="space-between">
-            <div class="prestige-div">
-                <p class="prestige-desc">Reset 1-4 for Fifth multiplier</p>
-                <div>
-                    <p class="upgrade-rate prestige-rate" id="imPV1">Currently: ×1</p>
-                    <button class="button" id="imP1" onclick="prestigeClick(1)">Reset 1</button>
-                </div>
-            </div>
-            <div class="prestige-div">
-                <p class="prestige-desc">Reset everything for ×2 multiplier on all ims</p>
-                <div>
-                    <p class="upgrade-rate prestige-rate" id="imPV2">Currently: ×1</p>
-                    <button class="button" id="imP2" onclick="prestigeClick(2)">Reset 1</button>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2 class="center">Autobuys</h2>
-        <div>
-            <div class="upgrades">
-                <p>U1</p>
-                <button id="imAb1" onclick="imAbClick(0)" class="upgrade-button number width-40">Buy</button>
-            </div>
-
-            <div class="upgrades">
-                <p>U2</p>
-                <button id="imAb2" onclick="imAbClick(1)" class="upgrade-button number width-40">Buy</button>
-            </div>
-
-            <div class="upgrades">
-                <p>U3</p>
-                <button id="imAb3" onclick="imAbClick(2)" class="upgrade-button number width-40">Buy</button>
             </div>
         </div>
     </div>
@@ -163,4 +177,5 @@
     <script src="newsticker.js"></script>
     <script type="module" src="impression.js"></script>
 </body>
+
 </html>
