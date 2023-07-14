@@ -19,12 +19,6 @@ export default class BigNum {
     }
 
     overflow() {
-        /*
-        while (this.man >= 10 && !(this.man == 0 && this.exp == 0)) {
-            this.man /= 10;
-            this.exp += 1;
-        }
-        */
         if (this.man != 0) {
             var d = Math.floor(Math.log10(this.man));
             this.man /= 10 ** d;
@@ -36,12 +30,6 @@ export default class BigNum {
 
     underflow() {
         this.overflow();
-        /*
-        while (this.man < 1 && !(this.man == 0 && this.exp == 0)) {
-            this.man *= 10;
-            this.exp -= 1;
-        }
-        */
     }
 
     static add(a, b) {
@@ -120,36 +108,11 @@ export default class BigNum {
         return new BigNum(Math.floor(x.man * Math.pow(10, x.exp)));
     }
 
-    /*
-    static pow(a, b) {
-        var aMan = a.man;
-        var aExp = a.exp;
-        var bMan = b.man;
-        var bExp = b.exp;
-        var exp = BigNum.floor(BigNum.mul(b, Math.log10(aMan)));
-        var resultMan = mpow(aMan, BigNum.mul(bMan, new BigNum(mpow(10, bExp))));
-        var resultExp = BigNum.mul(BigNum.mul(aExp, bMan), mpow(10, bExp));
-        var result = new BigNum(resultMan, resultExp);
-        result.overflow();
-        return result;
-    }
-    */
-
-    static pow(a, b) {
-        // var aMan = a.man;
-        // var aExp = a.exp;
-        b = b.man * 10 ** b.exp;
-        var resultMan = a.man ** b;
-        var resultExp = a.exp * b;
-        var result = new BigNum(resultMan, resultExp);
-        result.overflow();
-        return result;
-    }
-
     static exp10(x) {           // x must be integer
         return new BigNum(1, x.man * 10 ** x.exp);
     }
 
+    // NaN risk ffor x.exp > 308
     static exp2(x) {
         var a = Math.log10(2) * 10 ** (x.exp + Math.log10(x.man));
         return new BigNum(10 ** (a % 1), Math.floor(a));
@@ -167,6 +130,17 @@ export default class BigNum {
         return new BigNum((Math.log10(x.man) + x.exp) / 2);
     }
 
+    static pow(a, b) {
+        // var aMan = a.man;
+        // var aExp = a.exp;
+        b = b.man * 10 ** b.exp;
+        var resultMan = a.man ** b;
+        var resultExp = a.exp * b;
+        var result = new BigNum(resultMan, resultExp);
+        result.overflow();
+        return result;
+    }
+
     static greater(a, b) {      // is actually a greater or equal
         if (a.man == 0 && b.man == 0) return true;  // both are zero
         if (a.exp > b.exp) return true;
@@ -176,14 +150,27 @@ export default class BigNum {
         return false;
     }
 
-    static less(a, b) {
+    static lesser(a, b) {
         if (a.man == 0 && b.man == 0) return true;  // both are zero
         return !BigNum.greater(a, b);
+    }
+
+    static max(a, b) {
+        if (BigNum.greater(a, b)) return a;
+        return b;
     }
 
     static absSub(a, b) {
         if (BigNum.greater(a, b)) return BigNum.sub(a, b);
         return BigNum.sub(b, a);
+    }
+
+    static sum(args) {
+        var sum = new BigNum(0);
+        for (var arg of args) {
+            sum = BigNum.add(sum, arg);
+        }
+        return sum;
     }
 
     toString() {

@@ -25,29 +25,19 @@ h2 {
     font-size: calc(15px + 0.3vw);
 }
 
-.white {
-    color: white;
-}
+.white { color: white; }
+.black { color: black; }
+.gray { color: #555; }
+.pink { color: #de2ac6; }
 
-.black {
-    color: black;
-}
+.blue { color: #2692f7; }
+.dark-blue { color: #0060bb; }
 
-.gray {
-    color: #555;
-}
+.light-red { color: #ecb2b2; }
+.red { color: #e85050; }
 
-.pink {
-    color: #de2ac6;
-}
-
-.blue {
-    color: #2692f7;
-}
-
-.dark-blue {
-    color: #0060bb;
-}
+.light-green { color: #99b897; }
+.green { color: #4eb346; }
 
 .amount {
     margin: .5em;
@@ -213,7 +203,7 @@ span.ripple {
     justify-content: space-between;
     background-color: #eaeaea;
     padding: 5px;
-    margin: 0.4em 0;
+    margin: 0.4em 0 0 0;
     width: 45%;
     height: calc(120px + .6vw);
     border-radius: 10px;
@@ -287,51 +277,9 @@ span.ripple {
 }
 
 .toggle {
-    display: inline-block;
-}
-
-.toggle-checkbox {
-    display: none;
-}
-
-.toggle-button {
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-
-    width: calc(12px + 0.6vw);
-    height: calc(12px + 0.6vw);
-    color: white;
-    background-color: #f2395a;
-
-    transition: all 0.3 ease;
-}
-
-.toggle-button::before {
-    position: absolute;
-    display: flex;
-    align-items: center;
-  
-    top: 4px;
-    left: 60px;
-    height: 30px;
-    padding: 0 10px;
-
-    background: white;
-    color: #f2395a;
-    transition: all 0.3s ease;
-}
-
-.toggle-checkbox:checked + .toggle-button{
-    background: #8ECF45;
-    border: solid 1px #8ECF45;
-    box-shadow: 0 2px 20px rgba(142, 207, 69, 0.5);
-
-}
-
-.toggle-checkbox:checked + .toggle-button::before {
-    left: 5px;
-    color:#8ECF45;
+    height: 2.4em;
+    width: 4.8em;
+    background-color: #ecb2b2;
 }
 
 .bar-container {
