@@ -117,8 +117,6 @@ window.imClick = (n) => {
         imUpgrade[n] = BigNum.add(imUpgrade[n], bn(1));
         imTotal[n] = BigNum.add(imTotal[n], bn(1));
         setText(`imUp${n+1}`, imCost(n).smartToString(0));
-        // setText(`imUp${n+1}T`, imTotal[n].smartToString(0, 'gray', 6));
-        // setText(`imUp${n+1}R`, imValue(n).smartToString(0, 'gray', 6));
     }
 }
 
@@ -212,7 +210,7 @@ var imP1Mul = (reset) => {      // slightly inspired by antimatter dimensions
     return bn(1);
 
 }
-var imP2Req = () => BigNum.add(bn(20), BigNum.mul(bn(15), imP[1]));
+var imP2Req = () => BigNum.add(bn(10), BigNum.mul(bn(5), imP[1]));
 var imP3Req = () => BigNum.add(bn(40), BigNum.mul(bn(15), imP[2]));
 
 function imPrestigeUpdate(n) {
@@ -315,7 +313,7 @@ window.prestigeClick = (n) => {
             imP1Prev = bn(1);
             imUpgrade = Array(5).fill(new BigNum(0));
             imTotal = Array(5).fill(new BigNum(0));
-            imMul = BigNum.mul(imMul, bn(4));
+            imMul = BigNum.mul(imMul, bn(2));
             imP1MulTotal = bn(1);
             // imP[0] = BigNum.add(imP[0], bn(1));
             imP[1] = BigNum.add(imP[1], bn(1));
@@ -394,12 +392,23 @@ if (savegame !== null) {
 
     var bar = document.getElementById('bar');
     var tick = 0;
-    var tickrate = 500;
+    var tickrate = 1000;
     var ticks = timeAway / tickrate;
-    if (ticks > 100000) {
-        ticks = 100000;
+    
+    if (ticks > 5000) {
+        ticks = 5000;
         tickrate = timeAway / ticks;
     }
+    // console.log(tick, ticks, tickrate);
+
+    /*
+    filter: blur(5px) brightness(65%);
+    pointer-events: none;
+    */
+    var mainDiv = document.getElementById('main');
+    mainDiv.style.filter = 'blur(5px) brightness(55%)';
+    mainDiv.style.pointerEvents = 'none';
+
     var offlineUpdate = setInterval(function() {
         imAutobuyer(4);
         imAutobuyer(3);
@@ -416,18 +425,28 @@ if (savegame !== null) {
         if (tick >= ticks) {
             bar.style.width = `100%`;
             document.getElementById('close').disabled = false;
+            var newIm = im;
+            setText('imGain', oldIm.smartToString(0, 'black', 6) + ' เป็น ' + newIm.smartToString(0, 'black', 6) + ' ims.');
+            
+            document.getElementById('away').style.display = 'block';
             clearInterval(offlineUpdate);
         }
-    }, 5);
-    var newIm = im;
-    setText('imGain', oldIm.smartToString(0, 'black', 6) + ' เป็น ' + newIm.smartToString(0, 'black', 6) + ' ims.');
-    document.getElementById('away').style.display = 'block';
+    }, 4);
+    
 }
 else {
     document.getElementById('away').style.display = 'none';
 }
 
 // im = new BigNum(1, 2000);
+
+// CLOSE OFFLINE MENU -----------------
+
+window.closeWindow = () => {
+    document.getElementById('away').style.display = 'none';
+    mainDiv.style.filter = 'none';
+    mainDiv.style.pointerEvents = 'all';
+}
 
 // MAIN LOOP --------------------------
 

@@ -1,3 +1,5 @@
+import notation from './notation.js';
+
 export default class BigNum {
     constructor(man, exp) {
         if (exp == undefined) {
@@ -178,14 +180,6 @@ export default class BigNum {
     }
 
     smartToString(digits=2, color='white', thresold=9, md=1) {
-        if (this.exp < 3) {
-            return (this.man * 10 ** this.exp).toFixed(digits);
-        }
-        if (this.exp < thresold) {
-            // regex magic
-            return (this.man * 10 ** this.exp).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-        if (this.man.toFixed(md) == 'NaN') return '0.00';
-        return this.man.toFixed(md) + ' × 10<sup class="number center ' + color + '">' + this.exp + '</sup>';
+        return notation(this.man, this.exp, 'exp', color, digits, thresold, md);
     }
 }

@@ -4,6 +4,7 @@
 <head>
     <meta chaimet="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Secret</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Anuphan&display=swap');
@@ -36,21 +37,18 @@
         </div>
     </div>
 
-    <div class="main">
-        <div style="margin: 3vw; margin-top: calc(150px + 3vw); max-width: 480px;">
-            <div class="away" id="away">
-                <h2>ในขณะที่คุณไม่อยู่...</h2>
-                <p>คุณได้รับจาก</p>
-                <p id="imGain">(กำลังคำนวณ im ที่ได้รับขณะ offline)</p>
-                <div class="bar-container">
-                    <div class="bar" id="bar" style="width: 50%"></div>
-                </div>
-                <button class="button" id="close" disabled="true"
-                    onclick="document.getElementById('away').style.display = 'none'">ปิดข้อความนี้</button>
-            </div>
-            
-            <button onclick="localStorage.removeItem('save')">clear save</button>
-
+    <div class="away" id="away">
+        <h2>ในขณะที่คุณไม่อยู่...</h2>
+        <p>คุณได้รับจาก</p>
+        <p id="imGain">(กำลังคำนวณ im ที่ได้รับขณะ offline)</p>
+        <div class="bar-container">
+            <div class="bar" id="bar" style="width: 50%"></div>
+        </div>
+        <button class="button" id="close" disabled="true" onclick="closeWindow()">ปิดข้อความนี้</button>
+    </div>
+    
+    <div class="main" id="main">
+        <div style="margin: 3vw; margin-top: calc(160px + 3vw); max-width: 480px;">
             <h2 class="center">Ims</h2>
             <button onclick="buyMax()" class="button" style="display: block; margin-left: auto; margin-right: 5px;">
                 Buy Max
@@ -62,7 +60,7 @@
                         <div class="space-between">
                             <div class="flex-start width-45">
                                 <p id="imUp1R" class="upgrade-rate number">x</p>
-                                <p class="upgrade-rate">&nbsp;×</p>
+                                <p class="upgrade-rate">&nbsp;/s</p>
                             </div>
                             <p id="imUp1T" class="upgrade-rate number width-45 center">0</p>
                         </div>
@@ -76,7 +74,7 @@
                         <div class="space-between">
                             <div class="flex-start width-45">
                                 <p id="imUp2R" class="upgrade-rate number">x</p>
-                                <p class="upgrade-rate">&nbsp;×</p>
+                                <p class="upgrade-rate">&nbsp;/s</p>
                             </div>
                             <p id="imUp2T" class="upgrade-rate number width-45 center">0</p>
                         </div>
@@ -90,7 +88,7 @@
                         <div class="space-between">
                             <div class="flex-start width-45">
                                 <p id="imUp3R" class="upgrade-rate number">x</p>
-                                <p class="upgrade-rate">&nbsp;×</p>
+                                <p class="upgrade-rate">&nbsp;/s</p>
                             </div>
                             <p id="imUp3T" class="upgrade-rate number width-45 center">0</p>
                         </div>
@@ -104,7 +102,7 @@
                         <div class="space-between">
                             <div class="flex-start width-45">
                                 <p id="imUp4R" class="upgrade-rate number">x</p>
-                                <p class="upgrade-rate">&nbsp;×</p>
+                                <p class="upgrade-rate">&nbsp;/s</p>
                             </div>
                             <p id="imUp4T" class="upgrade-rate number width-45 center">0</p>
                         </div>
@@ -118,7 +116,7 @@
                         <div class="space-between">
                             <div class="flex-start width-45">
                                 <p id="imUp5R" class="upgrade-rate number">x</p>
-                                <p class="upgrade-rate">&nbsp;×</p>
+                                <p class="upgrade-rate">&nbsp;/s</p>
                             </div>
                             <p id="imUp5T" class="upgrade-rate number width-45 center">0</p>
                         </div>
@@ -129,7 +127,6 @@
 
             <hr>
 
-            <h2 class="center">Prestige</h2>
             <div class="space-between">
                 <div class="prestige-div">
                     <p class="prestige-desc">Reset 1-4 ims for 5 multiplier</p>
@@ -139,7 +136,7 @@
                     </div>
                 </div>
                 <div class="prestige-div">
-                    <p class="prestige-desc">Reset everything for ×4 multiplier on all ims</p>
+                    <p class="prestige-desc">Reset everything for ×2 multiplier on all ims</p>
                     <div>
                         <p class="upgrade-rate prestige-rate" id="imPV2">Currently: (1)</p>
                         <button class="button" id="imP2" onclick="prestigeClick(1)"></button>
@@ -198,9 +195,11 @@
                 </div>
             </div>
         </div>
+        <button onclick="localStorage.removeItem('save')">clear save</button>
     </div>
     <script src="button-ripple.js"></script>
     <script src="newsticker.js"></script>
+    <script src="notation.js"></script>
     <script type="module" src="impression.js"></script>
 </body>
 
