@@ -213,7 +213,6 @@ span.ripple {
     justify-content: space-between;
     background-color: #eaeaea;
     padding: 5px;
-    margin: 0.4em 0 0 0;
     width: 45%;
     height: calc(120px + .6vw);
     border-radius: 10px;

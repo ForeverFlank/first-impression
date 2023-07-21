@@ -3,22 +3,21 @@ import BigNum from './bignum.js';
 function setText(id, str) {
     document.getElementById(id).innerHTML = str;
 }
+var bn = (n) => new BigNum(n);
 
 // VARIABLES --------------------------
 
-var bn = (n) => new BigNum(n);
-
-var im = new BigNum(0);      // rels
+var im = new BigNum(1000);      // rels
 
 var imUpgrade = [
-    new BigNum(0),
+    new BigNum(10),
     new BigNum(0),
     new BigNum(0),
     new BigNum(0),
     new BigNum(0)
 ];
 var imTotal = [
-    new BigNum(0),
+    new BigNum(10),
     new BigNum(0),
     new BigNum(0),
     new BigNum(0),
@@ -33,22 +32,17 @@ var imLocMul = [
 ];
 var imAbCost = [
     new BigNum(1, 20),
-    new BigNum(1, 40),
-    new BigNum(1, 60),
-    new BigNum(1, 80),
-    new BigNum(1, 100)
+    new BigNum(1, 35),
+    new BigNum(1, 50),
+    new BigNum(1, 65),
+    new BigNum(1, 80)
 ];
+var imUnlocked = 1;
 var imAutobuy = [false, false, false, false, false];
 var imAbToggle = [false, false, false, false, false];
 var imMul = new BigNum(1);
-var imP = [
-    new BigNum(0),
-    new BigNum(0),
-    new BigNum(0),
-    new BigNum(0)
-];
-var imP1Prev = bn(1);
-var imP1MulTotal = bn(1);
+var imP1 = new BigNum(0);
+var imP2 = new BigNum(0);
 
 // IMS --------------------------------
 
@@ -60,21 +54,23 @@ function imSub(n) {
 }
 
 var imCost = (n) => {
-    var a = [ 1, .5, .2, .1, .1];
-    var b = [ 0,  1,  1,  1,  1];
-    var c = [ 2,  3,  4,  5,  6];
-    var d = [ 1,  3,  6, 10, 15];
+    // var a = [ 1, .5, .2, .1, .1];
+    var a = [ 1,  1,  1,  1,  1];
+    var b = [ 2,  3,  4,  5,  6];
+    var c = [ 1,  3,  6, 10, 15];
     a = a.map(x => bn(x));
     b = b.map(x => bn(x));
     c = c.map(x => bn(x));
-    d = d.map(x => bn(x));
+    if (n != 0 && imUpgrade[n] == 0) {
+        return BigNum.exp10(c[n]);
+    }
     return BigNum.mul(
-        BigNum.add(BigNum.mul(imUpgrade[n], a[n]), b[n]),
+        BigNum.add(BigNum.mul(imUpgrade[n], a[n]), bn(0)),
         BigNum.exp10(
             BigNum.add(
-                d[n],
+                c[n],
                 BigNum.mul(
-                    c[n],
+                    b[n],
                     BigNum.floor(
                         BigNum.div(
                             imUpgrade[n], bn(10)
@@ -111,14 +107,7 @@ var imValue = (n) => {
     );
 }
 
-window.imClick = (n) => {
-    if (BigNum.greater(im, imCost(n))) {
-        imSub(imCost(n));
-        imUpgrade[n] = BigNum.add(imUpgrade[n], bn(1));
-        imTotal[n] = BigNum.add(imTotal[n], bn(1));
-        setText(`imUp${n+1}`, imCost(n).smartToString(0));
-    }
-}
+
 
 window.imAbClick = (n) => {
     if (BigNum.greater(im, imAbCost[n]) && !imAutobuy[n]) {
@@ -147,16 +136,19 @@ window.imAbToggle = (n) => {
     }
 }
 
+// need optimization
 window.buyMax = () => {
     for (var n = 4; n >= 0; n--) {
-        while (BigNum.greater(im, imCost(n))) {
-            imSub(imCost(n));
-            imUpgrade[n] = BigNum.add(imUpgrade[n], bn(1));
-            imTotal[n] = BigNum.add(imTotal[n], bn(1));
+        if (n < imUnlocked) {
+            while (BigNum.greater(im, imCost(n))) {
+                imSub(imCost(n));
+                imUpgrade[n] = BigNum.add(imUpgrade[n], bn(1));
+                imTotal[n] = BigNum.add(imTotal[n], bn(1));
+            }
+            setText(`imUp${n+1}`, imCost(n).smartToString(0));
+            setText(`imUp${n+1}T`, imTotal[n].smartToString(0, 'gray', 6));
+            setText(`imUp${n+1}R`, imValue(n).smartToString(0, 'gray', 6));
         }
-        setText(`imUp${n+1}`, imCost(n).smartToString(0));
-        setText(`imUp${n+1}T`, imTotal[n].smartToString(0, 'gray', 6));
-        setText(`imUp${n+1}R`, imValue(n).smartToString(0, 'gray', 6));
     }
 }
 
@@ -194,49 +186,27 @@ function imUpdate(n, t) {
     setText(`imUp${n+1}R`, imValue(n).smartToString(0, 'gray', 6));
 }
 
-
-var imP1Mul = (reset) => {      // slightly inspired by antimatter dimensions
-    if (BigNum.greater(imTotal[0], bn(1))) {
-        var delta = BigNum.div(imTotal[0], imP1Prev);
-        delta = BigNum.log2(BigNum.log2(delta));
-        delta = BigNum.div(delta, bn(1));
-        if (BigNum.greater(delta, bn(1))) {
-            if (reset) {
-                imP1Prev = imTotal[0];
-            }
-            return delta;
-        }
-    }
-    return bn(1);
-
-}
-var imP2Req = () => BigNum.add(bn(10), BigNum.mul(bn(5), imP[1]));
-var imP3Req = () => BigNum.add(bn(40), BigNum.mul(bn(15), imP[2]));
+var imP1Req = () => BigNum.add(bn(10), BigNum.mul(bn(5), imP1));
+var imP2Req = () => BigNum.add(bn(40), BigNum.mul(bn(15), imP2));
 
 function imPrestigeUpdate(n) {
-    var button = document.getElementById(`imP${n+1}`);
-    if (n == 0) {
-        button.disabled = !BigNum.greater(imUpgrade[4], bn(10));
-        if (!button.disabled) {
-            var multiplier = imP1Mul(false);
-            setText('imP1', '×' + multiplier.smartToString(3, 'white', 6));
-        }
-    }
+    var button = document.getElementById(`imP${n}`);
     if (n == 1) {
-        button.disabled = !BigNum.greater(imUpgrade[4], imP2Req());
+        button.disabled = !BigNum.greater(imUpgrade[4], imP1Req());
     }
     if (n == 2) {
-        button.disabled = !BigNum.greater(imUpgrade[4], imP3Req());
+        button.disabled = !BigNum.greater(imUpgrade[4], imP2Req());
     }
 }
 
+// TODO: Optimize this
 function imAutobuyer(n) {
     var button = document.getElementById(`imAb${n+1}`);
     var toggle = document.getElementById(`imAb${n+1}T`);
     if (imAutobuy[n]) {
         if (imAbToggle[n]) {
             button.style.backgroundColor = '#99b897';   // take a look at css
-            if (BigNum.greater(im, imCost(n))) {
+            while (BigNum.greater(im, imCost(n))) {
                 imSub(imCost(n));
                 imUpgrade[n] = BigNum.add(imUpgrade[n], bn(1));
                 imTotal[n] = BigNum.add(imTotal[n], bn(1));
@@ -281,47 +251,35 @@ function initText() {
             toggle.style.backgroundColor = "#ecb2b2";
         }
     }
-    setText('imP1', '10 Fifth')
-    setText('imPV1', 'Currently: ×' + imP1MulTotal.smartToString(0, 'gray', 6));
+    if (imUnlocked < 6) {
+        for (var i = imUnlocked + 2; i <= 5; i++) {
+            document.getElementById(`imUp${i}Div`).style.display = 'none';
+        }
+        setText(`imUp${imUnlocked + 1}`, 'Unlock : ' + imCost(imUnlocked).smartToString(0));
+    }
+    setText('imP1', imP1Req().smartToString(0, 'gray', 6) + ' Fifth');
+    setText('imPV1', 'Currently: ×' + imMul.smartToString(0, 'gray', 6));
     setText('imP2', imP2Req().smartToString(0, 'gray', 6) + ' Fifth');
-    setText('imPV2', 'Currently: ×' + imMul.smartToString(0, 'gray', 6));
-    setText('imP3', imP3Req().smartToString(0, 'gray', 6) + ' Fifth');
-    setText('imPV3', 'Currently: ' + imP[2].smartToString(0, 'gray', 6));
+    setText('imPV2', 'Currently: ' + imP2.smartToString(0, 'gray', 6));
     
 }
 
 // PRESTIGE ---------------------------
 
 window.prestigeClick = (n) => {
-    if (n == 0) {
-        if (BigNum.greater(imUpgrade[4], bn(10))) {
-            var multiplier = imP1Mul(true);
-            console.log(multiplier);
-            imP1MulTotal = BigNum.mul(imP1MulTotal, multiplier);
-            imLocMul[4] = BigNum.mul(imLocMul[4], multiplier);
-            for (var i = 0; i < 4; i++) {
-                imTotal[i] = new BigNum(0);
-            }
-            setText('imPV1', 'Currently: ×' + imP1MulTotal.smartToString(3, 'gray', 6));
-            initText();
-        }
-    }
     if (n == 1) {
-        if (BigNum.greater(imUpgrade[4], imP2Req())) {
+        if (BigNum.greater(imUpgrade[4], imP1Req())) {
             im = new BigNum(0);
             imLocMul[4] = bn(1);
-            imP1Prev = bn(1);
             imUpgrade = Array(5).fill(new BigNum(0));
             imTotal = Array(5).fill(new BigNum(0));
             imMul = BigNum.mul(imMul, bn(2));
-            imP1MulTotal = bn(1);
-            // imP[0] = BigNum.add(imP[0], bn(1));
-            imP[1] = BigNum.add(imP[1], bn(1));
+            imP1 = BigNum.add(imP1, bn(1));
             initText();
         }
     }
     if (n == 2) {
-        if (BigNum.greater(imUpgrade[4], imP3Req())) {
+        if (BigNum.greater(imUpgrade[4], imP2Req())) {
             im = new BigNum(0);
             for (var i = 0; i < 5; i++) {
                 imLocMul[i] = BigNum.mul(imLocMul[i], BigNum.log10(imValue(i)));
@@ -329,16 +287,10 @@ window.prestigeClick = (n) => {
             imUpgrade = Array(5).fill(new BigNum(0));
             imTotal = Array(5).fill(new BigNum(0));
             imMul = new BigNum(1);
-            // imP[0] = new BigNum(0);
-            imP1Prev = bn(1);
-            imP1MulTotal = bn(1);
-            imP[1] = new BigNum(0);
-            imP[2] = BigNum.add(imP[2], bn(1));
+            imP1 = new BigNum(0);
+            imP2 = BigNum.add(imP2, bn(1));
             initText();
         }
-    }
-    if (n == 3) {
-
     }
 }
 
@@ -370,21 +322,19 @@ if (savegame !== null) {
             imLocMul[i] = new BigNum(each.man, each.exp);
         }
     }
-    if (typeof savegame.imP !== 'undefined') {
-        for (var i = 0; i < 4; i++) {
-            var each = savegame.imP[i];
-            imP[i] = new BigNum(each.man, each.exp);
-        }
-    }
     if (typeof savegame.imMul !== 'undefined') {
         imMul = new BigNum(savegame.imMul.man, savegame.imMul.exp);
     }
     if (typeof savegame.imAutobuy !== 'undefined') { imAutobuy = savegame.imAutobuy; }
+    if (typeof savegame.imUnlocked !== 'undefined') { imUnlocked = savegame.imUnlocked; }
     if (typeof savegame.imAbToggle !== 'undefined') { imAbToggle = savegame.imAbToggle; }
-    if (typeof savegame.imP1Prev !== 'undefined') { imP1Prev = savegame.imP1Prev; }
-    if (typeof savegame.imP1MulTotal !== 'undefined') {
-        imP1MulTotal = new BigNum(savegame.imP1MulTotal.man, savegame.imP1MulTotal.exp);
+    if (typeof savegame.imP1 !== 'undefined') {
+        imP1 = new BigNum(savegame.imP1.man, savegame.imP1.exp);
     }
+    if (typeof savegame.imP2 !== 'undefined') {
+        imP2 = new BigNum(savegame.imP2.man, savegame.imP2.exp);
+    }
+
     var timeAway = Date.now() - savedate;
     console.log(timeAway);
 
@@ -399,12 +349,6 @@ if (savegame !== null) {
         ticks = 5000;
         tickrate = timeAway / ticks;
     }
-    // console.log(tick, ticks, tickrate);
-
-    /*
-    filter: blur(5px) brightness(65%);
-    pointer-events: none;
-    */
     var mainDiv = document.getElementById('main');
     mainDiv.style.filter = 'blur(5px) brightness(55%)';
     mainDiv.style.pointerEvents = 'none';
@@ -432,7 +376,6 @@ if (savegame !== null) {
             clearInterval(offlineUpdate);
         }
     }, 4);
-    
 }
 else {
     document.getElementById('away').style.display = 'none';
@@ -452,10 +395,8 @@ window.closeWindow = () => {
 
 initText();
 setInterval(function() {
-    imPrestigeUpdate(3);
     imPrestigeUpdate(2);
     imPrestigeUpdate(1);
-    imPrestigeUpdate(0);
 
     imUpdate(4, 50);
     imUpdate(3, 50);
@@ -483,10 +424,10 @@ setInterval(function() {
         imMul : imMul,
         imLocMul : imLocMul,
         imAutobuy : imAutobuy,
+        imUnlocked : imUnlocked,
         imAbToggle : imAbToggle,
-        imP : imP,
-        imP1Prev : imP1Prev,
-        imP1MulTotal : imP1MulTotal
+        imP1 : imP1,
+        imP2 : imP2,
     }
     localStorage.setItem('save', JSON.stringify(save));
 }, 5 * 1000);

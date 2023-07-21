@@ -54,7 +54,7 @@
                 Buy Max
             </button>
             <div>
-                <div class="upgrades">
+                <div class="upgrades" id="imUp1Div">
                     <div class="width-55">
                         <p style="margin-top: 0;">First</p>
                         <div class="space-between">
@@ -68,7 +68,7 @@
                     <button id="imUp1" onclick="imClick(0)" class="upgrade-button number width-40"></button>
                 </div>
 
-                <div class="upgrades">
+                <div class="upgrades" id="imUp2Div">
                     <div class="width-55">
                         <p style="margin-top: 0;">Second</p>
                         <div class="space-between">
@@ -82,7 +82,7 @@
                     <button id="imUp2" onclick="imClick(1)" class="upgrade-button number width-40"></button>
                 </div>
 
-                <div class="upgrades">
+                <div class="upgrades" id="imUp3Div">
                     <div class="width-55">
                         <p style="margin-top: 0;">Third</p>
                         <div class="space-between">
@@ -96,7 +96,7 @@
                     <button id="imUp3" onclick="imClick(2)" class="upgrade-button number width-40"></button>
                 </div>
 
-                <div class="upgrades">
+                <div class="upgrades" id="imUp4Div">
                     <div class="width-55">
                         <p style="margin-top: 0;">Forth</p>
                         <div class="space-between">
@@ -110,7 +110,7 @@
                     <button id="imUp4" onclick="imClick(3)" class="upgrade-button number width-40"></button>
                 </div>
 
-                <div class="upgrades">
+                <div class="upgrades" id="imUp5Div">
                     <div class="width-55">
                         <p style="margin-top: 0;">Fifth</p>
                         <div class="space-between">
@@ -129,33 +129,17 @@
 
             <div class="space-between">
                 <div class="prestige-div">
-                    <p class="prestige-desc">Reset 1-4 ims for 5 multiplier</p>
-                    <div>
-                        <p class="upgrade-rate prestige-rate" id="imPV1">Currently: ×1.000</p>
-                        <button class="button" id="imP1" onclick="prestigeClick(0)">10 Fifth</button>
-                    </div>
-                </div>
-                <div class="prestige-div">
                     <p class="prestige-desc">Reset everything for ×2 multiplier on all ims</p>
                     <div>
-                        <p class="upgrade-rate prestige-rate" id="imPV2">Currently: (1)</p>
-                        <button class="button" id="imP2" onclick="prestigeClick(1)"></button>
+                        <p class="upgrade-rate prestige-rate" id="imPV1">Currently: (1)</p>
+                        <button class="button" id="imP1" onclick="prestigeClick(1)"></button>
                     </div>
                 </div>
-            </div>
-            <div class="space-between">
                 <div class="prestige-div">
                     <p class="prestige-desc">Reset everything for multiplier based on each ims</p>
                     <div>
-                        <p class="upgrade-rate prestige-rate" id="imPV3">Currently: ×1</p>
-                        <button class="button" id="imP3" onclick="prestigeClick(2)"></button>
-                    </div>
-                </div>
-                <div class="prestige-div">
-                    <p class="prestige-desc">Reset everything while you keep your 5th multiplier</p>
-                    <div>
-                        <p class="upgrade-rate prestige-rate" id="imPV4">Currently: ×1</p>
-                        <button class="button" id="imP4" onclick="prestigeClick(3)"></button>
+                        <p class="upgrade-rate prestige-rate" id="imPV2">Currently: ×1</p>
+                        <button class="button" id="imP2" onclick="prestigeClick(2)"></button>
                     </div>
                 </div>
             </div>
@@ -201,6 +185,7 @@
     <script src="newsticker.js"></script>
     <script src="notation.js"></script>
     <script type="module" src="impression.js"></script>
+    <script type="module" src="imp-click.js"></script>
 </body>
 
 </html>
