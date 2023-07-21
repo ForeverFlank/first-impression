@@ -7,7 +7,7 @@ var bn = (n) => new BigNum(n);
 
 // VARIABLES --------------------------
 
-var im = new BigNum(1e40);      // rels
+var im = new BigNum(1e30);
 
 var imUpgrade = [
     new BigNum(0),

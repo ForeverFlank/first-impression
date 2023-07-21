@@ -24,7 +24,7 @@ function initText() {
             toggle.style.backgroundColor = "#ecb2b2";
         }
     }
-    if (imUnlocked < 6) {
+    if (imUnlocked < 5) {
         for (var i = imUnlocked + 2; i <= 5; i++) {
             document.getElementById(`imUp${i}Div`).style.display = 'none';
         }
@@ -34,7 +34,6 @@ function initText() {
     setText('imPV1', 'Currently: ×' + imMul.smartToString(0, 'gray', 6));
     setText('imP2', imP2Req().smartToString(0, 'gray', 6) + ' Fifth');
     setText('imPV2', 'Currently: ' + imP2.smartToString(0, 'gray', 6));
-    
 }
 
 var savegame = JSON.parse(localStorage.getItem('save'));
@@ -121,5 +120,5 @@ if (savegame !== null) {
 else {
     document.getElementById('away').style.display = 'none';
 }
-
+console.log(imUnlocked);
 initText();

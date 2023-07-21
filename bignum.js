@@ -1,6 +1,4 @@
-import notation from './notation.js';
-
-export default class BigNum {
+class BigNum {
     constructor(man, exp) {
         if (exp == undefined) {
             if (man != 0) {

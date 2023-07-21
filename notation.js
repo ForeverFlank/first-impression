@@ -6,7 +6,7 @@ function format(string) {
     return string.replace(pattern, ',');
   }
 
-export default function notation(man, exp, not, color='white', digits=2, thresold=6, md=1) {
+function notation(man, exp, not, color='white', digits=2, thresold=6, md=1) {
     if (man.toFixed(md) == 'NaN') return '0.00';
     if (not == 'exp') {
         if (exp < 3) return (man * 10 ** exp).toFixed(digits);
