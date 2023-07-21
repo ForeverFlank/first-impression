@@ -1,4 +1,4 @@
-import BigNum from './bignum.js';
+// import BigNum from './bignum.js';
 
 function setText(id, str) {
     document.getElementById(id).innerHTML = str;
