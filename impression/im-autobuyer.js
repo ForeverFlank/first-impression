@@ -11,7 +11,7 @@ function imAutobuyer(n) {
                 imTotal[n] = BigNum.add(imTotal[n], bn(1));
                 setText(`imUp${n+1}`, imCost(n).smartToString(0));
                 setText(`imUp${n+1}T`, imTotal[n].smartToString(0, 'gray', 6));
-                setText(`imUp${n+1}R`, imValue(n).smartToString(0, 'gray', 6));
+                setText(`imUp${n+1}R`, imValue(n).smartToString(2, 'gray', 6));
             }
         }
     }

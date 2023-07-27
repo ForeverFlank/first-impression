@@ -1,5 +1,5 @@
 var imP1Req = () => BigNum.add(bn(10), BigNum.mul(bn(5), imP1));
-var imP2Req = () => BigNum.add(bn(40), BigNum.mul(bn(15), imP2));
+var imP2Req = () => BigNum.add(bn(80), BigNum.mul(bn(15), imP2));
 
 function imPrestigeUpdate(n) {
     var button = document.getElementById(`imP${n}`);
@@ -27,7 +27,7 @@ window.prestigeClick = (n) => {
         if (BigNum.greater(imUpgrade[4], imP2Req())) {
             im = new BigNum(0);
             for (var i = 0; i < 5; i++) {
-                imLocMul[i] = BigNum.mul(imLocMul[i], BigNum.log10(imValue(i)));
+                imLocMul[i] = BigNum.mul(imLocMul[i], BigNum.log100(imValue(i)));
             }
             imUpgrade = Array(5).fill(new BigNum(0));
             imTotal = Array(5).fill(new BigNum(0));

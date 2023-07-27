@@ -1,14 +1,18 @@
+
+var lastSave = Date.now();
 setInterval(function() {
     imPrestigeUpdate(2);
     imPrestigeUpdate(1);
-
     imUpdate(4, 50);
     imUpdate(3, 50);
     imUpdate(2, 50);
     imUpdate(1, 50);
     imUpdate(0, 50);
-
     setText('imA', im.smartToString(1, 'blue', 12, 3));
+    if (Date.now() - lastSave > 30 * 1000) {
+        loadGame();
+        lastSave = Date.now();
+    }
 }, 50);
 
 setInterval(function() {
@@ -20,6 +24,15 @@ setInterval(function() {
 }, 20);
 
 setInterval(function() {
+    imUIUpdate(4);
+    imUIUpdate(3);
+    imUIUpdate(2);
+    imUIUpdate(1);
+    imUIUpdate(0);
+}, 1000 / 30);
+
+setInterval(function() {
+    lastSave = Date.now();
     var save = {
         date: Date.now(),
         im: im,

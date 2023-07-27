@@ -16,13 +16,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body style="margin: 0">
+<body style="margin: 0;">
     <div class="fixed">
         <div class="newsticker-bg" id="newstickerBg">
             <p id="newsticker"></p>
         </div>
         
-        <div style="margin: calc(16px + .4vw); margin-bottom: calc(20px + .4vw);">
+        <div style="margin: calc(16px + .3vh); margin-bottom: calc(20px + .3vh);">
             <div class="amount-div">
                 <p class="center">คุณมี</p>
                 <div>
@@ -30,9 +30,9 @@
                 </div>
                 <p class="center">im.</p>
             </div>
-            <div class="inline" style="height: calc(14px + .4vw); margin-top: calc(8px + .4vw);">
+            <div class="inline" style="height: calc(14px + .3vh); margin-top: calc(8px + .3vh);">
                 <p id="imAps" class="number dark-blue">0.00</p>
-                <p>&ensp;ต่อวินาที</p>
+                <p>&ensp;/s</p>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
     </div>
     
     <div class="main" id="main">
-        <div style="margin: 3vw; margin-top: calc(160px + 3vw); max-width: 480px;">
+        <div style="margin: 2vh; margin-top: calc(160px + 2vh); max-width: 480px;">
             <h2 class="center">Ims</h2>
             <button onclick="buyMax()" class="button" style="display: block; margin-left: auto; margin-right: 5px;">
                 Buy Max
@@ -150,31 +150,31 @@
             <div>
                 <div class="upgrades">
                     <p class="width-35">U1</p>
-                    <button class="toggle" id="imAb1T" onclick="imAbToggle(0)">OFF</button>
+                    <button class="toggle" id="imAb1T" onclick="imAbToggleClick(0)">OFF</button>
                     <button id="imAb1" onclick="imAbClick(0)" class="upgrade-button number width-40">Buy</button>
                 </div>
 
                 <div class="upgrades">
                     <p class="width-35">U2</p>
-                    <button class="toggle" id="imAb2T" onclick="imAbToggle(1)">OFF</button>
+                    <button class="toggle" id="imAb2T" onclick="imAbToggleClick(1)">OFF</button>
                     <button id="imAb2" onclick="imAbClick(1)" class="upgrade-button number width-40">Buy</button>
                 </div>
 
                 <div class="upgrades">
                     <p class="width-35">U3</p>
-                    <button class="toggle" id="imAb3T" onclick="imAbToggle(2)">OFF</button>
+                    <button class="toggle" id="imAb3T" onclick="imAbToggleClick(2)">OFF</button>
                     <button id="imAb3" onclick="imAbClick(2)" class="upgrade-button number width-40">Buy</button>
                 </div>
 
                 <div class="upgrades">
                     <p class="width-35">U4</p>
-                    <button class="toggle" id="imAb4T" onclick="imAbToggle(3)">OFF</button>
+                    <button class="toggle" id="imAb4T" onclick="imAbToggleClick(3)">OFF</button>
                     <button id="imAb4" onclick="imAbClick(3)" class="upgrade-button number width-40">Buy</button>
                 </div>
 
                 <div class="upgrades">
                     <p class="width-35">U5</p>
-                    <button class="toggle" id="imAb5T" onclick="imAbToggle(4)">OFF</button>
+                    <button class="toggle" id="imAb5T" onclick="imAbToggleClick(4)">OFF</button>
                     <button id="imAb5" onclick="imAbClick(4)" class="upgrade-button number width-40">Buy</button>
                 </div>
             </div>

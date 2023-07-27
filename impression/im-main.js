@@ -7,7 +7,7 @@ var bn = (n) => new BigNum(n);
 
 // VARIABLES --------------------------
 
-var im = new BigNum(1e30);
+var im = new BigNum(0);
 
 var imUpgrade = [
     new BigNum(0),
@@ -84,26 +84,29 @@ var imCost = (n) => {
 
 var imValue = (n) => {
     if (BigNum.greater(bn(0), imTotal[n])) return bn(0);
-    return BigNum.mul(
-        BigNum.exp2(
-            BigNum.floor(
-                BigNum.div(imUpgrade[n], bn(10))
-            )
-        ),
+    return BigNum.div(
         BigNum.mul(
-            BigNum.mul(
-                imTotal[n],
-                BigNum.mul(
-                    imLocMul[n],
-                    imMul
+            BigNum.exp2(
+                BigNum.floor(
+                    BigNum.div(imUpgrade[n], bn(10))
                 )
             ),
-            BigNum.floor(
-                BigNum.log2(
-                    BigNum.add(imTotal[n], bn(1))
+            BigNum.mul(
+                BigNum.mul(
+                    imTotal[n],
+                    BigNum.mul(
+                        imLocMul[n],
+                        imMul
+                    )
+                ),
+                BigNum.floor(
+                    BigNum.log2(
+                        BigNum.add(imTotal[n], bn(1))
+                    )
                 )
             )
-        )
+        ),
+        bn(2 ** n)
     );
 }
 
@@ -112,15 +115,19 @@ var imValue = (n) => {
 var imPerSec = () => imValue(0);    // dead code kekw
 
 function imUpdate(n, t) {
+    /*
     var button = document.getElementById(`imUp${n+1}`);
+    var div = document.getElementById(`imUp${n+1}Div`);
+    var buttonPos = 10 * (imUpgrade[n] % 10);
     if (BigNum.greater(im, imCost(n))) {
-        button.style.backgroundImage = `linear-gradient(to right, #444 ${10 * (imUpgrade[n] % 10)}%, #222 ${10 * (imUpgrade[n] % 10) + 0.1}%)`;
+        button.style.backgroundImage = `linear-gradient(to right, #444 ${buttonPos}%, #222 ${buttonPos + 0.1}%)`;
         button.disabled = !BigNum.greater(im, imCost(n));
     }
     else {
-        button.style.backgroundImage = `linear-gradient(to right, #999 ${10 * (imUpgrade[n] % 10)}%, #777 ${10 * (imUpgrade[n] % 10) + 0.1}%)`;
+        button.style.backgroundImage = `linear-gradient(to right, #999 ${buttonPos}%, #777 ${buttonPos + 0.1}%)`;
         button.disabled = !BigNum.greater(im, imCost(n));
     }
+    */
     if (n == 0) {
         imAdd(BigNum.div(
             imPerSec(),
@@ -137,11 +144,40 @@ function imUpdate(n, t) {
             )
         );
     }
-    setText(`imUp${n+1}T`, imTotal[n].smartToString(0, 'gray', 6));
-    setText(`imUp${n+1}R`, imValue(n).smartToString(0, 'gray', 6));
+    /*
+    if (n >= 2) {
+        var divPos = 100 * (imTotal[n - 1] % 1);
+        div.style.backgroundImage = `linear-gradient(to right, #eaeaea ${divPos}%, #d8d8d8 ${divPos + 0.1}%)`;
+    }
+    setText(`imUp${n+1}T`, imTotal[n].smartToString(1, 'gray', 6));
+    setText(`imUp${n+1}R`, imValue(n).smartToString(2, 'gray', 6));
+    */
+}
+
+function imUIUpdate(n) {
+    var button = document.getElementById(`imUp${n+1}`);
+    // var div = document.getElementById(`imUp${n+1}Div`);
+    var buttonPos = 10 * (imUpgrade[n] % 10);
+    if (BigNum.greater(im, imCost(n))) {
+        button.style.backgroundImage = `linear-gradient(to right, #3d3e41 ${buttonPos}%, #24282c ${buttonPos + 0.1}%)`;
+        button.disabled = !BigNum.greater(im, imCost(n));
+    }
+    else {
+        button.style.backgroundImage = `linear-gradient(to right, #92939a ${buttonPos}%, #7f8184 ${buttonPos + 0.1}%)`;
+        button.disabled = !BigNum.greater(im, imCost(n));
+    }
+    /*
+    if (n >= 2) {
+        var divPos = 100 * (imTotal[n - 1] % 1);
+        div.style.backgroundImage = `linear-gradient(to right, #eaeaea ${divPos}%, #d8d8d8 ${divPos + 0.1}%)`;
+    }
+    */
+    setText(`imUp${n+1}T`, imTotal[n].smartToString(1, 'gray', 6));
+    setText(`imUp${n+1}R`, imValue(n).smartToString(2, 'gray', 6));
 }
 
 window.closeWindow = () => {
+    var mainDiv = document.getElementById('main');
     document.getElementById('away').style.display = 'none';
     mainDiv.style.filter = 'none';
     mainDiv.style.pointerEvents = 'all';

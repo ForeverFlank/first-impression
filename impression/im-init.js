@@ -36,89 +36,93 @@ function initText() {
     setText('imPV2', 'Currently: ' + imP2.smartToString(0, 'gray', 6));
 }
 
-var savegame = JSON.parse(localStorage.getItem('save'));
-var savedate = Date.now();
-console.log(savegame)
-if (savegame !== null) {
-    if (typeof savegame.date !== 'undefined') { savedate = savegame.date; }
-    if (typeof savegame.im !== 'undefined') {
-        im = new BigNum(savegame.im.man, savegame.im.exp);
-    }
-    if (typeof savegame.imUpgrade !== 'undefined') {
-        for (var i = 0; i < 5; i++) {
-            var each = savegame.imUpgrade[i];
-            imUpgrade[i] = new BigNum(each.man, each.exp);
-        }   
-    }
-    if (typeof savegame.imTotal !== 'undefined') {
-        for (var i = 0; i < 5; i++) {
-            var each = savegame.imTotal[i];
-            imTotal[i] = new BigNum(each.man, each.exp);
+function loadGame() {
+    var savegame = JSON.parse(localStorage.getItem('save'));
+    var savedate = Date.now();
+    console.log(savegame)
+    if (savegame !== null) {
+        if (typeof savegame.date !== 'undefined') { savedate = savegame.date; }
+        if (typeof savegame.im !== 'undefined') {
+            im = new BigNum(savegame.im.man, savegame.im.exp);
         }
-    }
-    if (typeof savegame.imLocMul !== 'undefined') {
-        for (var i = 0; i < 5; i++) {
-            var each = savegame.imLocMul[i];
-            imLocMul[i] = new BigNum(each.man, each.exp);
+        if (typeof savegame.imUpgrade !== 'undefined') {
+            for (var i = 0; i < 5; i++) {
+                var each = savegame.imUpgrade[i];
+                imUpgrade[i] = new BigNum(each.man, each.exp);
+            }   
         }
-    }
-    if (typeof savegame.imMul !== 'undefined') {
-        imMul = new BigNum(savegame.imMul.man, savegame.imMul.exp);
-    }
-    if (typeof savegame.imAutobuy !== 'undefined') { imAutobuy = savegame.imAutobuy; }
-    if (typeof savegame.imUnlocked !== 'undefined') { imUnlocked = savegame.imUnlocked; }
-    if (typeof savegame.imAbToggle !== 'undefined') { imAbToggle = savegame.imAbToggle; }
-    if (typeof savegame.imP1 !== 'undefined') {
-        imP1 = new BigNum(savegame.imP1.man, savegame.imP1.exp);
-    }
-    if (typeof savegame.imP2 !== 'undefined') {
-        imP2 = new BigNum(savegame.imP2.man, savegame.imP2.exp);
-    }
-
-    var timeAway = Date.now() - savedate;
-    console.log(timeAway);
-
-    var oldIm = im;
-
-    var bar = document.getElementById('bar');
-    var tick = 0;
-    var tickrate = 1000;
-    var ticks = timeAway / tickrate;
-    
-    if (ticks > 5000) {
-        ticks = 5000;
-        tickrate = timeAway / ticks;
-    }
-    var mainDiv = document.getElementById('main');
-    mainDiv.style.filter = 'blur(5px) brightness(55%)';
-    mainDiv.style.pointerEvents = 'none';
-
-    var offlineUpdate = setInterval(function() {
-        imAutobuyer(4);
-        imAutobuyer(3);
-        imAutobuyer(2);
-        imAutobuyer(1);
-        imAutobuyer(0);
-        imUpdate(4, tickrate);
-        imUpdate(3, tickrate);
-        imUpdate(2, tickrate);
-        imUpdate(1, tickrate);
-        imUpdate(0, tickrate);
-        bar.style.width = `${tick / ticks * 100}%`;
-        ++tick;
-        if (tick >= ticks) {
-            bar.style.width = `100%`;
-            document.getElementById('close').disabled = false;
-            var newIm = im;
-            setText('imGain', oldIm.smartToString(0, 'black', 6) + ' เป็น ' + newIm.smartToString(0, 'black', 6) + ' ims.');
-            
-            document.getElementById('away').style.display = 'block';
-            clearInterval(offlineUpdate);
+        if (typeof savegame.imTotal !== 'undefined') {
+            for (var i = 0; i < 5; i++) {
+                var each = savegame.imTotal[i];
+                imTotal[i] = new BigNum(each.man, each.exp);
+            }
         }
-    }, 4);
+        if (typeof savegame.imLocMul !== 'undefined') {
+            for (var i = 0; i < 5; i++) {
+                var each = savegame.imLocMul[i];
+                imLocMul[i] = new BigNum(each.man, each.exp);
+            }
+        }
+        if (typeof savegame.imMul !== 'undefined') {
+            imMul = new BigNum(savegame.imMul.man, savegame.imMul.exp);
+        }
+        if (typeof savegame.imAutobuy !== 'undefined') { imAutobuy = savegame.imAutobuy; }
+        if (typeof savegame.imUnlocked !== 'undefined') { imUnlocked = savegame.imUnlocked; }
+        if (typeof savegame.imAbToggle !== 'undefined') { imAbToggle = savegame.imAbToggle; }
+        if (typeof savegame.imP1 !== 'undefined') {
+            imP1 = new BigNum(savegame.imP1.man, savegame.imP1.exp);
+        }
+        if (typeof savegame.imP2 !== 'undefined') {
+            imP2 = new BigNum(savegame.imP2.man, savegame.imP2.exp);
+        }
+
+        var timeAway = Date.now() - savedate;
+        console.log(timeAway);
+
+        var oldIm = im;
+
+        var bar = document.getElementById('bar');
+        var tick = 0;
+        var tickrate = 1000;
+        var ticks = timeAway / tickrate;
+        
+        if (ticks > 5000) {
+            ticks = 5000;
+            tickrate = timeAway / ticks;
+        }
+        var mainDiv = document.getElementById('main');
+        // mainDiv.style.filter = 'blur(5px) brightness(55%)';
+        mainDiv.style.filter = 'brightness(35%)';
+        mainDiv.style.pointerEvents = 'none';
+
+        var offlineUpdate = setInterval(function() {
+            imAutobuyer(4);
+            imAutobuyer(3);
+            imAutobuyer(2);
+            imAutobuyer(1);
+            imAutobuyer(0);
+            imUpdate(4, tickrate);
+            imUpdate(3, tickrate);
+            imUpdate(2, tickrate);
+            imUpdate(1, tickrate);
+            imUpdate(0, tickrate);
+            bar.style.width = `${tick / ticks * 100}%`;
+            ++tick;
+            if (tick >= ticks) {
+                bar.style.width = `100%`;
+                document.getElementById('close').disabled = false;
+                var newIm = im;
+                setText('imGain', oldIm.smartToString(0, 'black', 6) + ' เป็น ' + newIm.smartToString(0, 'black', 6) + ' ims.');
+                
+                document.getElementById('away').style.display = 'block';
+                clearInterval(offlineUpdate);
+            }
+        }, 4);
+    }
+    else {
+        document.getElementById('away').style.display = 'none';
+    }
 }
-else {
-    document.getElementById('away').style.display = 'none';
-}
-console.log(imUnlocked);
+
+loadGame();
 initText();

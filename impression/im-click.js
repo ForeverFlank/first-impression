@@ -1,5 +1,4 @@
 window.imClick = (n) => {
-    
     if (BigNum.greater(im, imCost(n))) {
         imSub(imCost(n));
         imUpgrade[n] = BigNum.add(imUpgrade[n], bn(1));
@@ -27,7 +26,7 @@ window.imAbClick = (n) => {
     }
 }
 
-window.imAbToggle = (n) => {
+window.imAbToggleClick = (n) => {
     var toggle = document.getElementById(`imAb${n+1}T`);
     if (imAutobuy[n]) {
         imAbToggle[n] = !imAbToggle[n];
@@ -51,8 +50,10 @@ window.buyMax = () => {
                 imTotal[n] = BigNum.add(imTotal[n], bn(1));
             }
             setText(`imUp${n+1}`, imCost(n).smartToString(0));
+            /*
             setText(`imUp${n+1}T`, imTotal[n].smartToString(0, 'gray', 6));
-            setText(`imUp${n+1}R`, imValue(n).smartToString(0, 'gray', 6));
+            setText(`imUp${n+1}R`, imValue(n).smartToString(2, 'gray', 6));
+            */
         }
     }
 }
