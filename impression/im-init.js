@@ -76,6 +76,15 @@ function loadGame() {
             imP2 = new BigNum(savegame.imP2.man, savegame.imP2.exp);
         }
 
+        var savedNotation = localStorage.getItem('notation');
+        if (typeof savedNotation !== 'undefined') { 
+            selectedNotation = savedNotation;
+        }
+        else {
+            selectedNotation = 'exp';
+            localStorage.setItem('notation', selectedNotation);
+        }
+        
         var timeAway = Date.now() - savedate;
         console.log(timeAway);
 
@@ -126,3 +135,10 @@ function loadGame() {
 
 loadGame();
 initText();
+
+var select = document.getElementById('notation');
+select.addEventListener('change', () => {
+    selectedNotation = select.value;
+    localStorage.setItem('notation', selectedNotation);
+    initText();
+});

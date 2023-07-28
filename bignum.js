@@ -1,3 +1,7 @@
+var selectedNotation = 'exp'; 
+
+// var text = e.options[e.selectedIndex].text;
+
 class BigNum {
     constructor(man, exp) {
         if (exp == undefined) {
@@ -178,6 +182,6 @@ class BigNum {
     }
 
     smartToString(digits=2, color='white', thresold=9, md=1) {
-        return notation(this.man, this.exp, 'exp', color, digits, thresold, md);
+        return notation(this.man, this.exp, selectedNotation, color, digits, thresold, md);
     }
 }

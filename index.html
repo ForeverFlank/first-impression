@@ -180,6 +180,12 @@
             </div>
         </div>
         <button onclick="localStorage.removeItem('save')">clear save</button>
+        <select name="notation" id="notation">
+            <option onclick="selectNotation()" value="exp">สัญกรณ์</option>
+            <option onclick="selectNotation()" value="engineer">วิศวกรรม</option>
+            <option onclick="selectNotation()" value="million">ล้าน</option>
+            <option onclick="selectNotation()" value="pali">บาลี</option>
+          </select>
     </div>
     <script src="button-ripple.js"></script>
     <script src="newsticker.js"></script>
