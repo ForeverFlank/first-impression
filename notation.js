@@ -50,7 +50,8 @@ function notation(man, exp, not, color='white', digits=2, thresold=6, md=1) {
         if (exp <= 147) {
             md = 2;
             var s = ['โกฏิ', 'ปโกฏิ', 'โกฏิปโกฏิ', 'นหุต', 'นินนหุต', 'อักโขเภนี', 'พินทุ', 'อพุทะ', 'นิระพุทะ', 'อหหะ', 'อพพะ', 'อฏฏะ', 'โสคันธิกะ', 'อุปละ', 'กมุทะ', 'ปทุมะ', 'ปุณฑริกะ', 'อกถาน', 'มหากถาน', 'อสงไขย'];
-            var str = format(man.toFixed(md));
+            man *= 10 ** (exp % 7);
+            var str = format(man.toFixed(2));
             return str + ' ' + s[Math.floor(exp / 7) - 1];
         }
         return format((man * 10 ** exp).toFixed(0));
