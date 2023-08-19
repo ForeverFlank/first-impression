@@ -1,4 +1,4 @@
-function imClick(n) {
+function imBuy(n) {
     if (BigNum.greater(im, imCost(n))) {
         imSub(imCost(n));
         imMemory = BigNum.add(imMemory, bn(.01));

@@ -4,8 +4,14 @@ function format(string) {
       pattern = /(?=(?!^)\d{3}(?:\b|(?:\d{3})+)\b\.)/g;
     }
     return string.replace(pattern, ',');
-  }
+}
+console.log(new Decimal('1e123'))
+function notation(value, notation, color='white', d=2, md=1, thresold=6) {
 
+}
+
+// below is a legacy xd
+/*
 function notation(man, exp, not, color='white', digits=2, thresold=6, md=1) {
     if (man.toFixed(md) == 'NaN') return '0.00';
     if (not == 'exp') {
@@ -58,4 +64,5 @@ function notation(man, exp, not, color='white', digits=2, thresold=6, md=1) {
     }
 }
 
-console.log(notation(1.57, 37, 'million'))
+// console.log(notation(1.57, 37, 'million'))
+*/

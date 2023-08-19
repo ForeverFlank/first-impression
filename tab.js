@@ -1,7 +1,7 @@
 function openTab(e, tab) {
     var tabcontent = document.getElementsByClassName('tabcontent');
     for (var i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+        tabcontent[i].style.display = 'none';
     }
 
     var tablinks = document.getElementsByClassName('tablinks');
@@ -9,8 +9,9 @@ function openTab(e, tab) {
         tablinks[i].className = tablinks[i].className.replace(' active', '');
     }
 
-    document.getElementById(tab).style.display = "block";
-    e.currentTarget.className += " active";
+    document.getElementById(tab).style.display = 'block';
+    // e.currentTarget.className += ' active';
 }
 
 openTab(null, 'tabIm')
+// openTab(null, 'tabMp')
