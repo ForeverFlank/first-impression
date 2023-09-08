@@ -21,23 +21,24 @@
     <div class="newsticker-bg" id="newstickerBg">
       <p id="newsticker"></p>
     </div>
-    <div style="margin: .5em; margin-top: calc(20px + .3vh); margin-bottom: calc(20px + .3vh);">
+    <div style="margin: .5em; margin-top: 30px; margin-bottom: 12px;">
       <div class="amount-div">
         <p class="center">คุณมี</p>
-        <div>
-          <h1 id="imAmount" class="center amount blue">0</h1>
-        </div>
+        <h1 id="imAmount" class="center amount blue">0</h1>
         <p class="center">im</p>
       </div>
-      <div class="inline center" style="height: calc(14px + .3vh); margin-top: calc(8px + .3vh);">
+      <div class="inline center" style="height: 16px; margin-top: 10px;">
         <p id="imRate" class="dark-blue">0.00</p>
         <p>&ensp;/s</p>
       </div>
       <div class="space-around" style="gap: .5em; max-width: 360px; margin: auto;">
-        <button class="tablinks button" onclick="openTab(event, 'tabIm')">I</button>
-        <button class="tablinks button" onclick="openTab(event, 'tabMp')">M</button>
+        <button id='buttonIm' class="tablinks button" onclick="openTab(event, 'tabIm')">Im</button>
+        <button id='buttonMp' class="tablinks button" onclick="openTab(event, 'tabMp')">Mp</button>
+        <button id='buttonFp' class="tablinks button" onclick="openTab(event, 'tabFp')">Fp</button>
+        <button id='buttonAc' class="tablinks button" onclick="openTab(event, 'tabAc')">Ac</button>
+        <button id='buttonS' class="tablinks button" onclick="openTab(event, 'tabS')">S</button>
       </div>
-      <button onclick="localStorage.removeItem('save')">clear save</button>
+      <!--button onclick="localStorage.removeItem('save')">clear save</button-->
     </div>
   </div>
   <!--div class="away" id="away">
@@ -50,15 +51,19 @@
       <button class="button" id="close" disabled="true" onclick="closeWindow()">ปิดข้อความนี้</button>
     </div-->
   <div class="main" id="main">
-    <div style="margin: .5em; margin-top: calc(210px + 2vh); width: 90vw; max-width: 360px;">
+    <div style="margin: .5em; margin-top: 160px; width: 90vw; max-width: 360px;">
       <div class="tabcontent" id="tabIm">
         <div>
+
           <h2 class="center">Ims</h2>
-          <button onclick="buyMax()" class="button" style="display: block; margin-left: auto; margin-right: 5px;">
+          <button id="imClickButton" onclick="imClick(1)" class="button" style="display: block; height: 5em;">
+            Click!
+          </button>
+          <button onclick="buyMax()" class="button" style="display: block; margin-top: .5em;">
             Buy Max
           </button>
           <div>
-            <div id="ims">
+            <div id="ims" class="scrollable" style="max-height: 36vh;">
               <div class="tab" id="im1">
                 <div class="width-55">
                   <p style="margin-top: 0;">First</p>
@@ -70,26 +75,31 @@
                     <p id="im1Total" class="tab-text width-45 center">0</p>
                   </div>  
                 </div>
-                <button id="im1Button" onclick="imClick(1)" class="tab-button width-40">Click!</button>
+                <button id="im1Button" onclick="imBuy(1)" class="tab-button width-40">0</button>
               </div>
             </div>
               
-            <hr>
+            <hr style="margin-top: 5px;">
 
-            <div class="tab-big">
-              <div class="width-55">
-                <p style="margin-top: 0;">รีเซ็ตทุกอย่างเพื่อแลกรับ Memory</p>
-                <div class="flex-start">
-                  <p class="tab-text">รับ Memory ต่อไปที่:&nbsp;</p>
-                  <p id="imPrestigeCost" class="tab-text">0</p>
+            <div>
+              <div class="prestige-div">
+                <div class="width-55">
+                  <p style="margin-top: 0;">รีเซ็ตทุกอย่างเพื่อแลกรับ Memory</p>
+                  <div class="flex-start">
+                    <p class="tab-text">รับ Memory ต่อไปที่:&nbsp;</p>
+                    <p id="imPrestigeCost" class="tab-text">0</p>
+                  </div>
                 </div>
+                <button id="imPrestigeButton" onclick="imPrestigeClick()" class="prestige-button width-40"><span id="imPrestigeValue">0</span></button>
               </div>
-              <button id="imPrestigeButton" onclick="imPrestigeClick()" class="tab-button width-40">0</button>
+              <div class="bar-container">
+                <div class="bar" id="nextImBar" style="width: 0%"></div>
+              </div>
             </div>
 
             <hr>
 
-            <h2 class="center">Automation</h2>
+            <!--h2 class="center">Automation</h2>
             <div>
               <div class="tab">
                 <p class="width-40">U1</p>
@@ -116,7 +126,7 @@
                 <button class="toggle" id="imAb5T" onclick="imAbToggleClick(4)">OFF</button>
                 <button id="imAb5" onclick="imAbClick(4)" class="tab-button width-40">Buy</button>
               </div>
-            </div>
+            </div-->
           </div>
         </div>
       </div>
@@ -125,32 +135,122 @@
           <h2 class="center">Memory</h2>
           <div class="inline" style="height: 1em;">
             <p class="center">คุณมี&ensp;</p>
-            <h3 id="mpAmount" class="number center purple">0</h3>
+            <h3 id="mpAmount" class="center purple">0</h3>
+            <p>&nbsp;/&nbsp;</p>
+            <h3 id="mpMaxAmount" class="center purple">100</h3>
             <p class="center">&ensp;mp</p>
           </div>
         </div>
+        <hr>
+        <div class="scrollable" style="max-height: 40vh;">
+          <p style="margin-top: 0; margin-bottom: .5em;">Click</p>
+          <div class="grid-container"
+               style="grid-template-rows: repeat(1, 5em);
+                      grid-template-columns: repeat(2, 1fr);">
+            <button id="mp11" onclick="memoryUpgrade(0, 0)">รับ im ×1.2 ต่อคลิก
+              <br class="height-2x"><span>ขณะนี้: ×</span><span id="mp11Level">0</span>
+              <br class="height-2x"><span>ราคา: </span><span id="mp11Cost">1.00</span>
+            </button>
+            <button id="mp12" onclick="memoryUpgrade(0, 1)">รับ memory ×2 ต่อคลิก
+              <br class="height-2x"><span>ขณะนี้: ×</span><span id="mp12Level">0</span>
+              <br class="height-2x"><span>ราคา: </span><span id="mp12Cost">2.00</span>
+            </button>
+          </div>
+
+          <p style="margin-top: .5em; margin-bottom: .5em;">Autoclick - ปลดล็อกที่การซื้อ 4 ครั้ง</p>
+          <div class="grid-container"
+               style="grid-template-rows: repeat(1, 5em);
+                      grid-template-columns: repeat(2, 1fr);">
+            <button id="mp21" onclick="memoryUpgrade(1, 0)">
+              <span id="mp21Span">
+                ซื้อ Autoclicker
+                <br class="height-2x"><span>ขณะนี้: </span><span id="mp21Level">0</span>
+                <br class="height-2x"><span>ราคา: </span><span id="mp21Cost">2.00</span>
+              </span>
+              <span id="mp21Locked">Locked</span>
+            </button>
+            <button id="mp22" onclick="memoryUpgrade(1, 1)">
+              <span id="mp22Span">
+                ความเร็ว +0.5 ต่อ Autoclicker
+                <br class="height-2x"><span>ขณะนี้: </span><span id="mp22Level">0</span>
+                <br class="height-2x"><span>ราคา: </span><span id="mp22Cost">2.00</span>
+              </span>
+              <span id="mp22Locked">Locked</span>
+            </button>
+          </div>
+
+          <p style="margin-top: .5em; margin-bottom: .5em;">Im</p>
+          <div class="grid-container"
+               style="grid-template-rows: repeat(1, 5em);
+                      grid-template-columns: repeat(2, 1fr);">
+            <button id="mp31" onclick="memoryUpgrade(2, 0)">
+              <span id="mp31Span">
+                ซื้อ Im
+                <br class="height-2x"><span>ขณะนี้: </span><span id="mp31Level">0</span>
+                <br class="height-2x"><span>ราคา: </span><span id="mp31Cost">2.00</span>
+              </span>
+              <span id="mp31Locked">Locked</span>
+            </button>
+            <button id="mp32" onclick="memoryUpgrade(2, 1)">
+              <span id="mp32Span">
+                ปลดล็อก Autobuyer
+                <br><span id="mp32Level">0</span>
+                <br class="height-2x"><span>ราคา: </span><span id="mp32Cost">2.00</span>
+              </span>
+              <span id="mp32Locked">Locked</span>
+            </button>
+          </div>
+        </div>
+        <hr>
       </div>
-    </div>
-    <select name="notation" id="notation">
+      <div class="tabcontent" id="tabFp">
+        <div>
+          <h2 class="center">Forget</h2>
+          <div class="inline" style="height: 1em;">
+            <p class="center">คุณมี&ensp;</p>
+            <h3 id="fpAmount" class="center pink">0</h3>
+            <p class="center">&ensp;fp</p>
+          </div>
+        </div>
+      </div>
+      <div class="tabcontent" id="tabAc">
+        <div>
+          <h2 class="center">Achievements</h2>
+        </div>
+      </div>
+      <div class="tabcontent" id="tabS">
+        <select name="notation" id="notation">
       <option onclick="selectNotation()" value="exp">สัญกรณ์</option>
       <option onclick="selectNotation()" value="engineer">วิศวกรรม</option>
       <option onclick="selectNotation()" value="million">ล้าน</option>
       <option onclick="selectNotation()" value="pali">บาลี</option>
     </select>
+      </div>
+    </div>
+    <div class="achievement" id="achievement">
+      <div class="achievement-top">
+        <h2 id="acTitle">Title</h2>
+      </div>
+      <div class="achievement-bottom">
+        <p id="acDesc">Description</p>
+      </div>
+    </div>
   </div>
 
-  <script src="tab.js"></script>
   <script src="button-ripple.js"></script>
   <script src="newsticker.js"></script>
   <script src="break_eternity.js"></script>
   <script src="notation.js"></script>
-  
+  <script src="achievements.js"></script>
+
   <script src="main.js"></script>
-  <script src="im-prestige.js"></script>
+  <script src="tab.js"></script>
+  <script src="memory.js"></script>
   <script src="click.js"></script>
   <script src="loop.js"></script>
-  <script src="tutorial.js"></script>
   <script src="init.js"></script>
+  <script src="save.js"></script>
+
   <!--script src="bignum.js"></script-->
   <!--
       <script src="impression/im-main.js"></script>

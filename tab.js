@@ -10,6 +10,11 @@ function openTab(e, tab) {
     }
 
     document.getElementById(tab).style.display = 'block';
+
+    if (tutorial == 3 && tab == 'tabMp') {
+        tutorial = 4;
+        document.getElementById('buttonMp').style.animation = 'none';
+    }
     // e.currentTarget.className += ' active';
 }
 
