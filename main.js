@@ -1,3 +1,5 @@
+'use strict';
+
 function setText(id, str) {
     document.getElementById(id).innerHTML = str;
 }
@@ -8,17 +10,28 @@ function setSlider(id, value, time=1000) {
         { duration: time }
     );
 }
+function fadeIn(id) {
+    document.getElementById(id).style.display = 'block';
+    document.getElementById(id).animate(
+        [
+            { opacity: '0' },
+            { opacity: '1' }
+        ],
+        { duration: 2000, iterations: 1 });
+}
 
 let zero = new Decimal(0);
 var tickrate = 20;
 
 var tutorial = 0;
 
-var imInitAmount = new Decimal('20');
+var clickCooldown = 1000;
+
+var imInitAmount = new Decimal('10');
 var im = imInitAmount;
 var imAutoclickerAmount = new Decimal(0);
 var imAutoclickerPerClick = new Decimal(0.5);
-var imUnlocked = 1;
+var imUnlocked = 10;
 var imLevels = [];
 // !--- constant
 var imLevelsInitCost = [new Decimal( 'e1'), new Decimal( 'e3'),
@@ -26,8 +39,8 @@ var imLevelsInitCost = [new Decimal( 'e1'), new Decimal( 'e3'),
                         new Decimal('e15'), new Decimal('e20'),
                         new Decimal('e30'), new Decimal('e40'),
                         new Decimal('e50'), new Decimal('e60')];
-var imLevelsCostStep = [new Decimal('1.33'), new Decimal('2.67'),
-                        new Decimal('6.00'), new Decimal('12.0'),
+var imLevelsCostStep = [new Decimal('1.33'), new Decimal('4.00'),
+                        new Decimal('8.00'), new Decimal('16.0'),
                         new Decimal('24.0'), new Decimal('48.0'),
                         new Decimal( '100'), new Decimal('1000'),
                         new Decimal( '1e4'), new Decimal( '1e5')];
@@ -44,60 +57,55 @@ class ImLevel {
     cost() {
         const init = imLevelsInitCost[this.level - 1];
         const step = imLevelsCostStep[this.level - 1];
-        return init.mul(2).mul(step.pow(new Decimal(this.amount)));
+        return init.mul(step.pow(new Decimal(this.amount)));
     }
     value() {
         return this.total.mul(this.multiplier);
     }
     generate() {
-        const dest = imLevels[this.level - 2];
+        const destination = imLevels[this.level - 2];
         const amount = this.value();
-        dest.total = dest.total.add(amount.div(tickrate));
+        destination.total = destination.total.add(amount.div(tickrate));
     }
 }
-var imPrestigeMinimum = new Decimal(500);
+var imPrestigeMinimum = new Decimal(100);
 
-var mp = new Decimal('0');
-var mpMax = new Decimal(100);
+var mp = new Decimal('e50');
 var mpMultiplier = new Decimal(1);
-var memoryLevel = [[zero, zero], [zero, zero], [0, false]];
+var memoryLevel = [[zero, zero, 0], [zero, zero], [0, false]];
 var totalMemoryLevel = new Decimal(0);
 
 var fps = 30;
 
 var achievements = [];
+let achievementsQueue = [];
 function addAchievements(ac) {
     if (!achievements.includes(ac)) {
         achievements.push(ac);
+        achievementsQueue.push(ac);
         setText('acTitle', achievementString[ac][0]);
         setText('acDesc', achievementString[ac][1]);
         document.getElementById('achievement').style.animation = 'achievement-popup 5s';
+        setTimeout(() => { document.getElementById('achievement').style.animation = 'none' }, 5000);
     }
 }
 // addAchievements('ia03');
-var save = {
-    tutorial: tutorial,
-    imInitAmount: imInitAmount,
-    im: im,
-    imAutoclickerAmount: imAutoclickerAmount,
-    imAutoclickerPerClick: imAutoclickerPerClick,
-    imUnlocked: imUnlocked,
-    imLevels: imLevels,
-    imPrestigeMinimum: imPrestigeMinimum,
-    mp: mp,
-    mpMax: mpMax,
-    mpMultiplier: mpMultiplier,
-    memoryLevel: memoryLevel,
-    totalMemoryLevel: totalMemoryLevel
-};
 
 function imInit() {
     im = imInitAmount;
     imLevels[0].amount = new Decimal(0);
     imLevels[0].total = new Decimal(0);
-    for (let i = 2; i <= 10; i++) {
-        imLevels[i - 1].amount = new Decimal(0);
-        imLevels[i - 1].total = new Decimal(0);
-        imLevels[i - 1].multiplier = new Decimal(1);
+    for (let i = 1; i <= 10; i++) {
+        if (i > 1) {
+            imLevels[i - 1].amount = new Decimal(0);
+            imLevels[i - 1].total = new Decimal(0);
+            imLevels[i - 1].multiplier = new Decimal(1);
+        }
+        setText(`im${i}Mult`, format(imLevels[i - 1].multiplier, 'gray'));
+        setText(`im${i}Total`, format(imLevels[i - 1].total, 'gray'));
+        let button = document.getElementById(`im${i}Button`);
+        button.disabled = (im.cmp(imLevels[i - 1].cost()) < 0);
     }
 }
+
+var save;

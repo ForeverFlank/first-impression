@@ -1,3 +1,5 @@
+'use strict';
+
 function openTab(e, tab) {
     var tabcontent = document.getElementsByClassName('tabcontent');
     for (var i = 0; i < tabcontent.length; i++) {
@@ -18,5 +20,8 @@ function openTab(e, tab) {
     // e.currentTarget.className += ' active';
 }
 
-openTab(null, 'tabIm')
-// openTab(null, 'tabMp')
+openTab(null, 'tabIm');
+openTab(null, 'tabFp');
+
+let fpDiv = document.getElementById('fpGrid');
+fpDiv.scrollLeft += (fpDiv.scrollWidth - fpDiv.offsetWidth) / 2;

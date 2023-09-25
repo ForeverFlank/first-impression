@@ -1,3 +1,5 @@
+'use strict';
+
 // Create im tabs
 let ordinal = ['Second', 'Third', 'Forth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth'];
 let base = (n) => `<div class="tab" id="im${n}">
@@ -13,9 +15,9 @@ let base = (n) => `<div class="tab" id="im${n}">
 </div>
 <button id="im${n}Button" onclick="imBuy(${n})" class="tab-button width-40">0</button>
 </div>`;
-var div = document.getElementById('ims');
+let imDiv = document.getElementById('ims');
 for (var i = 2; i <= 10; i++) {
-    div.insertAdjacentHTML('beforeend', base(i));
+    imDiv.insertAdjacentHTML('beforeend', base(i));
 }
 for (var i = 1; i <= 10; i++) {
 	imLevels.push(new ImLevel(i,
@@ -24,10 +26,6 @@ for (var i = 1; i <= 10; i++) {
     new Decimal(2 ** (1 - i)),
     false,
     false));
-	setText(`im${i}Button`, format(imLevels[i - 1].cost()));  
-}
-for (var i = 10; i > imUnlocked; i--) {
- 	document.getElementById(`im${i}`).style.display = 'none';
 }
 
 // button ripple

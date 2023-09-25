@@ -1,3 +1,5 @@
+'use strict';
+
 var notation = 'exp';
 notation = 'exp';
 

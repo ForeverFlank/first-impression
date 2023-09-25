@@ -108,6 +108,10 @@ hr {
     margin: 0;
 }
 
+.ma {
+    margin: auto;
+}
+
 .center {
     text-align: center;
     justify-content: center;
@@ -136,12 +140,28 @@ hr {
     justify-content: flex-start;
 }
 
+.click-slider {
+    display: block;
+    position: absolute;
+    background-color: #2692f7;
+    bottom: 0;
+    height: 5px;
+    width: 100%;
+}
+
+.gray-text {
+    font-size: 11px;
+    color: #555;
+    margin-top: 0.7em;
+    margin-bottom: 0;
+}
+
 .tab {
     height: 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 7px 5px 7px;
+    padding: 5px 5px 5px 7px;
     margin: 0.4em 0;
     border-radius: 10px;
     background-color: rgb(229, 230, 232);
@@ -184,6 +204,10 @@ hr {
     line-height: 4em;
 }
 
+.margin-top-13 {
+    margin-top: 13px;
+}
+
 .grid-container {
     display: grid;
     row-gap: 0.4em;
@@ -193,9 +217,9 @@ hr {
 sup {
     position: relative;
     display: inline-block;
-    font-size: 90%;
+    font-size: 85%;
     margin: 0;
-    top: -0.4em;
+    top: -0.5em;
     width: auto;
     line-height: 0;
     white-space: nowrap;
@@ -305,12 +329,19 @@ span.ripple {
 
 .button {
     margin: auto;
-    margin-top: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 2.4em;
     width: 100%;
+}
+
+.im-button {
+    background: linear-gradient(135deg, rgb(46, 155, 206) 0%, rgb(33, 90, 195) 100%);
+}
+
+#imClickButton {
+    padding: 0;
 }
 
 .toggle {
@@ -339,6 +370,88 @@ span.ripple {
     padding-right: 5px;
 }
 
+.fp-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 5px;
+    overflow: scroll;
+}
+
+.fp-grid {
+    display: grid;
+    margin: 0 auto;
+}
+
+.fp-element {
+    position: relative;
+    overflow: visible;
+    display: inline-grid;
+    margin: 0px 6px 12px 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fp-branch {
+    position: relative;
+    overflow: visible;
+    display: inline-grid;
+    margin: 0px 12px 6px 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fp-element button, .fp-branch button {
+    width: 100%;
+    height: 2.4em;
+    background-color: #212a85;
+}
+
+.fp-line, .fp-left, .fp-right {
+    position: relative;
+    top: -6px;
+    overflow: visible;
+    display: block;
+    height: 2px;
+}
+
+.fp-none {
+    position: relative;
+    top: -6px;
+    overflow: visible;
+    display: block;
+    height: 0px;
+    background-color: none;
+}
+
+.fp-line {
+    background-color: black;
+}
+
+.fp-left {
+    background: linear-gradient(-90deg, rgba(0,0,0,0) 49%, rgba(0,0,0,1) 49%);
+}
+
+.fp-right {
+    background: linear-gradient(90deg, rgba(0,0,0,0) 49%, rgba(0,0,0,1) 49%);
+}
+
+.line-bottom::after {
+    content: '';
+    display: block;
+    position: absolute;
+    overflow-y: visible;
+    left: calc(50% - 1px);
+    bottom: -6px;
+    height: 6px;
+    width: 2px;
+    background-color: black;
+}
+
+
 @keyframes highlight {
     50% {
         border: 2px solid black;
@@ -355,7 +468,7 @@ span.ripple {
     margin: 0;
     z-index: 10;
     top: 150%;
-    width: 50%;
+    width: 180px;
     text-align: center;
     background-color: white;
     border: 1px solid #eee;
@@ -363,7 +476,16 @@ span.ripple {
     box-shadow: rgba(24, 28, 47, 0.2) 0px 4px 12px 0px;
 }
 
-.achievement-bottom {
+.achievement-top h2 {
+    margin: 1em;
+    margin-top: 0.8em;
+    margin-bottom: 0;
+}
+
+.achievement-bottom p {
+    margin: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
     word-wrap: break-word;
 }
 
@@ -374,8 +496,14 @@ span.ripple {
     100% { top: 150%; }
 }
 
+@keyframes fade-in {
+    0% { display: block; opacity: 0; }
+    100% { opacity: 1; }
+}
+
 ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
   
 /* Track */
