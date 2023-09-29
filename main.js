@@ -25,12 +25,12 @@ var tickrate = 20;
 
 var tutorial = 0;
 
-var clickCooldown = 1000;
+var clickCooldown = 10;
 
 var imInitAmount = new Decimal('10');
 var im = imInitAmount;
 var imAutoclickerAmount = new Decimal(0);
-var imAutoclickerPerClick = new Decimal(0.5);
+var imAutoclickerPerClick = new Decimal(0.1);
 var imUnlocked = 1;
 var imLevels = [];
 // !--- constant
@@ -70,9 +70,9 @@ class ImLevel {
 }
 var imPrestigeMinimum = new Decimal(100);
 
-var mp = new Decimal('0');
+var mp = new Decimal('e50');
 var mpMultiplier = new Decimal(1);
-var memoryLevel = [[zero, zero, 0], [zero, zero], [0, false]];
+var memoryLevel = [[zero, zero, 0], [zero, zero], [zero, zero], [0, false]];
 var totalMemoryLevel = new Decimal(0);
 
 var fps = 30;

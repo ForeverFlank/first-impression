@@ -48,7 +48,8 @@ function loadMpLevels(obj) {
     let x = [];
     x.push([new Decimal(obj[0][0]), new Decimal(obj[0][1]), obj[0][2]]);
     x.push([new Decimal(obj[1][0]), new Decimal(obj[1][1])]);
-    x.push([obj[2][0], obj[2][1]]);
+    x.push([new Decimal(obj[2][0]), new Decimal(obj[2][1])]);
+    x.push([obj[3][0], obj[3][1]]);
     return x;
 }
 
