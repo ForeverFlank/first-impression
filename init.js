@@ -23,7 +23,7 @@ for (var i = 1; i <= 10; i++) {
 	imLevels.push(new ImLevel(i,
     new Decimal(0),
     new Decimal(0),
-    new Decimal(2 ** (1 - i)),
+    imLevelsInitMult[i-1],
     false,
     false));
 }

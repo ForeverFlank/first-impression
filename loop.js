@@ -2,13 +2,13 @@
 
 function uiUpdate() {
     setInterval(function() {
-        let autoclickTotal = imAutoclickerAmount.mul(imAutoclickerPerClick);
+        let autoclickTotal = autoClickerAmount().mul(autoClickerPerClick());
         setText('imAmount', format(im, 'blue'));
         setText('imRate', format(imLevels[0].value().mul(autoclickTotal), 'dark-blue'));
         setText('imPrestigeValue', format(imPrestigeAmount(), 'white', 2));
         setText('imPrestigeCost', format(imPrestigeNextCost(), 'gray'));
-        setText('imAcAmount', format(imAutoclickerAmount, 'gray', 0));
-        setText('imAcPc', format(imAutoclickerPerClick));
+        setText('imAcAmount', format(autoClickerAmount(), 'gray', 0));
+        setText('imAcPc', format(autoClickerPerClick()));
         for (var i = 10; i >= 1; i--) {
             setText(`im${i}Mult`, format(imLevels[i - 1].multiplier, 'gray'));
             setText(`im${i}Total`, format(imLevels[i - 1].total, 'gray'));

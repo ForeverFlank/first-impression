@@ -1,27 +1,32 @@
 'use strict';
 
-function autosave() {
-    setInterval(function() {
-        save = {
-            tutorial: tutorial,
-            clickCooldown: clickCooldown,
-            imInitAmount: imInitAmount,
-            im: im,
-            imAutoclickerAmount: imAutoclickerAmount,
-            imAutoclickerPerClick: imAutoclickerPerClick,
-            imUnlocked: imUnlocked,
-            imLevels: imLevels,
-            imPrestigeMinimum: imPrestigeMinimum,
-            mp: mp,
-            mpMultiplier: mpMultiplier,
-            memoryLevel: memoryLevel,
-            totalMemoryLevel: totalMemoryLevel,
-            achievements: achievements
-        };
-        localStorage.setItem('save', JSON.stringify(save));
-    }, 10 * 1000);
+function saveObject() {
+    return {
+        tutorial: tutorial,
+        timestamp: Date.now(),
+        imInitAmount: imInitAmount,
+        im: im,
+        imUnlocked: imUnlocked,
+        imLevels: imLevels,
+        imPrestigeMinimum: imPrestigeMinimum,
+        mp: mp,
+        memoryLevel: memoryLevel,
+        totalMemoryLevel: totalMemoryLevel,
+        achievements: achievements
+    };
 }
-autosave();
+
+function saveGame() {
+    save = saveObject();
+    // console.log('Saved');
+    window.windowSave = save;
+    localStorage.setItem('save', JSON.stringify(save));
+}
+
+function autosave() {
+    saveGame();
+    setInterval(saveGame, 10 * 1000);
+}
 
 function loadDecimal(obj) {
 	let x = new Decimal(0);
@@ -48,26 +53,24 @@ function loadMpLevels(obj) {
     let x = [];
     x.push([new Decimal(obj[0][0]), new Decimal(obj[0][1]), obj[0][2]]);
     x.push([new Decimal(obj[1][0]), new Decimal(obj[1][1])]);
-    x.push([new Decimal(obj[2][0]), new Decimal(obj[2][1])]);
-    x.push([obj[3][0], obj[3][1]]);
+    x.push([obj[2][0], obj[2][1]],
+            obj[2][2], obj[2][3]);
     return x;
 }
+
+let saveTimeStamp = Date.now();
 
 var sg = JSON.parse(localStorage.getItem('save'));
 console.log(sg);
 if (sg !== null) {
+    if (sg.timestamp !== null)
+        saveTimeStamp = sg.timestamp;
     if (sg.tutorial !== null)
         tutorial = sg.tutorial;
-    if (sg.clickCooldown !== null)
-        clickCooldown = sg.clickCooldown;
     if (sg.imInitAmount !== null)
         imInitAmount = new Decimal(sg.imInitAmount);
     if (sg.im !== null)
         im = new Decimal(sg.im);
-    if (sg.imAutoclickerAmount !== null)
-        imAutoclickerAmount = new Decimal(sg.imAutoclickerAmount);
-    if (sg.imAutoclickerPerClick !== null)
-        imAutoclickerPerClick = new Decimal(sg.imAutoclickerPerClick);
     if (sg.imUnlocked !== null)
         imUnlocked = sg.imUnlocked;
     if (sg.imLevels !== null)
@@ -77,8 +80,6 @@ if (sg !== null) {
 
     if (sg.mp !== null)
         mp = new Decimal(sg.mp);
-    if (sg.mpMultiplier !== null)
-        mpMultiplier = new Decimal(sg.mpMultiplier);
     if (sg.memoryLevel !== null)
         memoryLevel = loadMpLevels(sg.memoryLevel);
     if (sg.totalMemoryLevel !== null)
@@ -87,29 +88,17 @@ if (sg !== null) {
         achievements = sg.achievements;
 }
 
+let offlineTime = Date.now() - saveTimeStamp;
+
 for (var i = 10; i > imUnlocked; i--) {
     document.getElementById(`im${i}`).style.display = 'none';
 }
+
 for (var i = 1; i <= 10; i++) {
     setText(`im${i}Button`, format(imLevels[i - 1].cost()));
     setText(`im${i}Mult`, format(imLevels[i - 1].multiplier), 'gray');
     setText(`im${i}Total`, format(imLevels[i - 1].total), 'gray');
 }
-/*
-var save = {
-    tutorial: tutorial,
-    im: im,
-    imAutoclickerAmount: imAutoclickerAmount,
-    imAutoclickerPerClick: imAutoclickerPerClick,
-    imUnlocked: imUnlocked,
-    imLevels: imLevels,
-    imPrestigeMinimum: imPrestigeMinimum,
-    mp: mp,
-    mpMultiplier: mpMultiplier,
-    memoryLevel: memoryLevel,
-    totalMemoryLevel: totalMemoryLevel
-};
-*/
 
 // ui inits
 if (tutorial == 0) {
@@ -127,9 +116,11 @@ function importSave() {
 }
 
 function exportSave() {
-    prompt('Copy your save here', JSON.stringify(save));
+    prompt('Copy your save here', JSON.stringify(saveObject()));
 }
 
 function deleteSave() {
     localStorage.removeItem('save')
 }
+
+autosave();

@@ -13,8 +13,11 @@
       font-family: 'Anuphan', sans-serif;
     }
   </style>
+  <!--script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script-->
   <link rel="stylesheet" href="style.css">
-</head>
+  </head>
 
 <body style="margin: 0; display: flex;">
   <div class="fixed">
@@ -98,10 +101,10 @@
                     <p id="imPrestigeCost" class="tab-text">0</p>
                   </div>
                 </div>
-                <button id="imPrestigeButton" onclick="imPrestigeClick()" class="prestige-button width-40"><span id="imPrestigeValue">0</span></button>
+                <button id="imPrestigeButton" onclick="imPrestigeClick()" class="prestige-button width-40">รับ <span id="imPrestigeValue">0</span> mp</button>
               </div>
               <div class="bar-container">
-                <div class="bar" id="nextImBar" style="width: 0%"></div>
+                <div class="blue-bar" id="nextImBar" style="width: 0%"></div>
               </div>
             </div>
 
@@ -118,7 +121,7 @@
           <p class="center">&ensp;mp</p>
         </div>
         <hr>
-        <div class="scrollable" style="max-height: 60vh;">
+        <div class="scrollable" style="max-height: 45vh;">
           <p style="margin-top: 0; margin-bottom: .5em;">คลิก</p>
           <div>
             <div class="tab">
@@ -177,7 +180,7 @@
 
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">ความเร็ว +0.5 ต่อ Autoclicker</p>
+                <p style="margin-top: 0;">ความเร็ว ×2 ต่อ Autoclicker</p>
                 <div class="flex-start">
                   <p class="tab-text">ขณะนี้: ×</p>
                   <p class="tab-text" id="mp22Level">0</p>
@@ -193,9 +196,8 @@
           <div>
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">ซื้อ Im</p>
+                <p style="margin-top: 0;">×1.02 ทุก ๆ การซื้อ im นั้น ๆ</p>
                 <div class="flex-start">
-                  <p class="tab-text">ขณะนี้:&nbsp;</p>
                   <p class="tab-text" id="mp31Level">0</p>
                 </div>
               </div>
@@ -206,7 +208,7 @@
 
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">ปลดล็อก Autobuyer</p>
+                <p style="margin-top: 0;">×2 ทุก ๆ 10 การซื้อ im นั้น ๆ </p>
                 <div class="flex-start">
                   <p class="tab-text" id="mp32Level">0</p>
                 </div>
@@ -215,34 +217,35 @@
                 <span id="mp32Cost"></span>
               </button>
             </div>
-          </div>
-
-          <p style="margin-top: .5em; margin-bottom: .5em;">Im - ปลดล็อกที่การซื้อ 15 ครั้ง</p>
-          <div>
-            <div class="tab">
-              <div class="width-55">
-                <p style="margin-top: 0;">ซื้อ Im</p>
-                <div class="flex-start">
-                  <p class="tab-text">ขณะนี้: &nbsp;</p>
-                  <p class="tab-text" id="mp41Level">0</p>
-                </div>
-              </div>
-              <button class="tab-button width-40" id="mp41" onclick="memoryBuy(3, 0)">
-                <span id="mp41Cost"></span>
-              </button>
-            </div>
-
             <div class="tab">
               <div class="width-55">
                 <p style="margin-top: 0;">ปลดล็อก Autobuyer</p>
                 <div class="flex-start">
-                  <p class="tab-text" id="mp42Level">0</p>
+                  <p class="tab-text" id="mp33Level">0</p>
                 </div>
               </div>
-              <button class="tab-button width-40" id="mp42" onclick="memoryBuy(3, 1)">
-                <span id="mp42Cost"></span>
+              <button class="tab-button width-40" id="mp33" onclick="memoryBuy(2, 2)">
+                <span id="mp33Cost"></span>
               </button>
             </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div>
+          <div class="prestige-div">
+            <div class="width-55">
+              <p style="margin-top: 0; margin-bottom: 0;">รีเซ็ตทุกอย่างเพื่อแลกรับ<br><span>Sec</span> Im</p>
+              <!--div class="flex-start">
+                <p class="tab-text">รับ Im ต่อไปที่:&nbsp;</p>
+                <p id="mpPrestigeCost" class="tab-text">0</p>
+              </div-->
+            </div>
+            <button id="mpImUnlockButton" onclick="mpImUnlock()" class="prestige-button width-40">0</button>
+          </div>
+          <div class="bar-container">
+            <div class="purple-bar" id="nextMpBar" style="width: 0%"></div>
           </div>
         </div>
 
@@ -287,7 +290,7 @@
           <h2 class="center">Dream</h2>
           <div class="inline" style="height: 1em;">
             <p class="center">คุณมี&ensp;</p>
-            <h3 id="DrAmount" class="center red">0</h3>
+            <h3 id="drAmount" class="center red">0</h3>
             <p class="center">&ensp;dream</p>
           </div>
         </div>
@@ -300,6 +303,13 @@
       </div>
       <div class="tabcontent" id="tabS">
         <h2 class="center">Settings</h2>
+        <div>
+          <p id="loginName"></p>
+          <button id="login">Login</button>
+          <button id="signOut">Sign Out</button>
+        </div>
+        
+        <button id="cloudSave">Save on Cloud</button>
         <button onclick="importSave()">Import Save</button>
         <button onclick="exportSave()">Export Save</button>
         <button onclick="deleteSave()">Delete Save</button>
@@ -334,6 +344,8 @@
   <script src="loop.js"></script>
   <script src="init.js"></script>
   <script src="save.js"></script>
+
+  <!--script type="module" src="firebase.js"></script-->
 
   <!--script src="bignum.js"></script-->
   <!--
