@@ -144,6 +144,16 @@ hr {
   flex-direction: column;
 }
 
+.blur-background {
+  z-index: 50;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: brightness(80%) blur(5px);
+}
+
 .m0 {
   margin: 0;
 }
@@ -609,6 +619,7 @@ span.ripple {
   }
 }
 
+/*
 @keyframes fade-in {
   0% {
     display: block;
@@ -619,6 +630,18 @@ span.ripple {
     opacity: 1;
   }
 }
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}
+*/
 
 ::-webkit-scrollbar {
   width: 8px;

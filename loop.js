@@ -27,14 +27,13 @@ function uiUpdate() {
     }, 1000 / fps);
 }
 
+
 function gameUpdate() {
     // 1 tick = 50 ms -> 20 tick / s
-    setInterval(function() {
-        for (var i = 10; i > 1; i--) {
-            imLevels[i - 1].generate();
-        }
-        imAutoclick();
-    }, 1000 / tickrate);
+    for (var i = 10; i > 1; i--) {
+        imLevels[i - 1].generate();
+    }
+    imAutoclick();
 }
 
 function slowUpdate() {
@@ -52,5 +51,8 @@ function slowUpdate() {
 // game loop
 
 uiUpdate();
-gameUpdate();
 slowUpdate();
+
+setInterval(function() {
+    gameUpdate()
+}, 1000 / tickrate);

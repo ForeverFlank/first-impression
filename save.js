@@ -58,13 +58,16 @@ function loadMpLevels(obj) {
     return x;
 }
 
+let hasOfflineProgress = false;
 let saveTimeStamp = Date.now();
 
 var sg = JSON.parse(localStorage.getItem('save'));
 console.log(sg);
 if (sg !== null) {
-    if (sg.timestamp !== null)
+    if (sg.timestamp !== null) {
         saveTimeStamp = sg.timestamp;
+        hasOfflineProgress = true;
+    }
     if (sg.tutorial !== null)
         tutorial = sg.tutorial;
     if (sg.imInitAmount !== null)
@@ -88,7 +91,46 @@ if (sg !== null) {
         achievements = sg.achievements;
 }
 
-let offlineTime = Date.now() - saveTimeStamp;
+if (hasOfflineProgress) {
+    let tick = 0;
+    let offlineTime = Date.now() - saveTimeStamp;
+    let offlineTicks = offlineTime / tickrate;
+    let offlineGameSpeed = 1;
+    let maxOfflineTicks = 10000;
+    if (offlineTicks > maxOfflineTicks) {
+        offlineTicks = maxOfflineTicks;
+        offlineGameSpeed = (offlineTime * tickrate / 1000) / offlineTicks;
+    }
+    else {
+        offlineGameSpeed = 1;
+    }
+    console.log(offlineTime, offlineGameSpeed);
+
+    document.getElementById('away').style.display = 'block';
+    document.getElementById('blurBackground').style.display = 'block';
+    let bar = document.getElementById('offlineBar');
+
+    gameSpeed = offlineGameSpeed;
+    for (let i = 0; i < offlineTicks; i++) {
+        gameUpdate();
+        bar.style.width = `${tick / offlineTicks * 100}%`;
+        ++tick;
+    }
+    gameSpeed = 1;
+
+    document.getElementById('close').disabled = false;
+}
+else {
+    closeOfflineProgressWindow();
+}
+
+function closeOfflineProgressWindow() {
+    document.getElementById('away').style.display = 'none';
+    fadeOut('blurBackground', 150);
+    // var mainDiv = document.getElementById('main');
+    // mainDiv.style.filter = 'none';
+    // mainDiv.style.pointerEvents = 'all';
+}
 
 for (var i = 10; i > imUnlocked; i--) {
     document.getElementById(`im${i}`).style.display = 'none';

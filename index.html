@@ -13,11 +13,8 @@
       font-family: 'Anuphan', sans-serif;
     }
   </style>
-  <!--script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js"></script-->
   <link rel="stylesheet" href="style.css">
-  </head>
+</head>
 
 <body style="margin: 0; display: flex;">
   <div class="fixed">
@@ -38,22 +35,22 @@
         <button id='buttonIm' class="tablinks button" onclick="openTab(event, 'tabIm')">Im</button>
         <button id='buttonMp' class="tablinks button" onclick="openTab(event, 'tabMp')">Mp</button>
         <button id='buttonFp' class="tablinks button" onclick="openTab(event, 'tabFp')">Fp</button>
-        <button id='buttonAc' class="tablinks button" onclick="openTab(event, 'tabDr')">Dr</button>
+        <button id='buttonDr' class="tablinks button" onclick="openTab(event, 'tabDr')">Dr</button>
         <button id='buttonAc' class="tablinks button" onclick="openTab(event, 'tabAc')">Ac</button>
         <button id='buttonS' class="tablinks button" onclick="openTab(event, 'tabS')">S</button>
       </div>
-      <!--button onclick="localStorage.removeItem('save')">clear save</button-->
     </div>
   </div>
-  <!--div class="away" id="away">
-      <h2>ในขณะที่คุณไม่อยู่...</h2>
-      <p>คุณได้รับจาก</p>
-      <p id="imGain">(กำลังคำนวณ im ที่ได้รับขณะ offline)</p>
-      <div class="bar-container">
-        <div class="bar" id="bar" style="width: 50%"></div>
-      </div>
-      <button class="button" id="close" disabled="true" onclick="closeWindow()">ปิดข้อความนี้</button>
-    </div-->
+  <div class="blur-background" id="blurBackground"></div>
+  <div class="away" id="away">
+    <h2>ในขณะที่คุณไม่อยู่...</h2>
+    <p>คุณได้รับจาก</p>
+    <p id="imGain">(กำลังคำนวณ im ที่ได้รับขณะ offline)</p>
+    <div class="bar-container" style="margin-bottom: .5em;">
+      <div class="blue-bar" id="offlineBar" style="width: 50%;"></div>
+    </div>
+    <button class="button" id="close" onclick="closeOfflineProgressWindow()" disabled>ปิดข้อความนี้</button>
+  </div>
   <div class="main" id="main">
     <div style="margin: 0; margin-top: 160px; width: 90vw; max-width: 360px;">
       <div class="tabcontent" id="tabIm">
@@ -84,12 +81,12 @@
                       <p class="tab-text">&nbsp;×</p>
                     </div>
                     <p id="im1Total" class="tab-text width-45 center">0</p>
-                  </div>  
+                  </div>
                 </div>
                 <button class="tab-button width-40" id="im1Button" onclick="imBuy(1)">0</button>
               </div>
             </div>
-              
+
             <hr style="margin-top: 5px;">
 
             <div>
@@ -101,7 +98,8 @@
                     <p id="imPrestigeCost" class="tab-text">0</p>
                   </div>
                 </div>
-                <button id="imPrestigeButton" onclick="imPrestigeClick()" class="prestige-button width-40">รับ <span id="imPrestigeValue">0</span> mp</button>
+                <button id="imPrestigeButton" onclick="imPrestigeClick()" class="prestige-button width-40">รับ <span
+                    id="imPrestigeValue">0</span> mp</button>
               </div>
               <div class="bar-container">
                 <div class="blue-bar" id="nextImBar" style="width: 0%"></div>
@@ -262,9 +260,8 @@
           </div>
         </div>
         <hr>
-        <div class="fp-container">
-          <div class="fp-grid" id="fpGrid"
-               style="grid-template-columns: repeat(1, 80px);">
+        <div class="fp-container" id="fp-grid">
+          <div class="fp-grid" style="grid-template-columns: repeat(1, 80px);">
             <div class="fp-element line-bottom"><button>1</button></div>
             <div class="fp-none    line-bottom"></div>
             <div class="fp-element line-bottom"><button>2</button></div>
@@ -274,8 +271,7 @@
             <div class="fp-element line-bottom"><button>4</button></div>
             <div class="fp-none"></div>
           </div>
-          <div class="fp-grid" id="fpGrid"
-               style="grid-template-rows: repeat(5, auto);
+          <div class="fp-grid" style="grid-template-rows: repeat(5, auto);
                       grid-template-columns: repeat(2, 80px);">
             <div class="fp-right line-bottom"></div>
             <div class="fp-left line-bottom"></div>
@@ -308,7 +304,7 @@
           <button id="login">Login</button>
           <button id="signOut">Sign Out</button>
         </div>
-        
+
         <button id="cloudSave">Save on Cloud</button>
         <button onclick="importSave()">Import Save</button>
         <button onclick="exportSave()">Export Save</button>

@@ -10,18 +10,29 @@ function setSlider(id, value, time = 1000) {
         { duration: time }
     );
 }
-function fadeIn(id) {
+function fadeIn(id, duration=2000) {
     document.getElementById(id).style.display = 'block';
     document.getElementById(id).animate(
         [
             { opacity: '0' },
             { opacity: '1' }
         ],
-        { duration: 2000, iterations: 1 });
+        { duration: duration, iterations: 1 });
+}
+function fadeOut(id, duration=2000) {
+    document.getElementById(id).animate(
+        [
+            { opacity: '1' },
+            { opacity: '0' }
+        ],
+        { duration: duration, iterations: 1 });
+    setTimeout(function() {
+        document.getElementById(id).style.display = 'none'
+    }, duration);
 }
 
-let zero = new Decimal(0);
-var tickrate = 20;
+const zero = new Decimal(0);
+const tickrate = 20;
 var gameSpeed = 1;
 
 var tutorial = 0;
