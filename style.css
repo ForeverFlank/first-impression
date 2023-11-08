@@ -2,6 +2,7 @@
 
 * {
   color: black;
+  text-rendering: optimizeLegibility; 
 }
 
 html {
@@ -151,7 +152,7 @@ hr {
   left: 0;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: brightness(80%) blur(5px);
+  backdrop-filter: brightness(60%) blur(5px);
 }
 
 .m0 {
@@ -193,7 +194,7 @@ hr {
 .click-slider {
   display: block;
   position: absolute;
-  background-color: #2692f7;
+  background-color: #2692f7;;
   bottom: 0;
   height: 5px;
   width: 100%;
@@ -214,7 +215,8 @@ hr {
   padding: 5px 5px 5px 7px;
   margin: 0.4em 0;
   border-radius: 13px;
-  background-color: rgb(229, 230, 232);
+  background-color: rgb(241, 243, 244);
+  box-shadow: rgba(24, 28, 47, 0.25) 0 2px 8px 0;
 }
 
 .tab-button {
@@ -330,7 +332,7 @@ button {
 }
 
 button:disabled {
-  background-color: #808080;
+  background-color: #999;
   /* box-shadow: none; */
 }
 
@@ -419,6 +421,30 @@ span.ripple {
   margin: 0;
 }
 
+.tablinks {
+  color: black;
+  background-color: transparent;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.4em;
+  width: 100%;
+}
+
+.tablinks.active {
+  font-weight: bold;
+}
+
+.tabindicator {
+  position: relative;
+  width: calc(2em);
+  height: 0.25em;
+  border-radius: 5px 5px 0 0;
+  background-color: #2692f7;
+  transition: ease;
+}
+
 .away {
   position: fixed;
   z-index: 50;
@@ -439,7 +465,6 @@ span.ripple {
 }
 
 .away p {
-  line-height: 0.5em;
   padding-left: 20px;
 }
 
@@ -473,7 +498,9 @@ span.ripple {
 .scrollable {
   overflow-y: scroll;
   margin-top: 5px;
-  padding-right: 5px;
+  padding-right: 8px;
+  margin-left: -20px;
+  padding-left: 30px;
 }
 
 .fp-container {
@@ -644,18 +671,18 @@ span.ripple {
 */
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
   background: #ddd;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
-  border-radius: 4px;
+  border-radius: 3px;
 }

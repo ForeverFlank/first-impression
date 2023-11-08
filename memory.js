@@ -5,18 +5,18 @@ function imPrestigeAmount(mult = true) {
         return new Decimal(0);
     }
     if (mult)
-        return im.div(imPrestigeMinimum).sqrt().floor().mul(mpMultiplier());
-    return im.div(imPrestigeMinimum).sqrt().floor();
+        return im.div(imPrestigeMinimum).pow(1/3).floor().mul(mpMultiplier());
+    return im.div(imPrestigeMinimum).pow(1/3).floor();
 }
 
 function imPrestigeCost() {
     let result = imPrestigeAmount(false);
-    return result.pow(2).mul(imPrestigeMinimum);
+    return result.pow(3).mul(imPrestigeMinimum);
 }
 
 function imPrestigeNextCost() {
     let result = imPrestigeAmount(false);
-    return result.add(1).pow(2).mul(imPrestigeMinimum);
+    return result.add(1).pow(3).mul(imPrestigeMinimum);
 }
 
 function memoryCost(p, q) {
@@ -25,9 +25,9 @@ function memoryCost(p, q) {
     if (isMemory(0, 0))
         return new Decimal(1).mul(new Decimal(3).pow(ml));
     if (isMemory(0, 1))
-        return new Decimal(2).mul(new Decimal(3).pow(ml));
+        return new Decimal(2).mul(new Decimal(4).pow(ml));
     if (isMemory(0, 2))
-        return new Decimal(10).mul(new Decimal(10).pow(new Decimal(ml)));
+        return new Decimal(5).mul(new Decimal(4).pow(new Decimal(ml)));
     if (isMemory(1, 0))
         return new Decimal(4).mul(new Decimal(5).pow(ml));
     if (isMemory(1, 1))

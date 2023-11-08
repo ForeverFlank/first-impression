@@ -49,3 +49,45 @@ function imBuy(x) {
         setText(`im${n+1}Button`, format(imLevels[n].cost()), 'gray');
     }
 }
+
+function imBuyMax(n) {
+    const init = imLevelsInitCost[n];
+    const step = imLevelsCostStep[n];
+
+    let maxPurchasable = im.mul(step.sub(1)).div(init);
+    maxPurchasable = maxPurchasable.add(step.pow(imLevels[n].amount));
+    maxPurchasable = maxPurchasable.log(step).floor();
+    let maxAmount = Math.round(maxPurchasable.sub(imLevels[n].amount).mag);
+    
+    let totalCost = new Decimal(0);
+    
+    const MAX_TERM = 50;
+    if (maxAmount < MAX_TERM) {
+        for (let i = 0; i < maxAmount; i++) {
+            let currentAmount = imLevels[n].amount.add(i);
+            totalCost = totalCost.add(init.mul(step.pow(currentAmount)));
+        }
+    }
+    else {
+        for (let i = 0; i < MAX_TERM; i++) {
+            let currentAmount = imLevels[n].amount.add(maxAmount).sub(i).sub(1);
+            totalCost = totalCost.add(init.mul(step.pow(currentAmount)));
+            console.log(totalCost);
+        }
+    }
+
+    // console.log(maxAmount);
+    // console.log(totalCost);
+    imLevels[n].amount = imLevels[n].amount.add(maxAmount);
+    imLevels[n].total = imLevels[n].total.add(maxAmount);
+    imCalculateMultiplier();
+    // console.log(n, imLevels[n].amount);
+    im = im.sub(totalCost);
+    setText(`im${n+1}Button`, format(imLevels[n].cost()), 'gray');
+}
+
+function imBuyMaxAll() {
+    for (let i = imUnlocked - 1; i >= 0; i--) {
+        imBuyMax(i);
+    }
+}

@@ -71,7 +71,7 @@ class ImLevel {
     cost() {
         const init = imLevelsInitCost[this.level - 1];
         const step = imLevelsCostStep[this.level - 1];
-        return init.mul(step.pow(new Decimal(this.amount)));
+        return init.mul(step.pow(this.amount));
     }
     value() {
         return this.total.mul(this.multiplier);
@@ -85,7 +85,7 @@ class ImLevel {
 var imPrestigeMinimum = new Decimal(100);
 
 var mp = new Decimal('0');
-var memoryLevel = [[zero, zero, 0], [zero, zero], [false, false, false, false]];
+var memoryLevel = [[zero, zero, 0], [zero, zero], [false, false, false]];
 var totalMemoryLevel = new Decimal(0);
 var mpMultiplier = () => new Decimal(2).pow(memoryLevel[0][1]);
 var autoClickerAmount = () => memoryLevel[1][0];
@@ -111,7 +111,7 @@ function addAchievements(ac) {
 function imCalculateMultiplier() {
     for (let i = 0; i < 10; i++) {
         let mp11Multiplier = (i == 0) ? new Decimal(1.2).pow(memoryLevel[0][0]) : new Decimal(1);
-        let mp31Multiplier = memoryLevel[2][0] ? new Decimal(1.02).pow(imLevels[i].amount) : new Decimal(1);
+        let mp31Multiplier = memoryLevel[2][0] ? new Decimal(1.01).pow(imLevels[i].amount) : new Decimal(1);
         let mp32Multiplier = memoryLevel[2][1] ? new Decimal(2).pow(imLevels[i].amount.div(10).floor()) : new Decimal(1);
         imLevels[i].multiplier = imLevelsInitMult[i].mul(
             mp11Multiplier).mul(

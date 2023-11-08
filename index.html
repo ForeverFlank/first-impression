@@ -21,7 +21,7 @@
     <div class="newsticker-bg" id="newstickerBg">
       <p id="newsticker"></p>
     </div>
-    <div style="margin: .5em; margin-top: 30px; margin-bottom: 12px;">
+    <div style="margin-top: 30px;">
       <div class="amount-div">
         <p class="center">คุณมี</p>
         <h1 id="imAmount" class="center amount blue">0</h1>
@@ -32,20 +32,25 @@
         <p>&ensp;/s</p>
       </div>
       <div class="space-around" style="gap: .3em; max-width: 360px; width: 90vw; margin: auto; margin-top: 13px;">
-        <button id='buttonIm' class="tablinks button" onclick="openTab(event, 'tabIm')">Im</button>
-        <button id='buttonMp' class="tablinks button" onclick="openTab(event, 'tabMp')">Mp</button>
-        <button id='buttonFp' class="tablinks button" onclick="openTab(event, 'tabFp')">Fp</button>
-        <button id='buttonDr' class="tablinks button" onclick="openTab(event, 'tabDr')">Dr</button>
-        <button id='buttonAc' class="tablinks button" onclick="openTab(event, 'tabAc')">Ac</button>
-        <button id='buttonS' class="tablinks button" onclick="openTab(event, 'tabS')">S</button>
+        <button id='buttonIm' class="tablinks active" onclick="openTab(event, 'tabIm')">Im</button>
+        <button id='buttonMp' class="tablinks" onclick="openTab(event, 'tabMp')">Mp</button>
+        <button id='buttonFp' class="tablinks" onclick="openTab(event, 'tabFp')">Fp</button>
+        <button id='buttonDr' class="tablinks" onclick="openTab(event, 'tabDr')">Dr</button>
+        <button id='buttonAm' class="tablinks" onclick="openTab(event, 'tabAm')">Am</button>
+        <button id='buttonAc' class="tablinks" onclick="openTab(event, 'tabAc')">Ac</button>
+        <button id='buttonS' class="tablinks" onclick="openTab(event, 'tabS')">S</button>
       </div>
+      <div id="tabIndicator" class="tabindicator"></div>
     </div>
   </div>
   <div class="blur-background" id="blurBackground"></div>
   <div class="away" id="away">
     <h2>ในขณะที่คุณไม่อยู่...</h2>
-    <p>คุณได้รับจาก</p>
-    <p id="imGain">(กำลังคำนวณ im ที่ได้รับขณะ offline)</p>
+    <p>คุณไม่อยู่เป็นเวลา <span id="awayTime"></span></p>
+    <p>
+      คุณได้รับจาก<br>
+      <span id="imGain">...</span>
+    </p>
     <div class="bar-container" style="margin-bottom: .5em;">
       <div class="blue-bar" id="offlineBar" style="width: 50%;"></div>
     </div>
@@ -67,7 +72,7 @@
 
           <hr>
 
-          <button onclick="buyMax()" class="button" id="imBuyMax" style="display: block; margin-top: .5em;">
+          <button onclick="imBuyMaxAll()" class="button" id="imBuyMax" style="display: block; margin-top: .5em;">
             Buy Max
           </button>
           <div>
@@ -194,7 +199,7 @@
           <div>
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">×1.02 ทุก ๆ การซื้อ im นั้น ๆ</p>
+                <p style="margin-top: 0;">×1.01 ทุก ๆ การซื้อ im นั้น ๆ</p>
                 <div class="flex-start">
                   <p class="tab-text" id="mp31Level">0</p>
                 </div>
@@ -281,6 +286,11 @@
           </div>
         </div>
       </div>
+      <div class="tabcontent" id="tabAm">
+        <div>
+          <h2 class="center">Automation</h2>
+        </div>
+      </div>
       <div class="tabcontent" id="tabDr">
         <div>
           <h2 class="center">Dream</h2>
@@ -339,7 +349,6 @@
   <script src="click.js"></script>
   <script src="loop.js"></script>
   <script src="init.js"></script>
-  <script src="save.js"></script>
 
   <!--script type="module" src="firebase.js"></script-->
 
