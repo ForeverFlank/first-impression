@@ -42,7 +42,8 @@ var im = imInitAmount;
 
 var imUnlocked = 1;
 var imLevels = [];
-// !--- constant
+
+// --- constant
 var imLevelsInitCost = [new Decimal('e1'), new Decimal('e3'),
 new Decimal('e6'), new Decimal('e10'),
 new Decimal('e15'), new Decimal('e20'),
@@ -58,7 +59,9 @@ new Decimal(1 / 4), new Decimal(1 / 8),
 new Decimal(1 / 16), new Decimal(1 / 32),
 new Decimal(1 / 64), new Decimal(1 / 128),
 new Decimal(1 / 256), new Decimal(1 / 512)];
-/// constant ---
+
+// --- ims
+
 class ImLevel {
     constructor(level, amount, total, multiplier, abUnlocked, abEnabled) {
         this.level = level;
@@ -84,6 +87,8 @@ class ImLevel {
 }
 var imPrestigeMinimum = new Decimal(100);
 
+// --- mps
+
 var mp = new Decimal('0');
 var memoryLevel = [[zero, zero, 0], [zero, zero], [false, false, false]];
 var totalMemoryLevel = new Decimal(0);
@@ -91,6 +96,12 @@ var mpMultiplier = () => new Decimal(2).pow(memoryLevel[0][1]);
 var autoClickerAmount = () => memoryLevel[1][0];
 var autoClickerPerClick = () => new Decimal(0.1).mul(new Decimal(2).pow(memoryLevel[1][1]));
 var clickCooldown = () => (1000 - memoryLevel[0][2] * 150) / gameSpeed;
+
+// --- fps
+
+var fp = new Decimal('0');
+
+// -- misc
 
 var fps = 30;
 
@@ -100,8 +111,8 @@ function addAchievements(ac) {
     if (!achievements.includes(ac)) {
         achievements.push(ac);
         achievementsQueue.push(ac);
-        setText('acTitle', achievementString[ac][0]);
-        setText('acDesc', achievementString[ac][1]);
+        setText('acTitle', achievementStrings[ac][0]);
+        setText('acDesc', achievementStrings[ac][1]);
         document.getElementById('achievement').style.animation = 'achievement-popup 5s';
         setTimeout(() => { document.getElementById('achievement').style.animation = 'none' }, 5000);
     }
@@ -110,7 +121,7 @@ function addAchievements(ac) {
 
 function imCalculateMultiplier() {
     for (let i = 0; i < 10; i++) {
-        let mp11Multiplier = (i == 0) ? new Decimal(1.2).pow(memoryLevel[0][0]) : new Decimal(1);
+        let mp11Multiplier = (i == 0) ? new Decimal(1.5).pow(memoryLevel[0][0]) : new Decimal(1);
         let mp31Multiplier = memoryLevel[2][0] ? new Decimal(1.01).pow(imLevels[i].amount) : new Decimal(1);
         let mp32Multiplier = memoryLevel[2][1] ? new Decimal(2).pow(imLevels[i].amount.div(10).floor()) : new Decimal(1);
         imLevels[i].multiplier = imLevelsInitMult[i].mul(

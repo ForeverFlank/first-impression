@@ -62,7 +62,7 @@
         <div>
           <h2 class="center">Ims</h2>
           <button id="imClickButton" onclick="imClick()" class="button" style="display: block; height: 5em;">
-            Click!
+            คลิก
             <span id="clickSlider" class="click-slider"></span>
           </button>
           <div class="space-between" id="imAcDisplay">
@@ -73,7 +73,7 @@
           <hr>
 
           <button onclick="imBuyMaxAll()" class="button" id="imBuyMax" style="display: block; margin-top: .5em;">
-            Buy Max
+            ซื้อทั้งหมด
           </button>
           <div>
             <div id="ims" class="scrollable" style="max-height: 36vh;">
@@ -129,7 +129,7 @@
           <div>
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">รับ im ×1.2 ต่อคลิก</p>
+                <p style="margin-top: 0;">รับ im ×1.5 ต่อคลิก</p>
                 <div class="flex-start">
                   <p class="tab-text">ขณะนี้: ×</p>
                   <p class="tab-text" id="mp11Level">0</p>
@@ -267,13 +267,9 @@
         <hr>
         <div class="fp-container" id="fp-grid">
           <div class="fp-grid" style="grid-template-columns: repeat(1, 80px);">
-            <div class="fp-element line-bottom"><button>1</button></div>
+            <div class="fp-element line-bottom" onclick="fpClick('1')"><button>1</button></div>
             <div class="fp-none    line-bottom"></div>
-            <div class="fp-element line-bottom"><button>2</button></div>
-            <div class="fp-none    line-bottom"></div>
-            <div class="fp-element line-bottom"><button>3</button></div>
-            <div class="fp-none    line-bottom"></div>
-            <div class="fp-element line-bottom"><button>4</button></div>
+            <div class="fp-element line-bottom" onclick="fpClick('2')"><button>2</button></div>
             <div class="fp-none"></div>
           </div>
           <div class="fp-grid" style="grid-template-rows: repeat(5, auto);
@@ -281,14 +277,35 @@
             <div class="fp-right line-bottom"></div>
             <div class="fp-left line-bottom"></div>
 
-            <div class="fp-element"><button>5a</button></div>
-            <div class="fp-element"><button>5b</button></div>
+            <div class="fp-element" onclick="fpClick('3a')"><button>3a</button></div>
+            <div class="fp-element" onclick="fpClick('3b')"><button>3b</button></div>
+          </div>
+        </div>
+        <hr>
+        <div>
+          <h2 id="fpSelecting" style="margin-bottom: -0.2em;">โปรดเลือก node เพื่อดูรายละเอียด</h2>
+          <div style="display: flex;">
+            <div style="width: 70%">
+              <h3 style="margin-bottom: -0.5em;">รายละเอียด</h3>
+              <p id="fpDescription">...</p>
+            </div>
+            <div>
+              <h3 style="margin-bottom: -0.5em;">ราคา</h3>
+              <p id="fpCost">...</p>
+            </div>
           </div>
         </div>
       </div>
       <div class="tabcontent" id="tabAm">
         <div>
           <h2 class="center">Automation</h2>
+          <div class="space-between" style="width: 200px; margin: 0 auto;">
+            <p>Im</p>
+            <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
         </div>
       </div>
       <div class="tabcontent" id="tabDr">
@@ -304,7 +321,8 @@
       <div class="tabcontent" id="tabAc">
         <div>
           <h2 class="center">Achievements</h2>
-          <p>คุณได้รับ xx achievements</p>
+          <div id="acDiv">
+          </div>
         </div>
       </div>
       <div class="tabcontent" id="tabS">
@@ -346,6 +364,7 @@
   <script src="main.js"></script>
   <script src="tab.js"></script>
   <script src="memory.js"></script>
+  <script src="forget.js"></script>
   <script src="click.js"></script>
   <script src="loop.js"></script>
   <script src="init.js"></script>

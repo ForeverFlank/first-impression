@@ -1,22 +1,29 @@
 'use strict';
-
+// todo : change to log2(x/100)+1
+// inv: 100 * 2^(y-1)
 function imPrestigeAmount(mult = true) {
     if (im.cmp(imPrestigeMinimum) < 0) {
         return new Decimal(0);
     }
-    if (mult)
-        return im.div(imPrestigeMinimum).pow(1/3).floor().mul(mpMultiplier());
-    return im.div(imPrestigeMinimum).pow(1/3).floor();
+    if (mult) {
+        return im.div(imPrestigeMinimum).log10().add(1).floor().mul(mpMultiplier());
+    }
+    return im.div(imPrestigeMinimum).log10().add(1).floor();
 }
 
 function imPrestigeCost() {
     let result = imPrestigeAmount(false);
-    return result.pow(3).mul(imPrestigeMinimum);
+    if (im.cmp(imPrestigeMinimum) < 0) {
+        return new Decimal(0);
+    }
+    return new Decimal(10).pow(result.sub(1)).mul(imPrestigeMinimum);
+    // return result.pow(3).mul(imPrestigeMinimum);
 }
 
 function imPrestigeNextCost() {
     let result = imPrestigeAmount(false);
-    return result.add(1).pow(3).mul(imPrestigeMinimum);
+    return new Decimal(10).pow(result).mul(imPrestigeMinimum);
+    // return result.add(1).pow(3).mul(imPrestigeMinimum);
 }
 
 function memoryCost(p, q) {
@@ -25,7 +32,7 @@ function memoryCost(p, q) {
     if (isMemory(0, 0))
         return new Decimal(1).mul(new Decimal(3).pow(ml));
     if (isMemory(0, 1))
-        return new Decimal(2).mul(new Decimal(4).pow(ml));
+        return new Decimal(2).mul(new Decimal(3).pow(ml));
     if (isMemory(0, 2))
         return new Decimal(5).mul(new Decimal(4).pow(new Decimal(ml)));
     if (isMemory(1, 0))
@@ -136,7 +143,7 @@ function mpImUnlock() {
 
 // init
 function memoryInit() {
-    setText('mp11Level', format(new Decimal(1.2).pow(memoryLevel[0][0]), 'gray'));
+    setText('mp11Level', format(new Decimal(1.5).pow(memoryLevel[0][0]), 'gray'));
     setText('mp11Cost', format(memoryCost(0, 0)));
     setText('mp12Level', format(mpMultiplier(), 'gray'));
     setText('mp12Cost', format(memoryCost(0, 1)));

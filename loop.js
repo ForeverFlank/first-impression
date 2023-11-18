@@ -20,10 +20,13 @@ function uiUpdate() {
         // mp slider
         let cost = imPrestigeCost();
         let nextCost = imPrestigeNextCost();
-        let ratio = (im.sub(cost)).div(nextCost.sub(cost)).mul(100);
+        // console.log(cost.toString(), nextCost.toString())
+        let ratio = (cost.sub(im)).div(nextCost.sub(cost)).mul(100);
         setSlider('nextImBar', ratio.mag);
         
         setText('mpAmount', format(mp, 'purple'));
+
+        setText('fpAmount', format(fp, 'pink'));
     }, 1000 / fps);
 }
 
@@ -33,6 +36,7 @@ function gameUpdate() {
     for (var i = 10; i > 1; i--) {
         imLevels[i - 1].generate();
     }
+    // if (imAutobuy)
     imAutoclick();
 }
 
