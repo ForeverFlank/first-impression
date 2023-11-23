@@ -44,12 +44,14 @@ var imUnlocked = 1;
 var imLevels = [];
 
 // --- constant
-var imLevelsInitCost = [new Decimal('e1'), new Decimal('e3'),
+var imLevelsInitCost = [
+new Decimal('e1'), new Decimal('e3'),
 new Decimal('e6'), new Decimal('e10'),
 new Decimal('e15'), new Decimal('e20'),
 new Decimal('e30'), new Decimal('e40'),
 new Decimal('e50'), new Decimal('e60')];
-var imLevelsCostStep = [new Decimal('1.33'), new Decimal('4.00'),
+var imLevelsCostStep = [
+new Decimal('1.33'), new Decimal('4.00'),
 new Decimal('8.00'), new Decimal('16.0'),
 new Decimal('24.0'), new Decimal('48.0'),
 new Decimal('100'), new Decimal('1000'),
@@ -63,13 +65,11 @@ new Decimal(1 / 256), new Decimal(1 / 512)];
 // --- ims
 
 class ImLevel {
-    constructor(level, amount, total, multiplier, abUnlocked, abEnabled) {
+    constructor(level, amount, total, multiplier) {
         this.level = level;
         this.amount = amount;
         this.total = total;
         this.multiplier = multiplier;
-        this.abUnlocked = abUnlocked;
-        this.abEnabled = abEnabled;
     }
     cost() {
         const init = imLevelsInitCost[this.level - 1];
@@ -86,6 +86,8 @@ class ImLevel {
     }
 }
 var imPrestigeMinimum = new Decimal(100);
+var imAutobuyUnlocked = false;
+var imAutobuyActivated = false;
 
 // --- mps
 

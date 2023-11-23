@@ -5,11 +5,6 @@ import { getDatabase, set, ref, child, update, remove }
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
     from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: "AIzaSyDQ54dZ26WEKqM89xYGIqfGYIXeegEkIZg",
     authDomain: "first-impression-game.firebaseapp.com",

@@ -91,3 +91,7 @@ function imBuyMaxAll() {
         imBuyMax(i);
     }
 }
+
+function imAbToggle(element) {
+    imAutobuyActivated = element.checked;
+}

@@ -23,9 +23,7 @@ for (var i = 1; i <= 10; i++) {
     imLevels.push(new ImLevel(i,
         new Decimal(0),
         new Decimal(0),
-        imLevelsInitMult[i - 1],
-        false,
-        false));
+        imLevelsInitMult[i - 1]));
 }
 
 const buttons = document.getElementsByTagName('button');
@@ -43,6 +41,8 @@ function saveObject() {
         imUnlocked: imUnlocked,
         imLevels: imLevels,
         imPrestigeMinimum: imPrestigeMinimum,
+        imAutobuyActivated: imAutobuyActivated,
+        imAutobuyUnlocked: imAutobuyUnlocked,
         mp: mp,
         memoryLevel: memoryLevel,
         totalMemoryLevel: totalMemoryLevel,
@@ -76,9 +76,7 @@ function loadImLevels(obj) {
         x.push(new ImLevel(i + 1,
             new Decimal(obj[i]['amount']),
             new Decimal(obj[i]['total']),
-            new Decimal(obj[i]['multiplier']),
-            obj[i]['abUnlocked'],
-            obj[i]['abEnabled']));
+            new Decimal(obj[i]['multiplier'])));
     }
     return x;
 }
@@ -87,7 +85,7 @@ function loadMpLevels(obj) {
     let x = [];
     x.push([new Decimal(obj[0][0]), new Decimal(obj[0][1]), obj[0][2]]);
     x.push([new Decimal(obj[1][0]), new Decimal(obj[1][1])]);
-    x.push([obj[2][0], obj[2][1]], obj[2][2]);
+    x.push([obj[2][0], obj[2][1], obj[2][2]]);
     return x;
 }
 
@@ -113,6 +111,10 @@ if (sg !== null) {
         imLevels = loadImLevels(sg.imLevels);
     if (sg.imPrestigeMinimum !== null)
         imPrestigeMinimum = new Decimal(sg.imPrestigeMinimum);
+    if (sg.imAutobuyUnlocked !== null)
+        imAutobuyUnlocked = sg.imAutobuyUnlocked;
+    if (sg.imAutobuyActivated !== null)
+        imAutobuyActivated = sg.imAutobuyActivated;
 
     if (sg.mp !== null)
         mp = new Decimal(sg.mp);
@@ -130,7 +132,6 @@ if (hasOfflineProgress) {
     let tick = 0;
     let offlineTime = Date.now() - saveTimeStamp;
     offlineTime = 2e7;  // debug 6 hours timewarp
-
 
     setText('awayTime', msToDate(offlineTime, 0));
 
@@ -169,9 +170,11 @@ function closeOfflineProgressWindow() {
     fadeOut('blurBackground', 150);
 }
 
+// things init
 for (var i = 10; i > imUnlocked; i--) {
     document.getElementById(`im${i}`).style.display = 'none';
 }
+document.getElementById('imAbToggleCheckbox').checked = imAutobuyActivated;
 
 for (var i = 1; i <= 10; i++) {
     setText(`im${i}Button`, format(imLevels[i - 1].cost()));

@@ -36,13 +36,14 @@ function gameUpdate() {
     for (var i = 10; i > 1; i--) {
         imLevels[i - 1].generate();
     }
-    // if (imAutobuy)
     imAutoclick();
 }
 
 function slowUpdate() {
-    // for less necessary update such as achievements
+    // 10 updates per sec (100ms interval)
     setInterval(function() {
+        if (imAutobuyUnlocked && imAutobuyActivated)
+            imBuyMaxAll();
         if (im.cmp(100) >= 0)
             addAchievements('ia01');
         if (im.cmp(1000) >= 0)

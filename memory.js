@@ -36,15 +36,15 @@ function memoryCost(p, q) {
     if (isMemory(0, 2))
         return new Decimal(5).mul(new Decimal(4).pow(new Decimal(ml)));
     if (isMemory(1, 0))
-        return new Decimal(4).mul(new Decimal(5).pow(ml));
+        return new Decimal(40).mul(new Decimal(3).pow(ml));
     if (isMemory(1, 1))
-        return new Decimal(5).mul(new Decimal(10).pow(ml));
+        return new Decimal(100).mul(new Decimal(3).pow(ml));
     if (isMemory(2, 0))
-        return new Decimal(15);
+        return new Decimal(150);
     if (isMemory(2, 1))
-        return new Decimal(100);
+        return new Decimal(500);
     if (isMemory(2, 2))
-        return new Decimal(200);
+        return new Decimal(1000);
     if (isMemory(3, 0))
         return new Decimal(10).mul(new Decimal(100).pow(new Decimal(ml)));
     if (isMemory(3, 1))
@@ -61,6 +61,8 @@ function memoryCanBuy(p, q) {
         return !memoryLevel[2][0];
     if (isMemory(2, 1))
         return !memoryLevel[2][1];
+    if (isMemory(2, 2))
+        return !memoryLevel[2][2];
     return true;
 }
 
@@ -122,7 +124,7 @@ function memoryBuy(p, q) {
     setText(`mp${p + 1}${q + 1}Cost`, format(cost()));
 }
 
-let mpImUnlockCost = [new Decimal('1e6'), new Decimal('1e12'),
+let mpImUnlockCost = [new Decimal('1e4'), new Decimal('1e12'),
                       new Decimal('1e6'), new Decimal('1e6'),
                       new Decimal('1e6'), new Decimal('1e6'),
                       new Decimal('1e6'), new Decimal('1e6'),
@@ -138,7 +140,6 @@ function mpImUnlock() {
         imReset();
         memoryInit();
     }
-    
 }
 
 // init
@@ -174,4 +175,5 @@ function memoryInit() {
 
     let acUnlocked = memoryLevel[1][0].cmp(0) > 0;
     document.getElementById('imAcDisplay').style.display = acUnlocked ? 'flex' : 'none';
+    document.getElementById('imAbToggleDiv').style.display = imAutobuyUnlocked ? 'flex' : 'none';
 }
