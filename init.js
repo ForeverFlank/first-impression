@@ -42,7 +42,6 @@ function saveObject() {
         imLevels: imLevels,
         imPrestigeMinimum: imPrestigeMinimum,
         imAutobuyActivated: imAutobuyActivated,
-        imAutobuyUnlocked: imAutobuyUnlocked,
         mp: mp,
         memoryLevel: memoryLevel,
         totalMemoryLevel: totalMemoryLevel,
@@ -51,7 +50,9 @@ function saveObject() {
 }
 
 function saveGame() {
+
     save = saveObject();
+    console.log(save)
     // console.log('Saved');
     window.windowSave = save;
     localStorage.setItem('save', JSON.stringify(save));
@@ -94,35 +95,33 @@ let saveTimeStamp = Date.now();
 
 var sg = JSON.parse(localStorage.getItem('save'));
 console.log(sg);
-if (sg !== null) {
-    if (sg.timestamp !== null) {
+if (sg != null) {
+    if (sg.timestamp != null) {
         saveTimeStamp = sg.timestamp;
         hasOfflineProgress = true;
     }
-    if (sg.tutorial !== null)
+    if (sg.tutorial != null)
         tutorial = sg.tutorial;
-    if (sg.imInitAmount !== null)
+    if (sg.imInitAmount != null)
         imInitAmount = new Decimal(sg.imInitAmount);
-    if (sg.im !== null)
+    if (sg.im != null)
         im = new Decimal(sg.im);
-    if (sg.imUnlocked !== null)
+    if (sg.imUnlocked != null)
         imUnlocked = sg.imUnlocked;
-    if (sg.imLevels !== null)
+    if (sg.imLevels != null)
         imLevels = loadImLevels(sg.imLevels);
-    if (sg.imPrestigeMinimum !== null)
+    if (sg.imPrestigeMinimum != null)
         imPrestigeMinimum = new Decimal(sg.imPrestigeMinimum);
-    if (sg.imAutobuyUnlocked !== null)
-        imAutobuyUnlocked = sg.imAutobuyUnlocked;
-    if (sg.imAutobuyActivated !== null)
+    if (sg.imAutobuyActivated != null)
         imAutobuyActivated = sg.imAutobuyActivated;
 
-    if (sg.mp !== null)
+    if (sg.mp != null)
         mp = new Decimal(sg.mp);
-    if (sg.memoryLevel !== null)
+    if (sg.memoryLevel != null)
         memoryLevel = loadMpLevels(sg.memoryLevel);
-    if (sg.totalMemoryLevel !== null)
+    if (sg.totalMemoryLevel != null)
         totalMemoryLevel = new Decimal(sg.totalMemoryLevel);
-    if (sg.achievements !== null)
+    if (sg.achievements != null)
         achievements = sg.achievements;
 }
 

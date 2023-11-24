@@ -15,13 +15,13 @@ function uiUpdate() {
             let button = document.getElementById(`im${i}Button`);
             button.disabled = (im.cmp(imLevels[i - 1].cost()) < 0);
         }
-        document.getElementById('imPrestigeButton').disabled = (im.cmp(imPrestigeMinimum) < 0);
+        document.getElementById('imPrestigeButton').disabled = (imMaxIm.cmp(imPrestigeMinimum) < 0);
 
         // mp slider
         let cost = imPrestigeCost();
         let nextCost = imPrestigeNextCost();
         // console.log(cost.toString(), nextCost.toString())
-        let ratio = (cost.sub(im)).div(nextCost.sub(cost)).mul(100);
+        let ratio = im.div(nextCost).mul(100);
         setSlider('nextImBar', ratio.mag);
         
         setText('mpAmount', format(mp, 'purple'));
@@ -37,13 +37,17 @@ function gameUpdate() {
         imLevels[i - 1].generate();
     }
     imAutoclick();
+    if (im.cmp(imMaxIm) > 0) {
+        imMaxIm = im;
+    }
+    if (memoryLevel[2][2] && imAutobuyActivated) {
+        imBuyMaxAll();
+    }
 }
 
 function slowUpdate() {
     // 10 updates per sec (100ms interval)
     setInterval(function() {
-        if (imAutobuyUnlocked && imAutobuyActivated)
-            imBuyMaxAll();
         if (im.cmp(100) >= 0)
             addAchievements('ia01');
         if (im.cmp(1000) >= 0)
@@ -59,5 +63,5 @@ uiUpdate();
 slowUpdate();
 
 setInterval(function() {
-    gameUpdate()
+    gameUpdate();
 }, 1000 / tickrate);

@@ -86,8 +86,8 @@ class ImLevel {
     }
 }
 var imPrestigeMinimum = new Decimal(100);
-var imAutobuyUnlocked = false;
 var imAutobuyActivated = false;
+var imMaxIm = new Decimal(0);
 
 // --- mps
 
@@ -135,9 +135,9 @@ function imCalculateMultiplier() {
 
 function imReset() {
     im = imInitAmount;
+    imMaxIm = im;
     // imLevels[0].amount = new Decimal(0);
     // imLevels[0].total = new Decimal(0);
-    
     for (let i = 0; i < 10; i++) {
         if (i > 1) {
             imLevels[i].amount = new Decimal(0);

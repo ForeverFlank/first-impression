@@ -2,18 +2,18 @@
 // todo : change to log2(x/100)+1
 // inv: 100 * 2^(y-1)
 function imPrestigeAmount(mult = true) {
-    if (im.cmp(imPrestigeMinimum) < 0) {
+    if (imMaxIm.cmp(imPrestigeMinimum) < 0) {
         return new Decimal(0);
     }
     if (mult) {
-        return im.div(imPrestigeMinimum).log10().add(1).floor().mul(mpMultiplier());
+        return imMaxIm.div(imPrestigeMinimum).log10().add(1).floor().mul(mpMultiplier());
     }
-    return im.div(imPrestigeMinimum).log10().add(1).floor();
+    return imMaxIm.div(imPrestigeMinimum).log10().add(1).floor();
 }
 
 function imPrestigeCost() {
     let result = imPrestigeAmount(false);
-    if (im.cmp(imPrestigeMinimum) < 0) {
+    if (imMaxIm.cmp(imPrestigeMinimum) < 0) {
         return new Decimal(0);
     }
     return new Decimal(10).pow(result.sub(1)).mul(imPrestigeMinimum);
@@ -124,24 +124,6 @@ function memoryBuy(p, q) {
     setText(`mp${p + 1}${q + 1}Cost`, format(cost()));
 }
 
-let mpImUnlockCost = [new Decimal('1e4'), new Decimal('1e12'),
-                      new Decimal('1e6'), new Decimal('1e6'),
-                      new Decimal('1e6'), new Decimal('1e6'),
-                      new Decimal('1e6'), new Decimal('1e6'),
-                      new Decimal('1e6'), new Decimal('1e6')];
-
-function mpImUnlock() {
-    if (mp.cmp(mpImUnlockCost[imUnlocked - 1]) >= 0) {
-        mp = new Decimal(0);
-        memoryLevel = [[zero, zero, 0], [zero, zero], [false, false, false, false]];
-        imUnlocked += 1;
-        document.getElementById(`im${imUnlocked}`).style.display = 'flex';
-        setText(`im${imUnlocked}Button`, format(imLevels[imUnlocked - 1].cost()));
-        imReset();
-        memoryInit();
-    }
-}
-
 // init
 function memoryInit() {
     setText('mp11Level', format(new Decimal(1.5).pow(memoryLevel[0][0]), 'gray'));
@@ -175,5 +157,27 @@ function memoryInit() {
 
     let acUnlocked = memoryLevel[1][0].cmp(0) > 0;
     document.getElementById('imAcDisplay').style.display = acUnlocked ? 'flex' : 'none';
-    document.getElementById('imAbToggleDiv').style.display = imAutobuyUnlocked ? 'flex' : 'none';
+    document.getElementById('imAbToggleDiv').style.display = memoryLevel[2][2] ? 'flex' : 'none';
+}
+
+function memoryReset() {
+    mp = new Decimal(0);
+    memoryLevel = [[zero, zero, 0], [zero, zero], [false, false, false]];
+    imReset();
+    memoryInit();
+}
+
+let mpImUnlockCost = [new Decimal('1e4'), new Decimal('1e12'),
+                      new Decimal('1e6'), new Decimal('1e6'),
+                      new Decimal('1e6'), new Decimal('1e6'),
+                      new Decimal('1e6'), new Decimal('1e6'),
+                      new Decimal('1e6'), new Decimal('1e6')];
+
+function mpImUnlock() {
+    if (mp.cmp(mpImUnlockCost[imUnlocked - 1]) >= 0) {
+        memoryReset();
+        imUnlocked += 1;
+        document.getElementById(`im${imUnlocked}`).style.display = 'flex';
+        setText(`im${imUnlocked}Button`, format(imLevels[imUnlocked - 1].cost()));
+    }
 }
