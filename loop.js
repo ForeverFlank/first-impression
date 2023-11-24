@@ -40,7 +40,10 @@ function gameUpdate() {
     if (im.cmp(imMaxIm) > 0) {
         imMaxIm = im;
     }
-    if (memoryLevel[2][2] && imAutobuyActivated) {
+    if (im.cmp(memoryMaxIm) > 0) {
+        memoryMaxIm = im;
+    }
+    if (memoryLevel[3][0] && imAutobuyActivated) {
         imBuyMaxAll();
     }
 }

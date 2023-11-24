@@ -87,13 +87,18 @@ class ImLevel {
 }
 var imPrestigeMinimum = new Decimal(100);
 var imAutobuyActivated = false;
-var imMaxIm = new Decimal(0);
+var imMaxIm = imInitAmount;
 
 // --- mps
 
 var mp = new Decimal('0');
-var memoryLevel = [[zero, zero, 0], [zero, zero], [false, false, false]];
+var memoryLevel = [
+    [zero, zero, 0],
+    [zero, zero],
+    [false, false, false],
+    [false]];
 var totalMemoryLevel = new Decimal(0);
+var memoryMaxIm = imInitAmount;
 var mpMultiplier = () => new Decimal(2).pow(memoryLevel[0][1]);
 var autoClickerAmount = () => memoryLevel[1][0];
 var autoClickerPerClick = () => new Decimal(0.1).mul(new Decimal(2).pow(memoryLevel[1][1]));
@@ -126,10 +131,12 @@ function imCalculateMultiplier() {
         let mp11Multiplier = (i == 0) ? new Decimal(1.5).pow(memoryLevel[0][0]) : new Decimal(1);
         let mp31Multiplier = memoryLevel[2][0] ? new Decimal(1.01).pow(imLevels[i].amount) : new Decimal(1);
         let mp32Multiplier = memoryLevel[2][1] ? new Decimal(2).pow(imLevels[i].amount.div(10).floor()) : new Decimal(1);
+        let mp33Multiplier = memoryLevel[2][2] ? memoryMaxIm.log10() : new Decimal(1);
         imLevels[i].multiplier = imLevelsInitMult[i].mul(
             mp11Multiplier).mul(
             mp31Multiplier).mul(
-            mp32Multiplier);
+            mp32Multiplier).mul(
+            mp33Multiplier);
     }
 }
 

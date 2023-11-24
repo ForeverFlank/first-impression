@@ -84,9 +84,11 @@ function loadImLevels(obj) {
 
 function loadMpLevels(obj) {
     let x = [];
-    x.push([new Decimal(obj[0][0]), new Decimal(obj[0][1]), obj[0][2]]);
-    x.push([new Decimal(obj[1][0]), new Decimal(obj[1][1])]);
-    x.push([obj[2][0], obj[2][1], obj[2][2]]);
+    let tryLoad = (p, q) => obj[p][q] != null ? obj[p][q] : 0;
+    x.push([new Decimal(tryLoad(0, 0)), new Decimal(tryLoad(0, 1)), tryLoad(0, 2)]);
+    x.push([new Decimal(tryLoad(1, 0)), new Decimal(tryLoad(1, 1))]);
+    x.push([tryLoad(2, 0), tryLoad(2, 1), tryLoad(2, 2)])
+    x.push([tryLoad(3, 0)]);
     return x;
 }
 
@@ -104,8 +106,11 @@ if (sg != null) {
         tutorial = sg.tutorial;
     if (sg.imInitAmount != null)
         imInitAmount = new Decimal(sg.imInitAmount);
-    if (sg.im != null)
+    if (sg.im != null) {
         im = new Decimal(sg.im);
+    } else {
+        im = new Decimal(10);
+    }
     if (sg.imUnlocked != null)
         imUnlocked = sg.imUnlocked;
     if (sg.imLevels != null)

@@ -2,11 +2,41 @@
 
 let clickable = true;
 
-function imClick() {
+function numberEffect(e, str) {
+    if (e == null) return;
+    let text = document.createElement('p');
+    text.textContent = '+' + str;              
+
+    text.style.pointerEvents = 'none';
+    text.style.zIndex = '20';
+    text.style.fontSize = '1.2em';
+    text.style.color = 'white';
+    text.style.mixBlendMode = 'difference';
+    text.style.position = 'fixed';
+    text.style.left = e.clientX + 'px';
+    text.style.top = e.clientY + 'px';
+
+    setTimeout(function() {
+        // ripple.remove();
+        text.remove();
+    }, 500);
+
+    e.currentTarget.appendChild(text);
+
+    text.animate(
+        [
+            { transform: 'translateY(-20px)', opacity: '1' },
+            { transform: 'translateY(-50px)', opacity: '0.6' }
+        ],
+        { duration: 500, iterations: 1 });
+}
+
+function imClick(e) {
     if (clickable) {
         clickable = false;
         setTimeout(() => { clickable = true; }, (clickCooldown()));
-        im = im.add((imLevels[0].total).mul(imLevels[0].multiplier));
+        let amount = (imLevels[0].total).mul(imLevels[0].multiplier);
+        im = im.add(amount);
         document.getElementById('clickSlider').animate(
             [
                 { width: '0%' },
@@ -22,6 +52,7 @@ function imClick() {
             tutorial = 2;
             document.getElementById('imPrestigeButton').style.animation = 'highlight 1s linear infinite';
         }
+        // numberEffect(e, format(amount));
     }
 }
 

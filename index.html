@@ -61,7 +61,7 @@
       <div class="tabcontent" id="tabIm">
         <div>
           <h2 class="center">Ims</h2>
-          <button id="imClickButton" onclick="imClick()" class="button" style="display: block; height: 5em;">
+          <button id="imClickButton" onclick="imClick(event)" class="button" style="display: block; height: 5em;">
             คลิก
             <span id="clickSlider" class="click-slider"></span>
           </button>
@@ -97,7 +97,8 @@
             <div>
               <div class="prestige-div">
                 <div class="width-55">
-                  <p style="margin-top: 0;">รีเซ็ตทุกอย่างเพื่อแลกรับ Memory</p>
+                  <p style="margin-top: 0;">เก็บไว้ในความทรงจำ</p>
+                  <p class="tab-text-margin">รีเซ็ตทุกอย่างเพื่อรับ Memory</p>
                   <div class="flex-start">
                     <p class="tab-text">รับ Memory ต่อไปที่:&nbsp;</p>
                     <p id="imPrestigeCost" class="tab-text">0</p>
@@ -125,11 +126,11 @@
         </div>
         <hr>
         <div class="scrollable" style="max-height: 45vh;">
-          <p style="margin-top: 0; margin-bottom: .5em;">คลิก</p>
+          <p style="margin-top: 0; margin-bottom: .5em;">ทั่วไป</p>
           <div>
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">รับ im ×1.5 ต่อคลิก</p>
+                <p style="margin-top: 0;">1<sup>st</sup> impression ×1.5</p>
                 <div class="flex-start">
                   <p class="tab-text">ขณะนี้: ×</p>
                   <p class="tab-text" id="mp11Level">0</p>
@@ -141,7 +142,7 @@
             </div>
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">รับ memory ×2 ต่อคลิก</p>
+                <p style="margin-top: 0;">รับ memory ×2 ต่อการเก็บไว้ในความทรงจำ</p>
                 <div class="flex-start">
                   <p class="tab-text">ขณะนี้: ×</p>
                   <p class="tab-text" id="mp12Level">0</p>
@@ -166,7 +167,7 @@
             </div>
           </div>
 
-          <p style="margin-top: .5em; margin-bottom: .5em;">กีกี้</p>
+          <p style="margin-top: .5em; margin-bottom: .5em;">Autoclicker</p>
           <div>
             <div class="tab">
               <div class="width-55">
@@ -183,7 +184,7 @@
 
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">ความเร็ว ×2 ต่อ Autoclicker</p>
+                <p style="margin-top: 0;">Autoclicker ความเร็ว ×2</p>
                 <div class="flex-start">
                   <p class="tab-text">ขณะนี้: ×</p>
                   <p class="tab-text" id="mp22Level">0</p>
@@ -195,11 +196,11 @@
             </div>
           </div>
 
-          <p style="margin-top: .5em; margin-bottom: .5em;">Im</p>
+          <p style="margin-top: .5em; margin-bottom: .5em;">Impression</p>
           <div>
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">impression ×1.01 ในทุก ๆ การซื้อ impression นั้น ๆ</p>
+                <p style="margin-top: 0;">n<sup>th</sup> impression ×1.01 ทุก ๆ การซื้อ impression นั้น ๆ</p>
                 <div class="flex-start">
                   <p class="tab-text" id="mp31Level">0</p>
                 </div>
@@ -211,7 +212,7 @@
 
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">×2 ทุก ๆ 10 การซื้อ im นั้น ๆ </p>
+                <p style="margin-top: 0;">n<sup>th</sup> impression ×2 ทุก ๆ การซื้อ impression นั้น ๆ </p>
                 <div class="flex-start">
                   <p class="tab-text" id="mp32Level">0</p>
                 </div>
@@ -222,13 +223,28 @@
             </div>
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">ปลดล็อก Autobuyer</p>
+                <p style="margin-top: 0;">n<sup>th</sup> impression ×log(impression สูงสุดที่เคยได้รับ)</p>
                 <div class="flex-start">
                   <p class="tab-text" id="mp33Level">0</p>
                 </div>
               </div>
               <button class="tab-button width-40" id="mp33" onclick="memoryBuy(2, 2)">
                 <span id="mp33Cost"></span>
+              </button>
+            </div>
+          </div>
+
+          <p style="margin-top: .5em; margin-bottom: .5em;">Autobuyer</p>
+          <div>
+            <div class="tab">
+              <div class="width-55">
+                <p style="margin-top: 0;">ปลดล็อก Autobuyer</p>
+                <div class="flex-start">
+                  <p class="tab-text" id="mp41Level">0</p>
+                </div>
+              </div>
+              <button class="tab-button width-40" id="mp41" onclick="memoryBuy(3, 0)">
+                <span id="mp41Cost"></span>
               </button>
             </div>
           </div>
