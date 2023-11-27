@@ -2,13 +2,12 @@
 
 function uiUpdate() {
     setInterval(function() {
-        let autoclickTotal = autoClickerAmount().mul(autoClickerPerClick());
+        let autoclickTotal = autoClickerAmount().mul(autoClickerPerClick()).mul(autoClickerSpeed());
         setText('imAmount', format(im, 'blue'));
         setText('imRate', format(imLevels[0].value().mul(autoclickTotal), 'dark-blue'));
         setText('imPrestigeValue', format(imPrestigeAmount(), 'white', 2));
         setText('imPrestigeCost', format(imPrestigeNextCost(), 'gray'));
-        setText('imAcAmount', format(autoClickerAmount(), 'gray', 0));
-        setText('imAcPc', format(autoClickerPerClick()));
+        setText('imAcSpeed', format(autoclickTotal, 'gray'));
         for (var i = 10; i >= 1; i--) {
             setText(`im${i}Mult`, format(imLevels[i - 1].multiplier, 'gray'));
             setText(`im${i}Total`, format(imLevels[i - 1].total, 'gray'));
@@ -16,23 +15,20 @@ function uiUpdate() {
             button.disabled = (im.cmp(imLevels[i - 1].cost()) < 0);
         }
         document.getElementById('imPrestigeButton').disabled = (imMaxIm.cmp(imPrestigeMinimum) < 0);
-
-        // mp slider
-        let cost = imPrestigeCost();
-        let nextCost = imPrestigeNextCost();
-        // console.log(cost.toString(), nextCost.toString())
-        let ratio = im.div(nextCost).mul(100);
+        setText('mp23Level', format(autoClickerSpeed(), 'gray', 1));
+        let ratio = im.div(imPrestigeNextCost()).mul(100);
         setSlider('nextImBar', ratio.mag);
-        
         setText('mpAmount', format(mp, 'purple'));
-
         setText('fpAmount', format(fp, 'pink'));
+
+        imAutoPrestigeThreshold = new Decimal(document.getElementById('imAutoPrestigeThreshold').value);
     }, 1000 / fps);
 }
 
 
 function gameUpdate() {
     // 1 tick = 50 ms -> 20 tick / s
+    // gamespeed = new Decimal(1).div(mp.add(1));
     for (var i = 10; i > 1; i--) {
         imLevels[i - 1].generate();
     }
@@ -46,6 +42,7 @@ function gameUpdate() {
     if (memoryLevel[3][0] && imAutobuyActivated) {
         imBuyMaxAll();
     }
+    imAutoPrestige();
 }
 
 function slowUpdate() {

@@ -195,7 +195,7 @@ hr {
 .click-slider {
   display: block;
   position: absolute;
-  background-color: #2692f7;;
+  background-color: #2692f7;
   bottom: 0;
   height: 5px;
   width: 100%;
@@ -233,16 +233,16 @@ hr {
 .tab-text {
   font-size: 11px;
   color: #555;
-  margin-top: -13px;
+  margin-top: -11px;
   margin-bottom: 0;
-  line-height: 1.4em;
+  line-height: 1.3em;
 }
 
 .tab-text-margin {
   font-size: 11px;
   color: #555;
-  margin-top: -13px;
-  line-height: 1.4em;
+  margin-top: -11px;
+  line-height: 1.3em;
 }
 
 .upgrade-div {
@@ -359,7 +359,7 @@ button span {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 2.4em;
+  height: 33px;
   width: 100%;
 }
 
@@ -697,15 +697,28 @@ span.ripple {
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #2692f7;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2692f7;
 }
 
 input:checked + .slider:before {
   transform: translateX(18px);
+}
+
+.small-text-input {
+  width: 5em;
+  height: 1.1em;
+  border: none;
+  border-bottom: 1px solid #24282c;
+}
+
+.small-text-input:focus {
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #2692f7;
 }
 
 /*

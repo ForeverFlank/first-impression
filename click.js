@@ -57,7 +57,7 @@ function imClick(e) {
 }
 
 function imAutoclick() {
-    let autoClick = autoClickerAmount().mul(autoClickerPerClick())
+    let autoClick = autoClickerAmount().mul(autoClickerPerClick()).mul(autoClickerSpeed());
     im = im.add((imLevels[0].total).mul(imLevels[0].multiplier).mul(autoClick).div(tickrate).mul(gameSpeed));
     setText('imAmount', format(im, 'blue'));
 }
@@ -77,7 +77,7 @@ function imBuy(x) {
         imLevels[n].amount = imLevels[n].amount.add(1);
         imLevels[n].total = imLevels[n].total.add(1);
         imCalculateMultiplier();
-        setText(`im${n+1}Button`, format(imLevels[n].cost()), 'gray');
+        setText(`im${n+1}Button`, format(imLevels[n].cost(), 'white'));
     }
 }
 
@@ -103,7 +103,7 @@ function imBuyMax(n) {
         for (let i = 0; i < MAX_TERM; i++) {
             let currentAmount = imLevels[n].amount.add(maxAmount).sub(i).sub(1);
             totalCost = totalCost.add(init.mul(step.pow(currentAmount)));
-            console.log(totalCost);
+            // console.log(totalCost);
         }
     }
 
@@ -114,15 +114,11 @@ function imBuyMax(n) {
     imCalculateMultiplier();
     // console.log(n, imLevels[n].amount);
     im = im.sub(totalCost);
-    setText(`im${n+1}Button`, format(imLevels[n].cost()), 'gray');
+    setText(`im${n+1}Button`, format(imLevels[n].cost(), 'white'));
 }
 
 function imBuyMaxAll() {
     for (let i = imUnlocked - 1; i >= 0; i--) {
         imBuyMax(i);
     }
-}
-
-function imAbToggle(element) {
-    imAutobuyActivated = element.checked;
 }

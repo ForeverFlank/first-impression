@@ -66,20 +66,20 @@ function format(value, color='white', d=2, md=2, t=6, lt=4) {
 
     if (notation == 'e') {
         if (layer >= lt) return `E${layer}#${man.toFixed(d)}e${exp}`;
-        if (layer == 0 && exp < t) return few(value, d);
+        if (layer == 0 && Math.abs(exp) < t) return few(value, d);
         // if (layer == 1 && exp < t) return char + `${man.toFixed(md)}e${few(exp)}`;
         return char + `${'e'.repeat(layer)}${man.toFixed(d)}e${exp}`;
     }
     if (notation == 'exp') {
         const open = `10<sup class="center ${color}">`.repeat(layer);
         const close = '</sup>'.repeat(layer + 1);
-        if (layer == 0 && exp < t) return few(value, d);
+        if (layer == 0 && Math.abs(exp) < t) return few(value, d);
         return `${open}${man.toFixed(d)} × 10<sup class="center ${color}">${comma(exp.toString())}${close}`;
     }
 }
 
 // tests
-// console.log(new Decimal('0.004'), format(new Decimal('0.004')))
+// console.log(new Decimal('1e-60'), format(new Decimal('1e-60')))
 // console.log(new Decimal('31.6'), format(new Decimal('31.6')))
 // console.log(new Decimal('299792458'), format(new Decimal('299792458')))
 // console.log(new Decimal('e9e3'), format(new Decimal('e9e3')))

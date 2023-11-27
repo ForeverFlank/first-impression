@@ -1,6 +1,5 @@
 'use strict';
-// todo : change to log2(x/100)+1
-// inv: 100 * 2^(y-1)
+
 function imPrestigeAmount(mult = true) {
     if (imMaxIm.cmp(imPrestigeMinimum) < 0) {
         return new Decimal(0);
@@ -17,13 +16,11 @@ function imPrestigeCost() {
         return new Decimal(0);
     }
     return new Decimal(10).pow(result.sub(1)).mul(imPrestigeMinimum);
-    // return result.pow(3).mul(imPrestigeMinimum);
 }
 
 function imPrestigeNextCost() {
     let result = imPrestigeAmount(false);
     return new Decimal(10).pow(result).mul(imPrestigeMinimum);
-    // return result.add(1).pow(3).mul(imPrestigeMinimum);
 }
 
 function memoryCost(p, q) {
@@ -34,19 +31,25 @@ function memoryCost(p, q) {
     if (isMemory(0, 1))
         return new Decimal(2).mul(new Decimal(3).pow(ml));
     if (isMemory(0, 2))
-        return new Decimal(5).mul(new Decimal(4).pow(new Decimal(ml)));
+        return new Decimal(5).mul(new Decimal(3).pow(new Decimal(ml)));
     if (isMemory(1, 0))
         return new Decimal(40).mul(new Decimal(3).pow(ml));
     if (isMemory(1, 1))
         return new Decimal(100).mul(new Decimal(3).pow(ml));
+    if (isMemory(1, 2))
+        return new Decimal(200);
     if (isMemory(2, 0))
         return new Decimal(150);
     if (isMemory(2, 1))
         return new Decimal(500);
     if (isMemory(2, 2))
-        return new Decimal(650);
+        return new Decimal(10000);
     if (isMemory(3, 0))
         return new Decimal(1000);
+    if (isMemory(3, 1))
+        return new Decimal(1e6);
+    if (isMemory(4, 0))
+        return new Decimal(2e4);
 };
 
 function memoryCanBuy(p, q) {
@@ -54,7 +57,9 @@ function memoryCanBuy(p, q) {
     if (mp.cmp(cost()) < 0) return false;
     let isMemory = (r, s) => (p == r && q == s);
     if (isMemory(0, 2))
-        return memoryLevel[0][2] < 5;
+        return memoryLevel[0][2] < 6;
+    if (isMemory(1, 2))
+        return !memoryLevel[1][2];
     if (isMemory(2, 0))
         return !memoryLevel[2][0];
     if (isMemory(2, 1))
@@ -63,15 +68,20 @@ function memoryCanBuy(p, q) {
         return !memoryLevel[2][2];
     if (isMemory(3, 0))
         return !memoryLevel[3][0];
+    if (isMemory(3, 1))
+        return !memoryLevel[3][1];
+    if (isMemory(4, 0))
+        return !memoryLevel[4][0];
     return true;
 }
 
 function memoryDisableButton() {
     let memoryList = [
         [0, 0], [0, 1], [0, 2],
-        [1, 0], [1, 1],
+        [1, 0], [1, 1], [1, 2],
         [2, 0], [2, 1], [2, 2],
-        [3, 0]];
+        [3, 0], [3, 1],
+        [4, 0]];
     for (let i = 0; i < memoryList.length; i++) {
         let p = memoryList[i][0];
         let q = memoryList[i][1];
@@ -83,10 +93,20 @@ function imPrestigeClick() {
     mp = mp.add(imPrestigeAmount());
     imReset();
     memoryDisableButton();
+    let ratio = im.div(imPrestigeNextCost()).mul(100);
+    setSlider('nextImBar', ratio.mag, 1);
     if (tutorial == 2) {
         tutorial = 3;
         document.getElementById('imPrestigeButton').style.animation = 'none';
         document.getElementById('buttonMp').style.animation = 'highlight 1s linear infinite';
+    }
+}
+
+function imAutoPrestige() {
+    if (memoryLevel[3][1] &&
+        imAutoPrestigeActivated &&
+        imPrestigeAmount().cmp(imAutoPrestigeThreshold) >= 0) {
+            imPrestigeClick();
     }
 }
 
@@ -103,10 +123,10 @@ function memoryBuy(p, q) {
         memoryLevel[0][2] = memoryLevel[0][2] + 1;
     } else if (isMemory(1, 0)) {
         memoryLevel[1][0] = memoryLevel[1][0].add(1);
-        let acUnlocked = memoryLevel[1][0].cmp(0) > 0;
-        document.getElementById('imAcDisplay').style.display = acUnlocked ? 'flex' : 'none';
     } else if (isMemory(1, 1)) {
         memoryLevel[1][1] = memoryLevel[1][1].add(1);
+    } else if (isMemory(1, 2)) {
+        memoryLevel[1][2] = true;
     } else if (isMemory(2, 0)) {
         memoryLevel[2][0] = true;
     } else if (isMemory(2, 1)) {
@@ -115,6 +135,10 @@ function memoryBuy(p, q) {
         memoryLevel[2][2] = true;
     } else if (isMemory(3, 0)) {
         memoryLevel[3][0] = true;
+    } else if (isMemory(3, 1)) {
+        memoryLevel[3][1] = true;
+    } else if (isMemory(4, 0)) {
+        memoryLevel[4][0] = true;
     }
     memoryInit();
     totalMemoryLevel = totalMemoryLevel.add(1);
@@ -134,6 +158,8 @@ function memoryInit() {
     setText('mp21Cost', format(memoryCost(1, 0)));
     setText('mp22Level', format(autoClickerPerClick(), 'gray', 1));
     setText('mp22Cost', format(memoryCost(1, 1)));
+    // setText('mp23Level', format(autoClickerSpeed(), 'gray', 1));
+    setText('mp23Cost', format(memoryCost(1, 2)));
 
     setText('mp31Level', memoryLevel[2][0] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
     setText('mp31Cost', format(memoryCost(2, 0)));
@@ -144,32 +170,40 @@ function memoryInit() {
 
     setText('mp41Level', memoryLevel[3][0] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
     setText('mp41Cost', format(memoryCost(3, 0)));
+    setText('mp42Level', memoryLevel[3][1] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
+    setText('mp42Cost', format(memoryCost(3, 1)));
+
+    setText('mp51Level', memoryLevel[4][0] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
+    setText('mp51Cost', format(memoryCost(4, 0)));
 
     setText('mpImUnlockButton', format(mpImUnlockCost[imUnlocked - 1], 'white'));
-
-    // setText('mp41Level', imUnlocked);
-    // setText('mp41Cost', format(memoryCost(3, 0)));
-    // setText('mp42Level', memoryLevel[3][1] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
-    // setText('mp42Cost', format(memoryCost(3, 1)));
 
     imCalculateMultiplier();
     memoryDisableButton();
 
     let acUnlocked = memoryLevel[1][0].cmp(0) > 0;
-    document.getElementById('imAcDisplay').style.display = acUnlocked ? 'flex' : 'none';
+    document.getElementById('imAcStatus').style.display = acUnlocked ? 'block' : 'none';
     document.getElementById('imAbToggleDiv').style.display = memoryLevel[3][0] ? 'flex' : 'none';
+    document.getElementById('imAutoPrestigeToggleDiv').style.display = memoryLevel[3][1] ? 'flex' : 'none';
 }
 
 function memoryReset() {
     mp = new Decimal(0);
-    memoryLevel = [[zero, zero, 0], [zero, zero], [false, false, false]];
+    let me51 = memoryLevel[4][0];
+    memoryLevel = [
+        [zero, zero, 0],
+        [zero, zero, false],
+        [false, false, false],
+        [false, false],
+        [me51]];
     imReset();
     memoryInit();
     memoryMaxIm = im;
 }
 
-let mpImUnlockCost = [new Decimal('1e4'), new Decimal('1e12'),
-new Decimal('1e6'), new Decimal('1e6'),
+let mpImUnlockCost = [
+new Decimal('5e3'), new Decimal('5e7'),
+new Decimal('5e11'), new Decimal('1e6'),
 new Decimal('1e6'), new Decimal('1e6'),
 new Decimal('1e6'), new Decimal('1e6'),
 new Decimal('1e6'), new Decimal('1e6')];
@@ -179,6 +213,7 @@ function mpImUnlock() {
         memoryReset();
         imUnlocked += 1;
         document.getElementById(`im${imUnlocked}`).style.display = 'flex';
+        setText('mpImUnlockButton', format(mpImUnlockCost[imUnlocked - 1], 'white'));
         setText(`im${imUnlocked}Button`, format(imLevels[imUnlocked - 1].cost()));
     }
 }

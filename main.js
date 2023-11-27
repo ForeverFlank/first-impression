@@ -3,11 +3,11 @@
 function setText(id, str) {
     document.getElementById(id).innerHTML = str;
 }
-function setSlider(id, value, time = 1000) {
+function setSlider(id, value, duration=1000) {
     let bar = document.getElementById(id);
     bar.animate(
         [{ width: `${value}%` }],
-        { duration: time }
+        { duration: duration }
     );
 }
 function fadeIn(id, duration=2000) {
@@ -31,14 +31,27 @@ function fadeOut(id, duration=2000) {
     }, duration);
 }
 
+var DEBUG = false;
+
 const zero = new Decimal(0);
 const tickrate = 20;
-var gameSpeed = 1;
+var gameSpeed = new Decimal(1);
 
 var tutorial = 0;
 
-var imInitAmount = new Decimal('10');
-var im = imInitAmount;
+var memoryLevel = [
+    [zero, zero, 0],
+    [zero, zero, false],
+    [false, false, false],
+    [false, false],
+    [false]];
+
+var imInitAmount = () => {
+    if (memoryLevel[4][0])
+        return new Decimal(50);
+    return new Decimal(10);
+}
+var im = new Decimal(10);
 
 var imUnlocked = 1;
 var imLevels = [];
@@ -87,22 +100,20 @@ class ImLevel {
 }
 var imPrestigeMinimum = new Decimal(100);
 var imAutobuyActivated = false;
-var imMaxIm = imInitAmount;
+var imAutoPrestigeActivated = false;
+let imAutoPrestigeThreshold = new Decimal(0);
+var imMaxIm = imInitAmount();
 
 // --- mps
 
 var mp = new Decimal('0');
-var memoryLevel = [
-    [zero, zero, 0],
-    [zero, zero],
-    [false, false, false],
-    [false]];
 var totalMemoryLevel = new Decimal(0);
-var memoryMaxIm = imInitAmount;
+var memoryMaxIm = imInitAmount();
 var mpMultiplier = () => new Decimal(2).pow(memoryLevel[0][1]);
 var autoClickerAmount = () => memoryLevel[1][0];
 var autoClickerPerClick = () => new Decimal(0.1).mul(new Decimal(2).pow(memoryLevel[1][1]));
-var clickCooldown = () => (1000 - memoryLevel[0][2] * 150) / gameSpeed;
+var autoClickerSpeed = () => memoryLevel[1][2] ? mp.add(1).log(2).add(1) : new Decimal(1);
+var clickCooldown = () => 1000 - memoryLevel[0][2] * 150;
 
 // --- fps
 
@@ -128,20 +139,22 @@ function addAchievements(ac) {
 
 function imCalculateMultiplier() {
     for (let i = 0; i < 10; i++) {
-        let mp11Multiplier = (i == 0) ? new Decimal(1.5).pow(memoryLevel[0][0]) : new Decimal(1);
-        let mp31Multiplier = memoryLevel[2][0] ? new Decimal(1.01).pow(imLevels[i].amount) : new Decimal(1);
-        let mp32Multiplier = memoryLevel[2][1] ? new Decimal(2).pow(imLevels[i].amount.div(10).floor()) : new Decimal(1);
-        let mp33Multiplier = memoryLevel[2][2] ? memoryMaxIm.log10() : new Decimal(1);
+        let me11 = (i == 0) ? new Decimal(1.5).pow(memoryLevel[0][0]) : new Decimal(1);
+        let me31 = memoryLevel[2][0] ? new Decimal(1.01).pow(imLevels[i].amount) : new Decimal(1);
+        let me32 = memoryLevel[2][1] ? new Decimal(2).pow(imLevels[i].amount.div(10).floor()) : new Decimal(1);
+        let me33 = memoryLevel[2][2] ? memoryMaxIm.log10() : new Decimal(1);
+        let me51 = memoryLevel[4][0] ? new Decimal(2) : new Decimal(1);
         imLevels[i].multiplier = imLevelsInitMult[i].mul(
-            mp11Multiplier).mul(
-            mp31Multiplier).mul(
-            mp32Multiplier).mul(
-            mp33Multiplier);
+            me11).mul(
+            me31).mul(
+            me32).mul(
+            me33).mul(
+            me51);
     }
 }
 
 function imReset() {
-    im = imInitAmount;
+    im = imInitAmount();
     imMaxIm = im;
     // imLevels[0].amount = new Decimal(0);
     // imLevels[0].total = new Decimal(0);
@@ -153,13 +166,21 @@ function imReset() {
         }
         imLevels[i].amount = new Decimal(0);
         imLevels[i].total = new Decimal(0);
-        setText(`im${i + 1}Button`, format(imLevels[i].cost(), 'gray'));
+        setText(`im${i + 1}Button`, format(imLevels[i].cost(), 'white'));
         setText(`im${i + 1}Mult`, format(imLevels[i].multiplier, 'gray'));
         setText(`im${i + 1}Total`, format(imLevels[i].total, 'gray'));
         let button = document.getElementById(`im${i + 1}Button`);
         button.disabled = (im.cmp(imLevels[i].cost()) < 0);
     }
     imCalculateMultiplier();
+}
+
+function imAbToggle(element) {
+    imAutobuyActivated = element.checked;
+}
+
+function imAutoPrestigeToggle(element) {
+    imAutoPrestigeActivated = element.checked;
 }
 
 var save;
