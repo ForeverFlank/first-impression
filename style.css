@@ -675,6 +675,8 @@ span.ripple {
 
 .fp-element button,
 .fp-branch button {
+  text-align: center;
+  margin: auto;
   width: 2.4em;
   height: 2.4em;
   background-color: #6537c2;
