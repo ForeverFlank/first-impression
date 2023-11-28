@@ -436,7 +436,7 @@ span.ripple {
 
 .newsticker-bg {
   background-color: black;
-  height: 24px;
+  height: 1.6em;
   /* max-width: 390px; */
   overflow: hidden;
   margin-left: auto;
@@ -446,7 +446,7 @@ span.ripple {
 .newsticker-bg p {
   display: inline-block;
   position: absolute;
-  top: 3px;
+  top: 0.3em;
   white-space: nowrap;
   color: white;
   margin: 0;
@@ -550,7 +550,7 @@ span.ripple {
   padding-left: 30px;
 }
 
-.fp-container {
+.fg-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -559,13 +559,13 @@ span.ripple {
   overflow: scroll;
 }
 
-.fp-grid {
+.fg-grid {
   display: -ms-grid;
   display: grid;
   margin: 0 auto;
 }
 
-.fp-element {
+.fg-element {
   position: relative;
   overflow: visible;
   display: -ms-inline-grid;
@@ -576,7 +576,7 @@ span.ripple {
   align-items: center;
 }
 
-.fp-branch {
+.fg-branch {
   position: relative;
   overflow: visible;
   display: -ms-inline-grid;
@@ -587,8 +587,8 @@ span.ripple {
   align-items: center;
 }
 
-.fp-element button,
-.fp-branch button {
+.fg-element button,
+.fg-branch button {
   text-align: center;
   margin: auto;
   width: 3.6em;
@@ -597,9 +597,9 @@ span.ripple {
   box-shadow: rgba(24, 28, 47, 0.25) 0 2px 8px 0;
 }
 
-.fp-line,
-.fp-left,
-.fp-right {
+.fg-line,
+.fg-left,
+.fg-right {
   position: relative;
   top: -6px;
   overflow: visible;
@@ -607,7 +607,7 @@ span.ripple {
   height: 2px;
 }
 
-.fp-none {
+.fg-none {
   position: relative;
   top: -6px;
   overflow: visible;
@@ -616,17 +616,17 @@ span.ripple {
   background-color: none;
 }
 
-.fp-line {
+.fg-line {
   background-color: black;
 }
 
-.fp-left {
+.fg-left {
   background: linear-gradient(-90deg,
       rgba(0, 0, 0, 0) 49%,
       rgba(0, 0, 0, 1) 49%);
 }
 
-.fp-right {
+.fg-right {
   background: linear-gradient(90deg,
       rgba(0, 0, 0, 0) 49%,
       rgba(0, 0, 0, 1) 49%);

@@ -1,10 +1,9 @@
 'use strict';
 
 // Create im tabs
-let ordinal = ['Second', 'Third', 'Forth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth'];
 let base = (n) => `<div class="tab" id="im${n}">
 <div class="width-55">
-  <p style="margin-top: 0;">${ordinal[n - 2]} Impression</p>
+  <p style="margin-top: 0;">${ordinal[n - 1]} Impression</p>
   <div class="space-between">
     <div class="flex-start width-45">
       <p id="im${n}Mult" class="tab-text">1</p>
@@ -185,6 +184,9 @@ function loadGame() {
     for (var i = 10; i > imUnlocked; i--) {
         document.getElementById(`im${i}`).style.display = 'none';
     }
+    for (var i = imUnlocked; i >0 ; i--) {
+        document.getElementById(`im${i}`).style.display = 'flex';
+    }
     document.getElementById('imAbToggleCheckbox').checked = imAutobuyActivated;
     document.getElementById('imAutoPrestigeToggleCheckbox').checked = imAutoPrestigeActivated;
     document.getElementById('imAutoPrestigeThreshold').value = imAutoPrestigeThreshold;
@@ -220,7 +222,8 @@ function importSave() {
 }
 
 function exportSave() {
-    prompt('Copy your save here', JSON.stringify(saveObject()));
+    navigator.clipboard.writeText(JSON.stringify(saveObject()));
+    // prompt('Copy your save here', JSON.stringify(saveObject()));
 }
 
 function deleteSave() {

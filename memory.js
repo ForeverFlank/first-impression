@@ -106,7 +106,7 @@ function imAutoPrestige() {
     if (memoryLevel[3][1] &&
         imAutoPrestigeActivated &&
         imPrestigeAmount().cmp(imAutoPrestigeThreshold) >= 0) {
-            imPrestigeClick();
+        imPrestigeClick();
     }
 }
 
@@ -165,7 +165,7 @@ function memoryInit() {
     setText('mp31Cost', format(memoryCost(2, 0)));
     setText('mp32Level', memoryLevel[2][1] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
     setText('mp32Cost', format(memoryCost(2, 1)));
-    setText('mp33Level', memoryLevel[2][2] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
+    // setText('mp33Level', memoryLevel[2][2] ? format(memoryMaxIm.log10(), 'gray') : 'ยังไม่ปลดล็อก');
     setText('mp33Cost', format(memoryCost(2, 2)));
 
     setText('mp41Level', memoryLevel[3][0] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
@@ -202,17 +202,30 @@ function memoryReset() {
 }
 
 let mpImUnlockCost = [
-new Decimal('5e3'), new Decimal('5e7'),
-new Decimal('5e11'), new Decimal('1e6'),
-new Decimal('1e6'), new Decimal('1e6'),
-new Decimal('1e6'), new Decimal('1e6'),
-new Decimal('1e6'), new Decimal('1e6')];
+    new Decimal('5e3'), new Decimal('5e7'),
+    new Decimal('5e11'), new Decimal('1e6'),
+    new Decimal('1e6'), new Decimal('1e6'),
+    new Decimal('1e6'), new Decimal('1e6'),
+    new Decimal('1e6'), new Decimal('0')];
 
 function mpImUnlock() {
     if (mp.cmp(mpImUnlockCost[imUnlocked - 1]) >= 0) {
-        memoryReset();
-        imUnlocked += 1;
-        document.getElementById(`im${imUnlocked}`).style.display = 'flex';
+        if (imUnlocked < 10) {
+            memoryReset();
+            imUnlocked += 1;
+            document.getElementById(`im${imUnlocked}`).style.display = 'flex';
+        } else {
+            memoryReset();
+            imUnlocked = 1;
+            fp = fp.add(1);
+            for (var i = 10; i > imUnlocked; i--) {
+                document.getElementById(`im${i}`).style.display = 'none';
+            }
+            for (var i = imUnlocked; i > 0; i--) {
+                document.getElementById(`im${i}`).style.display = 'flex';
+            }
+        }
+        
         setText('mpImUnlockButton', format(mpImUnlockCost[imUnlocked - 1], 'white'));
         setText(`im${imUnlocked}Button`, format(imLevels[imUnlocked - 1].cost()));
     }

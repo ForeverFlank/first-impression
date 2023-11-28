@@ -36,6 +36,7 @@ var DEBUG = false;
 const zero = new Decimal(0);
 const tickrate = 20;
 var gameSpeed = new Decimal(1);
+var ordinal = ['First', 'Second', 'Third', 'Forth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth'];
 
 var tutorial = 0;
 

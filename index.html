@@ -5,7 +5,7 @@
   <meta chaimet="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-  <title>Secret</title>
+  <title>FIrst Impression</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Anuphan&display=swap');
 
@@ -312,40 +312,42 @@
           <h2 class="center">Forget</h2>
           <div class="inline" style="height: 1em;">
             <p class="center">คุณมี&ensp;</p>
-            <h3 id="fpAmount" class="center pink">0</h3>
+            <h3 id="fgAmount" class="center pink">0</h3>
             <p class="center">&ensp;forget points</p>
           </div>
         </div>
         <hr>
-        <div class="fp-container" id="fp-grid">
-          <div class="fp-grid" style="grid-template-columns: repeat(1, 80px);">
-            <div class="fp-element line-bottom" onclick="fpClick('1')"><button>1</button></div>
-            <div class="fp-none    line-bottom"></div>
-            <div class="fp-element line-bottom" onclick="fpClick('2')"><button>2</button></div>
-            <div class="fp-none"></div>
+        <div class="fg-container" id="fg-grid">
+          <div class="fg-grid" style="grid-template-columns: repeat(1, 80px);">
+            <div class="fg-element line-bottom" onclick="fgClick('1')"><button>1</button></div>
+            <div class="fg-none    line-bottom"></div>
+            <div class="fg-element line-bottom" onclick="fgClick('2')"><button>2</button></div>
+            <div class="fg-none"></div>
           </div>
-          <div class="fp-grid" style="grid-template-rows: repeat(5, auto);
+          <div class="fg-grid" style="grid-template-rows: repeat(5, auto);
                       grid-template-columns: repeat(2, 80px);">
-            <div class="fp-right line-bottom"></div>
-            <div class="fp-left line-bottom"></div>
+            <div class="fg-right line-bottom"></div>
+            <div class="fg-left line-bottom"></div>
 
-            <div class="fp-element" onclick="fpClick('3a')"><button>3a</button></div>
-            <div class="fp-element" onclick="fpClick('3b')"><button>3b</button></div>
+            <div class="fg-element" onclick="fgClick('3a')"><button>3a</button></div>
+            <div class="fg-element" onclick="fgClick('3b')"><button>3b</button></div>
           </div>
         </div>
         <hr>
         <div>
-          <h2 id="fpSelecting" style="margin-bottom: -0.2em;">โปรดเลือก node เพื่อดูรายละเอียด</h2>
+          <h2 id="fgSelecting" style="margin-bottom: -0.2em;">โปรดเลือก node เพื่อดูรายละเอียด</h2>
           <div style="display: flex;">
             <div style="width: 70%">
               <h3 style="margin-bottom: -0.5em;">รายละเอียด</h3>
-              <p id="fpDescription">...</p>
+              <p id="fgDescription">...</p>
             </div>
             <div>
               <h3 style="margin-bottom: -0.5em;">ราคา</h3>
-              <p id="fpCost">...</p>
+              <p id="fgCost">...</p>
+              <button class="button" id="fgBuy" onclick="fgBuy()">ซื้อ</button>
             </div>
           </div>
+          
         </div>
       </div>
       <div class="tabcontent" id="tabAm">

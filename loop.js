@@ -16,6 +16,7 @@ function uiUpdate() {
         }
         document.getElementById('imPrestigeButton').disabled = (imMaxIm.cmp(imPrestigeMinimum) < 0);
         setText('mp23Level', format(autoClickerSpeed(), 'gray', 1));
+        setText('mp33Level', memoryLevel[2][2] ? 'ขณะนี้: ×' + format(memoryMaxIm.log10(), 'gray') : 'ยังไม่ปลดล็อก');
         let ratio = im.div(imPrestigeNextCost()).mul(100);
         setSlider('nextImBar', ratio.mag);
         setText('mpAmount', format(mp, 'purple'));
