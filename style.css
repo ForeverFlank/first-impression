@@ -198,7 +198,6 @@ button span {
 
 .amount-div h1 {
   position: relative;
-  bottom: 0.15em;
 }
 
 /* Main */
@@ -271,7 +270,7 @@ button span {
 }
 
 .gray-text {
-  font-size: 11px;
+  font-size: 12px;
   color: #555;
   margin-top: 0.7em;
   margin-bottom: 0;
@@ -300,17 +299,17 @@ button span {
 }
 
 .tab-text {
-  font-size: 11px;
+  font-size: 12px;
   color: #555;
-  margin-top: -11px;
+  margin-top: -12px;
   margin-bottom: 0;
   line-height: 1.3em;
 }
 
 .tab-text-margin {
-  font-size: 11px;
+  font-size: 12px;
   color: #555;
-  margin-top: -11px;
+  margin-top: -12px;
   line-height: 1.3em;
 }
 
