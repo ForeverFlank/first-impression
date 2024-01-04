@@ -5,11 +5,11 @@ let base = (n) => `<div class="tab" id="im${n}">
 <div class="width-55">
   <p style="margin-top: 0;">${ordinal[n - 1]} Impression</p>
   <div class="space-between">
-    <div class="flex-start width-45">
+    <div class="flex-start width-30">
       <p id="im${n}Mult" class="tab-text">1</p>
       <p class="tab-text">&nbsp;×</p>
     </div>
-    <p id="im${n}Total" class="tab-text width-45 center">0</p>
+    <p id="im${n}Total" class="tab-text width-50 center">0</p>
   </div>  
 </div>
 <button id="im${n}Button" onclick="imBuy(${n})" class="tab-button width-40">0</button>
@@ -43,18 +43,22 @@ function saveObject() {
         imAutoPrestigeActivated: imAutoPrestigeActivated,
         imAutoPrestigeThreshold: imAutoPrestigeThreshold,
         mp: mp,
-        memoryLevel: memoryLevel,
-        totalMemoryLevel: totalMemoryLevel,
+        memoryUpgrades: memoryUpgrades,
+        totalmemoryUpgrades: totalmemoryUpgrades,
         achievements: achievements
     };
 }
 
+let focusing = true;
+
 function saveGame() {
-    save = saveObject();
-    // console.log(save)
-    // console.log('Saved');
-    window.windowSave = save;
-    localStorage.setItem('save', JSON.stringify(save));
+    if (focusing) {
+        save = saveObject();
+        // console.log(save)
+        // console.log('Saved');
+        window.windowSave = save;
+        localStorage.setItem('save', JSON.stringify(save));
+    }
 }
 
 function autosave() {
@@ -82,6 +86,20 @@ function loadImLevels(obj) {
 }
 
 function loadMpLevels(obj) {
+    let x = {};
+    for (const [key, value] of Object.entries(obj)) {
+        if (['imMult', 'mpMult', 'acAmount', 'acSpeed'].includes(key)) {
+            x[key] = new Decimal(value);
+        } else {
+            x[key] = value;
+        }
+    }
+    console.log('x', x);
+    return x;
+}
+
+/*
+function loadMpLevels(obj) {
     let x = [];
     let tryLoad = (p, q) => {
         try {
@@ -97,16 +115,24 @@ function loadMpLevels(obj) {
     x.push([tryLoad(4, 0)]);
     return x;
 }
+*/
 
 function loadGame() {
     let hasOfflineProgress = false;
     let saveTimeStamp = Date.now();
-    var sg = JSON.parse(localStorage.getItem('save'));
+    var sg;
+    try {
+        sg = JSON.parse(localStorage.getItem('save'));
+    } catch {
+        sg = null;
+    }
     console.log(sg);
     if (sg != null) {
         if (sg.timestamp != null) {
             saveTimeStamp = sg.timestamp;
-            hasOfflineProgress = true;
+            if (Date.now() - saveTimeStamp >= 30000) {
+                hasOfflineProgress = true;
+            }
         }
         if (sg.tutorial != null)
             tutorial = sg.tutorial;
@@ -130,14 +156,13 @@ function loadGame() {
 
         if (sg.mp != null)
             mp = new Decimal(sg.mp);
-        if (sg.memoryLevel != null)
-            memoryLevel = loadMpLevels(sg.memoryLevel);
-        if (sg.totalMemoryLevel != null)
-            totalMemoryLevel = new Decimal(sg.totalMemoryLevel);
+        if (sg.memoryUpgrades != null)
+            memoryUpgrades = loadMpLevels(sg.memoryUpgrades);
+        // if (sg.totalmemoryUpgrades != null)
+        //     totalmemoryUpgrades = new Decimal(sg.totalmemoryUpgrades);
         if (sg.achievements != null)
             achievements = sg.achievements;
     }
-
     if (hasOfflineProgress) {
         let oldIm = im;
 
@@ -154,9 +179,8 @@ function loadGame() {
         let maxOfflineTicks = 10000;
         if (offlineTicks > maxOfflineTicks) {
             offlineTicks = maxOfflineTicks;
-            offlineGameSpeed = (offlineTime * tickrate / 1000) / offlineTicks;
-        }
-        else {
+            offlineGameSpeed = (offlineTime / tickrate) / offlineTicks;
+        } else {
             offlineGameSpeed = 1;
         }
         console.log(offlineTime, offlineGameSpeed);
@@ -184,7 +208,7 @@ function loadGame() {
     for (var i = 10; i > imUnlocked; i--) {
         document.getElementById(`im${i}`).style.display = 'none';
     }
-    for (var i = imUnlocked; i >0 ; i--) {
+    for (var i = imUnlocked; i > 0 ; i--) {
         document.getElementById(`im${i}`).style.display = 'flex';
     }
     document.getElementById('imAbToggleCheckbox').checked = imAutobuyActivated;
@@ -200,7 +224,7 @@ function loadGame() {
     // ui inits
     if (tutorial == 0) {
         document.getElementById('im1Button').style.animation = 'highlight 1s linear infinite';
-        document.getElementById('imClickButton').style.display = 'none';
+        // document.getElementById('imClickButton').style.display = 'none';
         document.getElementById('imBuyMax').style.display = 'none';
     }
     memoryInit();
@@ -222,6 +246,7 @@ function importSave() {
 }
 
 function exportSave() {
+    console.log(JSON.stringify(saveObject()))
     navigator.clipboard.writeText(JSON.stringify(saveObject()));
     // prompt('Copy your save here', JSON.stringify(saveObject()));
 }
@@ -240,8 +265,10 @@ document.addEventListener('visibilitychange', () => {
     setTimeout(() => {
         if (document.visibilityState == 'visible') {
             loadGame();
+            focusing = true;
         } else {
             saveGame();
+            focusing = false;
         }
     }, 100);
 });

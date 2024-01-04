@@ -5,7 +5,7 @@
   <meta chaimet="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-  <title>FIrst Impression</title>
+  <title>First Impression</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Anuphan&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap');
@@ -63,12 +63,13 @@
       <div class="tabcontent" id="tabIm">
         <div>
           <h2 class="center">Impression</h2>
-          <button id="imClickButton" onclick="imClick(event)" class="button" style="display: block; height: 5em;">
+          <!--button id="imClickButton" onclick="imClick(event)" class="button" style="display: block; height: 5em;">
             คลิก
             <span id="clickSlider" class="click-slider"></span>
-          </button>
-          <p class="gray-text center" id="imAcStatus">ความเร็ว Autoclicker: <span class="gray-text"
-              id="imAcSpeed">0</span></p>
+          </button-->
+          <!--p class="gray-text center" id="imAcStatus">ความเร็ว Autoclicker: <span class="gray-text"
+              id="imAcSpeed">0</span>
+          </p-->
 
           <hr>
 
@@ -81,11 +82,11 @@
                 <div class="width-55">
                   <p style="margin-top: 0;">First Impression</p>
                   <div class="space-between">
-                    <div class="flex-start width-45">
+                    <div class="flex-start width-30">
                       <p id="im1Mult" class="tab-text">1</p>
                       <p class="tab-text">&nbsp;×</p>
                     </div>
-                    <p id="im1Total" class="tab-text width-45 center">0</p>
+                    <p id="im1Total" class="tab-text width-50 center">0</p>
                   </div>
                 </div>
                 <button class="tab-button width-40" id="im1Button" onclick="imBuy(1)">0</button>
@@ -130,14 +131,14 @@
           <div>
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">1<sup>st</sup> impression ×1.5</p>
+                <p style="margin-top: 0;">1<sup>st</sup> impression ×2</p>
                 <div class="flex-start">
                   <p class="tab-text">ขณะนี้: ×</p>
-                  <p class="tab-text" id="mp11Level">0</p>
+                  <p class="tab-text" id="mp-imMult-Level">0</p>
                 </div>
               </div>
-              <button class="tab-button width-40" id="mp11" onclick="memoryBuy(0, 0)">
-                <span id="mp11Cost"></span>
+              <button class="tab-button width-40" id="mp-imMult" onclick="memoryBuy('imMult')">
+                <span id="mp-imMult-Cost"></span>
               </button>
             </div>
             <div class="tab">
@@ -145,64 +146,11 @@
                 <p style="margin-top: 0;">รับ memory points ×2 ต่อการเก็บไว้ในความทรงจำ</p>
                 <div class="flex-start">
                   <p class="tab-text">ขณะนี้: ×</p>
-                  <p class="tab-text" id="mp12Level">0</p>
+                  <p class="tab-text" id="mp-mpMult-Level">0</p>
                 </div>
               </div>
-              <button class="tab-button width-40" id="mp12" onclick="memoryBuy(0, 1)">
-                <span id="mp12Cost"></span>
-              </button>
-            </div>
-            <div class="tab">
-              <div class="width-55">
-                <p style="margin-top: 0;">ลด cooldown คลิก</p>
-                <div class="flex-start">
-                  <p class="tab-text">ขณะนี้:&nbsp;</p>
-                  <p class="tab-text" id="mp13Level">1</p>
-                  <p class="tab-text">&nbsp;ms</p>
-                </div>
-              </div>
-              <button class="tab-button width-40" id="mp13" onclick="memoryBuy(0, 2)">
-                <span id="mp13Cost"></span>
-              </button>
-            </div>
-          </div>
-
-          <p style="margin-top: .5em; margin-bottom: .5em;">Autoclicker</p>
-          <div>
-            <div class="tab">
-              <div class="width-55">
-                <p style="margin-top: 0;">ซื้อ Autoclicker</p>
-                <div class="flex-start">
-                  <p class="tab-text">ขณะนี้:&nbsp;</p>
-                  <p class="tab-text" id="mp21Level">0</p>
-                </div>
-              </div>
-              <button class="tab-button width-40" id="mp21" onclick="memoryBuy(1, 0)">
-                <span id="mp21Cost"></span>
-              </button>
-            </div>
-            <div class="tab">
-              <div class="width-55">
-                <p style="margin-top: 0;">ความเร็ว Autoclicker ×2</p>
-                <div class="flex-start">
-                  <p class="tab-text">ขณะนี้:&nbsp;</p>
-                  <p class="tab-text" id="mp22Level">0</p>
-                </div>
-              </div>
-              <button class="tab-button width-40" id="mp22" onclick="memoryBuy(1, 1)">
-                <span id="mp22Cost"></span>
-              </button>
-            </div>
-            <div class="tab">
-              <div class="width-55">
-                <p style="margin-top: 0;">ความเร็ว Autoclicker ขึ้นอยู่กับ log<sub>2</sub> ของจำนวน memory points ที่มีอยู่</p>
-                <div class="flex-start">
-                  <p class="tab-text">ขณะนี้: ×</p>
-                  <p class="tab-text" id="mp23Level">0</p>
-                </div>
-              </div>
-              <button class="tab-button width-40" id="mp23" onclick="memoryBuy(1, 2)">
-                <span id="mp23Cost"></span>
+              <button class="tab-button width-40" id="mp-mpMult" onclick="memoryBuy('mpMult')">
+                <span id="mp-mpMult-Cost"></span>
               </button>
             </div>
           </div>
@@ -211,24 +159,24 @@
           <div>
             <div class="tab">
               <div class="width-55">
-                <p style="margin-top: 0;">n<sup>th</sup> impression ×1.01 ทุก ๆ การซื้อ impression นั้น ๆ</p>
+                <p style="margin-top: 0;">n<sup>th</sup> impression ×1.05 ทุก ๆ การซื้อ impression นั้น ๆ</p>
                 <div class="flex-start">
-                  <p class="tab-text" id="mp31Level">0</p>
+                  <p class="tab-text" id="mp-imUpgrade1-Level">0</p>
                 </div>
               </div>
-              <button class="tab-button width-40" id="mp31" onclick="memoryBuy(2, 0)">
-                <span id="mp31Cost"></span>
+              <button class="tab-button width-40" id="mp-imUpgrade1" onclick="memoryBuy('imUpgrade1')">
+                <span id="mp-imUpgrade1-Cost"></span>
               </button>
             </div>
             <div class="tab">
               <div class="width-55">
                 <p style="margin-top: 0;">n<sup>th</sup> impression ×2 ทุก ๆ การซื้อ impression นั้น ๆ 10 ครั้ง</p>
                 <div class="flex-start">
-                  <p class="tab-text" id="mp32Level">0</p>
+                  <p class="tab-text" id="mp-imUpgrade2-Level">0</p>
                 </div>
               </div>
-              <button class="tab-button width-40" id="mp32" onclick="memoryBuy(2, 1)">
-                <span id="mp32Cost"></span>
+              <button class="tab-button width-40" id="mp-imUpgrade2" onclick="memoryBuy('imUpgrade2')">
+                <span id="mp-imUpgrade2-Cost"></span>
               </button>
             </div>
             <div class="tab">
@@ -236,11 +184,11 @@
                 <p style="margin-top: 0;">ทุก ๆ impression ×log<sub>10</sub> ของ impression สูงสุดที่เคยได้รับ
                 </p>
                 <div class="flex-start">
-                  <p class="tab-text" id="mp33Level">0</p>
+                  <p class="tab-text" id="mp-imUpgrade3-Level">0</p>
                 </div>
               </div>
-              <button class="tab-button width-40" id="mp33" onclick="memoryBuy(2, 2)">
-                <span id="mp33Cost"></span>
+              <button class="tab-button width-40" id="mp-imUpgrade3" onclick="memoryBuy('imUpgrade3')">
+                <span id="mp-imUpgrade3-Cost"></span>
               </button>
             </div>
           </div>
@@ -251,22 +199,22 @@
               <div class="width-55">
                 <p style="margin-top: 0;">ปลดล็อก Impression Autobuyer</p>
                 <div class="flex-start">
-                  <p class="tab-text" id="mp41Level">0</p>
+                  <p class="tab-text" id="mp-imAb-Level">0</p>
                 </div>
               </div>
-              <button class="tab-button width-40" id="mp41" onclick="memoryBuy(3, 0)">
-                <span id="mp41Cost"></span>
+              <button class="tab-button width-40" id="mp-imAb" onclick="memoryBuy('imAb')">
+                <span id="mp-imAb-Cost"></span>
               </button>
             </div>
             <div class="tab">
               <div class="width-55">
                 <p style="margin-top: 0;">ปลดล็อก เก็บไว้ในความทรงจำ Autobuyer</p>
                 <div class="flex-start">
-                  <p class="tab-text" id="mp42Level">0</p>
+                  <p class="tab-text" id="mp-mpAb-Level">0</p>
                 </div>
               </div>
-              <button class="tab-button width-40" id="mp42" onclick="memoryBuy(3, 1)">
-                <span id="mp42Cost"></span>
+              <button class="tab-button width-40" id="mp-mpAb" onclick="memoryBuy('mpAb')">
+                <span id="mp-mpAb-Cost"></span>
               </button>
             </div>
           </div>
@@ -277,11 +225,11 @@
               <div class="width-55">
                 <p style="margin-top: 0;">เริ่มเกมด้วย 50 impressions และ ×2 ในทุก ๆ impression</p>
                 <div class="flex-start">
-                  <p class="tab-text" id="mp51Level">0</p>
+                  <p class="tab-text" id="mp-permUpgrade1-Level">0</p>
                 </div>
               </div>
-              <button class="tab-button width-40" id="mp51" onclick="memoryBuy(4, 0)">
-                <span id="mp51Cost"></span>
+              <button class="tab-button width-40" id="mp-permUpgrade1" onclick="memoryBuy('permUpgrade1')">
+                <span id="mp-permUpgrade1-Cost"></span>
               </button>
             </div>
           </div>

@@ -10,8 +10,8 @@ function setSlider(id, value, duration=1000) {
         { duration: duration }
     );
 }
-function fadeIn(id, duration=2000) {
-    document.getElementById(id).style.display = 'block';
+function fadeIn(id, duration=2000, display = 'block') {
+    document.getElementById(id).style.display = display;
     document.getElementById(id).animate(
         [
             { opacity: '0' },
@@ -40,15 +40,19 @@ var ordinal = ['First', 'Second', 'Third', 'Forth', 'Fifth', 'Sixth', 'Seventh',
 
 var tutorial = 0;
 
-var memoryLevel = [
-    [zero, zero, 0],
-    [zero, zero, false],
-    [false, false, false],
-    [false, false],
-    [false]];
+var memoryUpgrades = {
+    'imMult': zero,
+    'mpMult': zero,
+    'imUpgrade1': false,
+    'imUpgrade2': false,
+    'imUpgrade3': false,
+    'imAb': false,
+    'mpAb': false,
+    'permUpgrade1': false
+}
 
 var imInitAmount = () => {
-    if (memoryLevel[4][0])
+    if (memoryUpgrades['permUpgrade1'])
         return new Decimal(50);
     return new Decimal(10);
 }
@@ -59,14 +63,14 @@ var imLevels = [];
 
 // --- constant
 var imLevelsInitCost = [
-new Decimal('e1'), new Decimal('e3'),
-new Decimal('e6'), new Decimal('e10'),
-new Decimal('e15'), new Decimal('e20'),
+new Decimal('10'), new Decimal('100'),
+new Decimal('10000'), new Decimal('e6'),
+new Decimal('e9'), new Decimal('e12'),
 new Decimal('e30'), new Decimal('e40'),
 new Decimal('e50'), new Decimal('e60')];
 var imLevelsCostStep = [
-new Decimal('1.33'), new Decimal('4.00'),
-new Decimal('8.00'), new Decimal('16.0'),
+new Decimal('1.5'), new Decimal('3'),
+new Decimal('6'), new Decimal('12'),
 new Decimal('24.0'), new Decimal('48.0'),
 new Decimal('100'), new Decimal('1000'),
 new Decimal('1e4'), new Decimal('1e5')];
@@ -99,7 +103,7 @@ class ImLevel {
         destination.total = destination.total.add(amount.div(tickrate).mul(gameSpeed));
     }
 }
-var imPrestigeMinimum = new Decimal(100);
+var imPrestigeMinimum = new Decimal('1000');
 var imAutobuyActivated = false;
 var imAutoPrestigeActivated = false;
 let imAutoPrestigeThreshold = new Decimal(0);
@@ -108,13 +112,9 @@ var imMaxIm = imInitAmount();
 // --- mps
 
 var mp = new Decimal('0');
-var totalMemoryLevel = new Decimal(0);
+var totalmemoryUpgrades = new Decimal(0);
 var memoryMaxIm = imInitAmount();
-var mpMultiplier = () => new Decimal(2).pow(memoryLevel[0][1]);
-var autoClickerAmount = () => memoryLevel[1][0];
-var autoClickerPerClick = () => new Decimal(0.1).mul(new Decimal(2).pow(memoryLevel[1][1]));
-var autoClickerSpeed = () => memoryLevel[1][2] ? mp.add(1).log(2).add(1) : new Decimal(1);
-var clickCooldown = () => 1000 - memoryLevel[0][2] * 150;
+var mpMultiplier = () => new Decimal(2).pow(memoryUpgrades['mpMult']);
 
 // --- fps
 
@@ -140,11 +140,11 @@ function addAchievements(ac) {
 
 function imCalculateMultiplier() {
     for (let i = 0; i < 10; i++) {
-        let me11 = (i == 0) ? new Decimal(1.5).pow(memoryLevel[0][0]) : new Decimal(1);
-        let me31 = memoryLevel[2][0] ? new Decimal(1.01).pow(imLevels[i].amount) : new Decimal(1);
-        let me32 = memoryLevel[2][1] ? new Decimal(2).pow(imLevels[i].amount.div(10).floor()) : new Decimal(1);
-        let me33 = memoryLevel[2][2] ? memoryMaxIm.log10() : new Decimal(1);
-        let me51 = memoryLevel[4][0] ? new Decimal(2) : new Decimal(1);
+        let me11 = (i == 0) ? new Decimal(2).pow(memoryUpgrades['imMult']) : new Decimal(1);
+        let me31 = memoryUpgrades['imUpgrade1'] ? new Decimal(1.05).pow(imLevels[i].amount) : new Decimal(1);
+        let me32 = memoryUpgrades['imUpgrade2'] ? new Decimal(2).pow(imLevels[i].amount.div(10).floor()) : new Decimal(1);
+        let me33 = memoryUpgrades['imUpgrade3'] ? memoryMaxIm.log10() : new Decimal(1);
+        let me51 = memoryUpgrades['permUpgrade1'] ? new Decimal(2) : new Decimal(1);
         imLevels[i].multiplier = imLevelsInitMult[i].mul(
             me11).mul(
             me31).mul(

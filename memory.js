@@ -4,10 +4,15 @@ function imPrestigeAmount(mult = true) {
     if (imMaxIm.cmp(imPrestigeMinimum) < 0) {
         return new Decimal(0);
     }
+    // let result = imMaxIm.div(imPrestigeMinimum).log10().add(1).floor();
+    let result = imMaxIm.log(imPrestigeMinimum).floor();
+
     if (mult) {
-        return imMaxIm.div(imPrestigeMinimum).log10().add(1).floor().mul(mpMultiplier());
+        // (1/2)(x)(x+1)
+        return result.mul(mpMultiplier());
+        // return result.mul(result.add(1)).div(2).mul(mpMultiplier());
     }
-    return imMaxIm.div(imPrestigeMinimum).log10().add(1).floor();
+    return result;
 }
 
 function imPrestigeCost() {
@@ -15,77 +20,61 @@ function imPrestigeCost() {
     if (imMaxIm.cmp(imPrestigeMinimum) < 0) {
         return new Decimal(0);
     }
-    return new Decimal(10).pow(result.sub(1)).mul(imPrestigeMinimum);
+    return new Decimal(imPrestigeMinimum).pow(result);
+    // return new Decimal(10).pow(result.sub(1)).mul(imPrestigeMinimum);
 }
 
 function imPrestigeNextCost() {
     let result = imPrestigeAmount(false);
-    return new Decimal(10).pow(result).mul(imPrestigeMinimum);
+    return new Decimal(imPrestigeMinimum).pow(result.add(1));
+    // return new Decimal(10).pow(result).mul(imPrestigeMinimum);
 }
 
-function memoryCost(p, q) {
-    let ml = memoryLevel[p][q];
-    let isMemory = (r, s) => (p == r && q == s);
-    if (isMemory(0, 0))
-        return new Decimal(1).mul(new Decimal(3).pow(ml));
-    if (isMemory(0, 1))
-        return new Decimal(2).mul(new Decimal(3).pow(ml));
-    if (isMemory(0, 2))
-        return new Decimal(5).mul(new Decimal(3).pow(new Decimal(ml)));
-    if (isMemory(1, 0))
-        return new Decimal(40).mul(new Decimal(3).pow(ml));
-    if (isMemory(1, 1))
-        return new Decimal(100).mul(new Decimal(3).pow(ml));
-    if (isMemory(1, 2))
-        return new Decimal(200);
-    if (isMemory(2, 0))
-        return new Decimal(150);
-    if (isMemory(2, 1))
-        return new Decimal(500);
-    if (isMemory(2, 2))
-        return new Decimal(10000);
-    if (isMemory(3, 0))
+function memoryCost(id) {
+    let ml = memoryUpgrades[id];
+    if (id == 'imMult')
+        return new Decimal(1).mul(new Decimal(3).pow(ml)).floor();
+    if (id == 'mpMult')
+        return new Decimal(2).mul(new Decimal(3).pow(ml)).floor();
+    if (id == 'imUpgrade1')
+        return new Decimal(15);
+    if (id == 'imUpgrade2')
+        return new Decimal(80);
+    if (id == 'imUpgrade3')
+        return new Decimal(100000);
+    if (id == 'imAb')
         return new Decimal(1000);
-    if (isMemory(3, 1))
+    if (id == 'mpAb')
         return new Decimal(1e6);
-    if (isMemory(4, 0))
+    if (id == 'permUpgrade1')
         return new Decimal(2e4);
 };
 
-function memoryCanBuy(p, q) {
-    let cost = () => memoryCost(p, q);
+function memoryCanBuy(id) {
+    let cost = () => memoryCost(id);
     if (mp.cmp(cost()) < 0) return false;
-    let isMemory = (r, s) => (p == r && q == s);
-    if (isMemory(0, 2))
-        return memoryLevel[0][2] < 6;
-    if (isMemory(1, 2))
-        return !memoryLevel[1][2];
-    if (isMemory(2, 0))
-        return !memoryLevel[2][0];
-    if (isMemory(2, 1))
-        return !memoryLevel[2][1];
-    if (isMemory(2, 2))
-        return !memoryLevel[2][2];
-    if (isMemory(3, 0))
-        return !memoryLevel[3][0];
-    if (isMemory(3, 1))
-        return !memoryLevel[3][1];
-    if (isMemory(4, 0))
-        return !memoryLevel[4][0];
+    if (id == 'imUpgrade1')
+        return !memoryUpgrades['imUpgrade1'];
+    if (id == 'imUpgrade2')
+        return !memoryUpgrades['imUpgrade2'];
+    if (id == 'imUpgrade3')
+        return !memoryUpgrades['imUpgrade3'];
+    if (id == 'imAb')
+        return !memoryUpgrades['imAb'];
+    if (id == 'mpAb')
+        return !memoryUpgrades['mpAb'];
+    if (id == 'permUpgrade1')
+        return !memoryUpgrades['permUpgrade1'];
     return true;
 }
 
 function memoryDisableButton() {
-    let memoryList = [
-        [0, 0], [0, 1], [0, 2],
-        [1, 0], [1, 1], [1, 2],
-        [2, 0], [2, 1], [2, 2],
-        [3, 0], [3, 1],
-        [4, 0]];
-    for (let i = 0; i < memoryList.length; i++) {
-        let p = memoryList[i][0];
-        let q = memoryList[i][1];
-        document.getElementById(`mp${p + 1}${q + 1}`).disabled = !memoryCanBuy(p, q);
+    for (const [key, value] of Object.entries(memoryUpgrades)) {
+        try {
+            document.getElementById(`mp-${key}`).disabled = !memoryCanBuy(key);
+        } catch(e) {
+            console.log(e, key, value)
+        }
     }
 }
 
@@ -103,99 +92,87 @@ function imPrestigeClick() {
 }
 
 function imAutoPrestige() {
-    if (memoryLevel[3][1] &&
+    if (memoryUpgrades['mpAb'] &&
         imAutoPrestigeActivated &&
         imPrestigeAmount().cmp(imAutoPrestigeThreshold) >= 0) {
         imPrestigeClick();
     }
 }
 
-function memoryBuy(p, q) {
-    let cost = () => memoryCost(p, q);
-    if (!memoryCanBuy(p, q)) return;
+function memoryBuy(id) {
+    let cost = () => memoryCost(id);
+    if (!memoryCanBuy(id)) return;
     mp = mp.sub(cost());
-    let isMemory = (r, s) => (p == r && q == s);
-    if (isMemory(0, 0)) {
-        memoryLevel[0][0] = memoryLevel[0][0].add(1);
-    } else if (isMemory(0, 1)) {
-        memoryLevel[0][1] = memoryLevel[0][1].add(1);
-    } else if (isMemory(0, 2)) {
-        memoryLevel[0][2] = memoryLevel[0][2] + 1;
-    } else if (isMemory(1, 0)) {
-        memoryLevel[1][0] = memoryLevel[1][0].add(1);
-    } else if (isMemory(1, 1)) {
-        memoryLevel[1][1] = memoryLevel[1][1].add(1);
-    } else if (isMemory(1, 2)) {
-        memoryLevel[1][2] = true;
-    } else if (isMemory(2, 0)) {
-        memoryLevel[2][0] = true;
-    } else if (isMemory(2, 1)) {
-        memoryLevel[2][1] = true;
-    } else if (isMemory(2, 2)) {
-        memoryLevel[2][2] = true;
-    } else if (isMemory(3, 0)) {
-        memoryLevel[3][0] = true;
-    } else if (isMemory(3, 1)) {
-        memoryLevel[3][1] = true;
-    } else if (isMemory(4, 0)) {
-        memoryLevel[4][0] = true;
+    if (id == 'imMult') {
+        memoryUpgrades['imMult'] = memoryUpgrades['imMult'].add(1);
+    } else if (id == 'mpMult') {
+        memoryUpgrades['mpMult'] = memoryUpgrades['mpMult'].add(1);
+    } else if (id == 'imUpgrade1') {
+        memoryUpgrades['imUpgrade1'] = true;
+    } else if (id == 'imUpgrade2') {
+        memoryUpgrades['imUpgrade2'] = true;
+    } else if (id == 'imUpgrade3') {
+        memoryUpgrades['imUpgrade3'] = true;
+    } else if (id == 'imAb') {
+        memoryUpgrades['imAb'] = true;
+    } else if (id == 'mpAb') {
+        memoryUpgrades['mpAb'] = true;
+    } else if (id == 'permUpgrade1') {
+        memoryUpgrades['permUpgrade1'] = true;
     }
     memoryInit();
-    totalMemoryLevel = totalMemoryLevel.add(1);
-    setText(`mp${p + 1}${q + 1}Cost`, format(cost()));
+    totalmemoryUpgrades = totalmemoryUpgrades.add(1);
+    setText(`mp-${id}-Cost`, format(cost()));
 }
 
 // init
 function memoryInit() {
-    setText('mp11Level', format(new Decimal(1.5).pow(memoryLevel[0][0]), 'gray'));
-    setText('mp11Cost', format(memoryCost(0, 0)));
-    setText('mp12Level', format(mpMultiplier(), 'gray'));
-    setText('mp12Cost', format(memoryCost(0, 1)));
-    setText('mp13Level', format(new Decimal(clickCooldown()), 'gray'));
-    setText('mp13Cost', format(memoryCost(0, 2)));
+    setText('mp-imMult-Level', format(new Decimal(2).pow(memoryUpgrades['imMult']), 'gray'));
+    setText('mp-imMult-Cost', format(memoryCost('imMult')));
+    setText('mp-mpMult-Level', format(mpMultiplier(), 'gray'));
+    setText('mp-mpMult-Cost', format(memoryCost('mpMult')));
 
-    setText('mp21Level', format(autoClickerAmount(), 'gray', 0));
-    setText('mp21Cost', format(memoryCost(1, 0)));
-    setText('mp22Level', format(autoClickerPerClick(), 'gray', 1));
-    setText('mp22Cost', format(memoryCost(1, 1)));
-    // setText('mp23Level', format(autoClickerSpeed(), 'gray', 1));
-    setText('mp23Cost', format(memoryCost(1, 2)));
+    setText('mp-imUpgrade1-Level', memoryUpgrades['imUpgrade1'] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
+    setText('mp-imUpgrade1-Cost', format(memoryCost('imUpgrade1')));
+    setText('mp-imUpgrade2-Level', memoryUpgrades['imUpgrade2'] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
+    setText('mp-imUpgrade2-Cost', format(memoryCost('imUpgrade2')));
+    // setText('mp33Level', memoryUpgrades[2][2] ? format(memoryMaxIm.log10(), 'gray') : 'ยังไม่ปลดล็อก');
+    setText('mp-imUpgrade3-Cost', format(memoryCost('imUpgrade3')));
 
-    setText('mp31Level', memoryLevel[2][0] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
-    setText('mp31Cost', format(memoryCost(2, 0)));
-    setText('mp32Level', memoryLevel[2][1] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
-    setText('mp32Cost', format(memoryCost(2, 1)));
-    // setText('mp33Level', memoryLevel[2][2] ? format(memoryMaxIm.log10(), 'gray') : 'ยังไม่ปลดล็อก');
-    setText('mp33Cost', format(memoryCost(2, 2)));
+    setText('mp-imAb-Level', memoryUpgrades['imAb'] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
+    setText('mp-imAb-Cost', format(memoryCost('imAb')));
+    setText('mp-mpAb-Level', memoryUpgrades['mpAb'] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
+    setText('mp-mpAb-Cost', format(memoryCost('mpAb')));
 
-    setText('mp41Level', memoryLevel[3][0] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
-    setText('mp41Cost', format(memoryCost(3, 0)));
-    setText('mp42Level', memoryLevel[3][1] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
-    setText('mp42Cost', format(memoryCost(3, 1)));
-
-    setText('mp51Level', memoryLevel[4][0] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
-    setText('mp51Cost', format(memoryCost(4, 0)));
+    setText('mp-permUpgrade1-Level', memoryUpgrades['permUpgrade1'] ? 'ปลดล็อกแล้ว' : 'ยังไม่ปลดล็อก');
+    setText('mp-permUpgrade1-Cost', format(memoryCost('permUpgrade1')));
 
     setText('mpImUnlockButton', format(mpImUnlockCost[imUnlocked - 1], 'white'));
 
     imCalculateMultiplier();
     memoryDisableButton();
 
-    let acUnlocked = memoryLevel[1][0].cmp(0) > 0;
-    document.getElementById('imAcStatus').style.display = acUnlocked ? 'block' : 'none';
-    document.getElementById('imAbToggleDiv').style.display = memoryLevel[3][0] ? 'flex' : 'none';
-    document.getElementById('imAutoPrestigeToggleDiv').style.display = memoryLevel[3][1] ? 'flex' : 'none';
+    // document.getElementById('imAcStatus').style.display = acUnlocked ? 'block' : 'none';
+    document.getElementById('imAbToggleDiv').style.display = memoryUpgrades['imAb'] ? 'flex' : 'none';
+    document.getElementById('imAutoPrestigeToggleDiv').style.display = memoryUpgrades['mpAb'] ? 'flex' : 'none';
 }
 
 function memoryReset() {
     mp = new Decimal(0);
-    let me51 = memoryLevel[4][0];
-    memoryLevel = [
-        [zero, zero, 0],
-        [zero, zero, false],
-        [false, false, false],
-        [false, false],
-        [me51]];
+    let me51 = memoryUpgrades['permUpgrade1'];
+    memoryUpgrades = {
+        'imMult': zero,
+        'mpMult': zero,
+        'acAmount': zero,
+        'acSpeed': zero,
+        'acUpgrade': false,
+        'imUpgrade1': false,
+        'imUpgrade2': false,
+        'imUpgrade3': false,
+        'imAb': false,
+        'mpAb': false,
+        'permUpgrade1': me51
+    }
     imReset();
     memoryInit();
     memoryMaxIm = im;
@@ -216,7 +193,7 @@ function mpImUnlock() {
             document.getElementById(`im${imUnlocked}`).style.display = 'flex';
         } else {
             memoryReset();
-            imUnlocked = 1;
+            imUnlocked = 2;
             fp = fp.add(1);
             for (var i = 10; i > imUnlocked; i--) {
                 document.getElementById(`im${i}`).style.display = 'none';

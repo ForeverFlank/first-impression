@@ -57,8 +57,7 @@ function imClick(e) {
 }
 
 function imAutoclick() {
-    let autoClick = autoClickerAmount().mul(autoClickerPerClick()).mul(autoClickerSpeed());
-    im = im.add((imLevels[0].total).mul(imLevels[0].multiplier).mul(autoClick).div(tickrate).mul(gameSpeed));
+    im = im.add((imLevels[0].total).mul(imLevels[0].multiplier).div(tickrate).mul(gameSpeed));
     setText('imAmount', format(im, 'blue'));
 }
 
@@ -67,10 +66,13 @@ function imBuy(x) {
     if (tutorial == 0) {
         tutorial = 1; 
         addAchievements('im01');
-        fadeIn('imClickButton');
         fadeIn('imBuyMax');
         document.getElementById('im1Button').style.animation = 'none';
-        document.getElementById('imClickButton').style.animation = 'highlight 1s linear infinite';
+        // fadeIn('imClickButton');
+        // document.getElementById('imClickButton').style.animation = 'highlight 1s linear infinite';
+    }
+    if (x == 2) {
+        addAchievements('im02');
     }
     if (im.cmp(imLevels[n].cost()) >= 0) {
         im = im.sub(imLevels[n].cost());
