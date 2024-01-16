@@ -88,7 +88,7 @@ function loadImLevels(obj) {
 function loadMpLevels(obj) {
     let x = {};
     for (const [key, value] of Object.entries(obj)) {
-        if (['imMult', 'mpMult', 'acAmount', 'acSpeed'].includes(key)) {
+        if (['imMult', 'im1Mult', 'mpMult', 'acAmount', 'acSpeed'].includes(key)) {
             x[key] = new Decimal(value);
         } else {
             x[key] = value;

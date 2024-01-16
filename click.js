@@ -92,6 +92,12 @@ function imBuyMax(n) {
     maxPurchasable = maxPurchasable.log(step).floor();
     let maxAmount = Math.round(maxPurchasable.sub(imLevels[n].amount).mag);
     
+    if (maxAmount > 0) {
+        if (n + 1 == 2) {
+            addAchievements('im02');
+        }
+    }
+
     let totalCost = new Decimal(0);
     
     const MAX_TERM = 50;

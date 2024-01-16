@@ -101,7 +101,6 @@
                   <p style="margin-top: 0;">เก็บไว้ในความทรงจำ</p>
                   <p class="tab-text-margin">รีเซ็ตทุกอย่างเพื่อรับ Memory</p>
                   <div class="flex-start">
-                    <p class="tab-text">รับ Memory ต่อไปที่:&nbsp;</p>
                     <p id="imPrestigeCost" class="tab-text">0</p>
                   </div>
                 </div>
@@ -132,6 +131,18 @@
             <div class="tab">
               <div class="width-55">
                 <p style="margin-top: 0;">1<sup>st</sup> impression ×2</p>
+                <div class="flex-start">
+                  <p class="tab-text">ขณะนี้: ×</p>
+                  <p class="tab-text" id="mp-im1Mult-Level">0</p>
+                </div>
+              </div>
+              <button class="tab-button width-40" id="mp-im1Mult" onclick="memoryBuy('im1Mult')">
+                <span id="mp-im1Mult-Cost"></span>
+              </button>
+            </div>
+            <div class="tab">
+              <div class="width-55">
+                <p style="margin-top: 0;">ทุก ๆ impression ×2</p>
                 <div class="flex-start">
                   <p class="tab-text">ขณะนี้: ×</p>
                   <p class="tab-text" id="mp-imMult-Level">0</p>

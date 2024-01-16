@@ -3,14 +3,14 @@
 function setText(id, str) {
     document.getElementById(id).innerHTML = str;
 }
-function setSlider(id, value, duration=1000) {
+function setSlider(id, value, duration = 1000) {
     let bar = document.getElementById(id);
     bar.animate(
         [{ width: `${value}%` }],
         { duration: duration }
     );
 }
-function fadeIn(id, duration=2000, display = 'block') {
+function fadeIn(id, duration = 2000, display = 'block') {
     document.getElementById(id).style.display = display;
     document.getElementById(id).animate(
         [
@@ -19,14 +19,14 @@ function fadeIn(id, duration=2000, display = 'block') {
         ],
         { duration: duration, iterations: 1 });
 }
-function fadeOut(id, duration=2000) {
+function fadeOut(id, duration = 2000) {
     document.getElementById(id).animate(
         [
             { opacity: '1' },
             { opacity: '0' }
         ],
         { duration: duration, iterations: 1 });
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById(id).style.display = 'none'
     }, duration);
 }
@@ -41,6 +41,7 @@ var ordinal = ['First', 'Second', 'Third', 'Forth', 'Fifth', 'Sixth', 'Seventh',
 var tutorial = 0;
 
 var memoryUpgrades = {
+    'im1Mult': zero,
     'imMult': zero,
     'mpMult': zero,
     'imUpgrade1': false,
@@ -63,22 +64,23 @@ var imLevels = [];
 
 // --- constant
 var imLevelsInitCost = [
-new Decimal('10'), new Decimal('100'),
-new Decimal('10000'), new Decimal('e6'),
-new Decimal('e9'), new Decimal('e12'),
-new Decimal('e30'), new Decimal('e40'),
-new Decimal('e50'), new Decimal('e60')];
+    new Decimal('10'), new Decimal('100'),
+    new Decimal('10000'), new Decimal('e8'),
+    new Decimal('e16'), new Decimal('e32'),
+    new Decimal('e64'), new Decimal('e128'),
+    new Decimal('e256'), new Decimal('e512')];
 var imLevelsCostStep = [
-new Decimal('1.5'), new Decimal('3'),
-new Decimal('6'), new Decimal('12'),
-new Decimal('24.0'), new Decimal('48.0'),
-new Decimal('100'), new Decimal('1000'),
-new Decimal('1e4'), new Decimal('1e5')];
-var imLevelsInitMult = [new Decimal(1), new Decimal(1 / 2),
-new Decimal(1 / 4), new Decimal(1 / 8),
-new Decimal(1 / 16), new Decimal(1 / 32),
-new Decimal(1 / 64), new Decimal(1 / 128),
-new Decimal(1 / 256), new Decimal(1 / 512)];
+    new Decimal('1.5'), new Decimal('3'),
+    new Decimal('6'), new Decimal('12'),
+    new Decimal('80'), new Decimal('3200'),
+    new Decimal('e6'), new Decimal('e12'),
+    new Decimal('e24'), new Decimal('e48')];
+var imLevelsInitMult = [
+    new Decimal(1), new Decimal(1 / 2),
+    new Decimal(1 / 4), new Decimal(1 / 8),
+    new Decimal(1 / 16), new Decimal(1 / 32),
+    new Decimal(1 / 64), new Decimal(1 / 128),
+    new Decimal(1 / 256), new Decimal(1 / 512)];
 
 // --- ims
 
@@ -140,17 +142,19 @@ function addAchievements(ac) {
 
 function imCalculateMultiplier() {
     for (let i = 0; i < 10; i++) {
-        let me11 = (i == 0) ? new Decimal(2).pow(memoryUpgrades['imMult']) : new Decimal(1);
-        let me31 = memoryUpgrades['imUpgrade1'] ? new Decimal(1.05).pow(imLevels[i].amount) : new Decimal(1);
-        let me32 = memoryUpgrades['imUpgrade2'] ? new Decimal(2).pow(imLevels[i].amount.div(10).floor()) : new Decimal(1);
-        let me33 = memoryUpgrades['imUpgrade3'] ? memoryMaxIm.log10() : new Decimal(1);
-        let me51 = memoryUpgrades['permUpgrade1'] ? new Decimal(2) : new Decimal(1);
-        imLevels[i].multiplier = imLevelsInitMult[i].mul(
-            me11).mul(
-            me31).mul(
-            me32).mul(
-            me33).mul(
-            me51);
+        let im1Mult = (i == 0) ? new Decimal(2).pow(memoryUpgrades['im1Mult']) : new Decimal(1);
+        let imMult = new Decimal(2).pow(memoryUpgrades['imMult']);
+        let imUpgrade1Mult = memoryUpgrades['imUpgrade1'] ? new Decimal(1.05).pow(imLevels[i].amount) : new Decimal(1);
+        let imUpgrade2Mult = memoryUpgrades['imUpgrade2'] ? new Decimal(2).pow(imLevels[i].amount.div(10).floor()) : new Decimal(1);
+        let imUpgrade3Mult = memoryUpgrades['imUpgrade3'] ? memoryMaxIm.log10() : new Decimal(1);
+        let permUpgrade1Mult = memoryUpgrades['permUpgrade1'] ? new Decimal(2) : new Decimal(1);
+        imLevels[i].multiplier = imLevelsInitMult[i]
+            .mul(im1Mult)
+            .mul(imMult)
+            .mul(imUpgrade1Mult)
+            .mul(imUpgrade2Mult)
+            .mul(imUpgrade3Mult)
+            .mul(permUpgrade1Mult);
     }
 }
 

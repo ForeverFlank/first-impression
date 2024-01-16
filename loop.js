@@ -5,11 +5,12 @@ function uiUpdate() {
         setText('imAmount', format(im, 'blue'));
         setText('imRate', format(imLevels[0].value(), 'dark-blue'));
         setText('imPrestigeValue', format(imPrestigeAmount(), 'white', 2));
-        setText('imPrestigeCost', format(imPrestigeNextCost(), 'gray'));
+        setText('imPrestigeCost', `รับ ${format(imPrestigeAmount(true, imPrestigeNextCost()), 'gray')} mp เมื่อมี ${format(imPrestigeNextCost(), 'gray')} im`);
         // setText('imAcSpeed', format(autoclickTotal, 'gray'));
         for (var i = 10; i >= 1; i--) {
             setText(`im${i}Mult`, format(imLevels[i - 1].multiplier, 'gray'));
-            setText(`im${i}Total`, `${format(imLevels[i - 1].total, 'gray')}&ensp;(${format(imLevels[i - 1].amount, 'gray', 0)})`);
+            // setText(`im${i}Total`, `${format(imLevels[i - 1].total, 'gray')}&ensp;(${format(imLevels[i - 1].amount, 'gray', 0)})`);
+            setText(`im${i}Total`, `${format(imLevels[i - 1].total, 'gray')}`);
             let button = document.getElementById(`im${i}Button`);
             button.disabled = (im.cmp(imLevels[i - 1].cost()) < 0);
         }
@@ -38,13 +39,17 @@ function gameUpdate() {
         imUnlocked = 3;
         fadeIn('im3', 2000, 'flex');
     }
-    if (imUnlocked == 3 && im.cmp(3e5) >= 0) {
+    if (imUnlocked == 3 && im.cmp(3e7) >= 0) {
         imUnlocked = 4;
         fadeIn('im4', 2000, 'flex');
     }
-    if (imUnlocked == 4 && im.cmp(3e8) >= 0) {
+    if (imUnlocked == 4 && im.cmp(3e15) >= 0) {
         imUnlocked = 5;
         fadeIn('im5', 2000, 'flex');
+    }
+    if (imUnlocked == 5 && im.cmp(3e31) >= 0) {
+        imUnlocked = 6;
+        fadeIn('im6', 2000, 'flex');
     }
     if (imUnlockedUpdate) {
         for (var i = 10; i > imUnlocked; i--) {

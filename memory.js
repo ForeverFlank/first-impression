@@ -1,16 +1,16 @@
 'use strict';
 
-function imPrestigeAmount(mult = true) {
-    if (imMaxIm.cmp(imPrestigeMinimum) < 0) {
+function imPrestigeAmount(mult = true, imAmount = imMaxIm) {
+    if (imAmount.cmp(imPrestigeMinimum) < 0) {
         return new Decimal(0);
     }
     // let result = imMaxIm.div(imPrestigeMinimum).log10().add(1).floor();
-    let result = imMaxIm.log(imPrestigeMinimum).floor();
+    let result = imAmount.log(imPrestigeMinimum).floor();
 
     if (mult) {
         // (1/2)(x)(x+1)
-        return result.mul(mpMultiplier());
-        // return result.mul(result.add(1)).div(2).mul(mpMultiplier());
+        // return result.mul(mpMultiplier());
+        return result.mul(result.add(1)).div(2).mul(mpMultiplier());
     }
     return result;
 }
@@ -32,14 +32,16 @@ function imPrestigeNextCost() {
 
 function memoryCost(id) {
     let ml = memoryUpgrades[id];
+    if (id == 'im1Mult')
+        return new Decimal(1).mul(new Decimal(3).pow(ml)).round();
     if (id == 'imMult')
-        return new Decimal(1).mul(new Decimal(3).pow(ml)).floor();
+        return new Decimal(5).mul(new Decimal(4).pow(ml)).round();
     if (id == 'mpMult')
-        return new Decimal(2).mul(new Decimal(3).pow(ml)).floor();
+        return new Decimal(2).mul(new Decimal(3).pow(ml)).round();
     if (id == 'imUpgrade1')
         return new Decimal(15);
     if (id == 'imUpgrade2')
-        return new Decimal(80);
+        return new Decimal(1500);
     if (id == 'imUpgrade3')
         return new Decimal(100000);
     if (id == 'imAb')
@@ -79,6 +81,17 @@ function memoryDisableButton() {
 }
 
 function imPrestigeClick() {
+    let mp02Criteria = true;
+    imLevels.forEach(x => {
+        if (x.level != 1) {
+            if (x.total.cmp(0) != 0) {
+                mp02Criteria = false;
+            }
+        }
+    });
+    if (mp02Criteria) {
+        addAchievements('mp02');
+    }
     mp = mp.add(imPrestigeAmount());
     imReset();
     memoryDisableButton();
@@ -103,7 +116,9 @@ function memoryBuy(id) {
     let cost = () => memoryCost(id);
     if (!memoryCanBuy(id)) return;
     mp = mp.sub(cost());
-    if (id == 'imMult') {
+    if (id == 'im1Mult') {
+        memoryUpgrades['im1Mult'] = memoryUpgrades['im1Mult'].add(1);
+    } else if (id == 'imMult') {
         memoryUpgrades['imMult'] = memoryUpgrades['imMult'].add(1);
     } else if (id == 'mpMult') {
         memoryUpgrades['mpMult'] = memoryUpgrades['mpMult'].add(1);
@@ -127,6 +142,8 @@ function memoryBuy(id) {
 
 // init
 function memoryInit() {
+    setText('mp-im1Mult-Level', format(new Decimal(2).pow(memoryUpgrades['im1Mult']), 'gray'));
+    setText('mp-im1Mult-Cost', format(memoryCost('im1Mult')));
     setText('mp-imMult-Level', format(new Decimal(2).pow(memoryUpgrades['imMult']), 'gray'));
     setText('mp-imMult-Cost', format(memoryCost('imMult')));
     setText('mp-mpMult-Level', format(mpMultiplier(), 'gray'));
@@ -161,6 +178,7 @@ function memoryReset() {
     mp = new Decimal(0);
     let me51 = memoryUpgrades['permUpgrade1'];
     memoryUpgrades = {
+        'im1Mult': zero,
         'imMult': zero,
         'mpMult': zero,
         'acAmount': zero,
