@@ -25,7 +25,8 @@ class Game {
     }
 
     gameStart() {
-        this.im = new Decimal(0)
+        // this.im = new Decimal(10000)
+        // this.tickets.amount = 4;
         // this.impressions.count.value = new Decimal(10);
         // this.impressions.tier.value = 2;
         // this.impressions.reset.value = 1

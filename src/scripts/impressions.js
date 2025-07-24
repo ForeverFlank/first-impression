@@ -17,19 +17,18 @@ class Impressions {
                     return new Decimal(6);
                 }
                 if (val.cmp(3) == 0) {
-                    return new Decimal(7);
+                    return new Decimal(8);
                 }
                 let imBuyDiscounts = arg[0];
-                let base = 1.25 + 0.75 * 0.9 ** imBuyDiscounts.value;
-                return new Decimal(base).pow(val).div(2);
+                return new Decimal(2).pow(val).mul(0.9 ** imBuyDiscounts.value);
             }
         );
         this.tier = new Item(
             1,
             (val, arg) => {
                 let imTierDiscounts = arg[0];
-                let base = 1.5 + 1 * 0.9 ** imTierDiscounts.value;
-                return 100 * base ** (val) / 2.5;
+                let base = 1.5 + 1 ;
+                return 40 * 2.5 ** (val) * 0.9 ** imTierDiscounts.value;
             }
         );
         this.reset = new Item(
@@ -51,7 +50,7 @@ class Impressions {
         if (game.im.cmp(cost) >= 0) {
             game.impressions.tier.value += 1;
             game.impressions.count.value = new Decimal(0);
-            game.im = game.im.sub(cost);
+            game.im = new Decimal(0);
         }
     }
 
