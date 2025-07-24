@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Impression</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="./output.css" rel="stylesheet">
+</head>
+
+<body class="p-4 text-xs">
+    <header class="p-2 sticky flex flex-col gap-y-4">
+        <div>
+            <h1 class="text-base">
+                คุณมี
+                <span id="val-im" class="text-blue-500 font-medium tabular-nums">0</span>
+                impressions.
+            </h1>
+            <p>
+                คุณกำลังได้รับ 
+                <span id="val-im-rate" class="text-blue-700">0</span>
+                impressions ต่อวินาที.
+            </p>
+        </div>
+        <nav>
+            <button id="btn-im" class="bg-gray-200 p-1 rounded w-12">Im</button>
+            <button id="btn-me" class="bg-gray-200 p-1 rounded w-12">Me</button>
+            <button id="btn-dr" class="bg-gray-200 p-1 rounded w-12">Dr</button>
+        </nav>
+    </header>
+    <hr>
+    <main class="p-2">
+        <div id="tab-im" class="tabcontent-main flex flex-col gap-y-2">
+            <div class="flex flex-col gap-y-2">
+                <h2 class="font-medium text-base">Impressions</h2>
+                <p>คุณมี
+                    <span id="val-im-up-amount" class="font-medium">0</span>
+                    <span id="val-im-up-tier" class="font-medium">1</span>
+                    <span class="font-medium">impressions</span>
+                </p>
+                <div>
+                    <p>ซื้อ</p>
+                    <button id="btn-im-up-amount" class="bg-gray-200 p-1 rounded w-20">0</button>
+                </div>
+                <div>
+                    <p>อัพเกรด</p>
+                    <button id="btn-im-up-tier" class="bg-gray-200 p-1 rounded w-20">0</button>
+                </div>
+                <div>
+                    <p>รีเซ็ตทุกอย่างที่ผ่านมาเพื่อเพิ่มความเร็วของ impressions และรับ <span id="val-ticket-gain">1</span> ตั๋ว</p>
+                    <button id="btn-im-up-reset" class="bg-gray-200 p-1 rounded w-20">0</button>
+                </div>
+            </div>
+            <hr>
+            <div class="flex flex-col gap-y-2">
+                <h3 class="font-medium text-sm">ตั๋ว</h3>
+                <p>คุณมี <span id="val-ticket">0</span> ตั๋ว</p>
+                <div>
+                    <p>ลดราคาเริ่มต้นของ impressions 10%</p>
+                    <button id="btn-ticket-buy-discount" class="bg-gray-200 p-1 rounded w-20">0</button>
+                </div>
+                <div>
+                    <p>ลดราคาเริ่มต้นของอัพเกรด impressions 10%</p>
+                    <button id="btn-ticket-tier-discount" class="bg-gray-200 p-1 rounded w-20">0</button>
+                </div>
+                <div>
+                    <p>รับตั๋วเพิ่มขึ้นเมื่อรีเซ็ต</p>
+                    <button id="btn-ticket-per-reset" class="bg-gray-200 p-1 rounded w-20">0</button>
+                </div>
+            </div>
+        </div>
+        <div id="tab-me" class="tabcontent-main flex flex-col gap-y-4">
+            <h2 class="font-medium text-base">Memories</h2>
+            <p>Everything else here</p>
+        </div>
+    </main>
+</body>
+<script src="./scripts/break_eternity.js"></script>
+<script type="module" src="./scripts/main.js"></script>
+<script type="module">
+    import { main } from "./scripts/main.js"
+    main();
+</script>
+
+</html>
